@@ -65,26 +65,31 @@ function Editor() {
         autofocus: true,
         tools: { 
 
-          header: {
-            class: Header,
-            inlineToolbar: ['link',  'bold', 'italic'],
-            config: {
-              placeholder: 'Enter a header',
-            }
-          },
-
-          list:{
-            class: List,
-            inlineToolbar: true,
-            config: {
-              placeholder: 'List'
-            }
+          checklist:{
+            class: Checklist
           },
 
           code:{
             class: Code,
             inlineToolbar:true,
           },
+
+          header: {
+            class: Header,
+            inlineToolbar: ['link', 'bold', 'italic'],
+            config: {
+              placeholder: 'Enter a header',
+            }
+          },
+
+          // list:{
+          //   class: List,
+          //   inlineToolbar: true,
+          //   config: {
+          //     placeholder: 'List'
+          //   }
+          // },
+
 
           embed:{
             class: Embed
