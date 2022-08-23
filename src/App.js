@@ -1,35 +1,20 @@
 import logo from './logo.svg';
 // import './App.css';
-import EditableBlock from "./Components/EditableBlock";
+import PageHeader from "./Components/PageHeader";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
+import Editor from './Components/Editor';
 
 function App() {
   return (
-    <div className="flex ">
-        <div className="">
+    <div className="flex w-full">
+        <div className="w-3/12">
           <Sidebar />
         </div>
-        <div className="">
-          <header className="content-header">
-            <Header />
-            {/* <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a> */}
-          </header>
-          
-          <h1 className="text-3xl font-bold underline">here</h1>
-          <EditableBlock />
-      
+        <div className="w-9/12">
+          < Header />
+          < PageHeader />
+          < Editor />
       </div>
     </div>
   );
