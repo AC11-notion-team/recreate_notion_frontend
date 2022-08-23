@@ -9,12 +9,12 @@ import fullStar from "../image/full-star.png"
 import more from "../image/more.png"
 
 
-export default function Header(){
+export default function Header(props){
     return(
        <div className="flex  px-4 leading-10 ">
            <div className="flex ">
-                <div className="mr-2">
-                    側邊欄選單
+                <div className="mr-2" >
+                    <button onClick = {props.handleSidebar}>側邊欄選單</button>
                 </div>
                 <div>
                     <img src="" />

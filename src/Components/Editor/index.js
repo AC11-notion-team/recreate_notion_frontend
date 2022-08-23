@@ -34,19 +34,6 @@ const EDITTOR_HOLDER_ID = 'editorjs';
 function Editor() {
     const ejInstance = useRef();
     const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
-    
-    // This will run only once
-    useEffect(() => {
-        if (!ejInstance.current) {
-            initEditor();
-            
-        }
-        return () => {
-            ejInstance.current.destroy();
-            ejInstance.current = null;
-        }
-    }, []);
-    
     const initEditor = () => {
       const editor = new EditorJS({
         holder: EDITTOR_HOLDER_ID,
@@ -58,7 +45,6 @@ function Editor() {
         },
         onChange: async () => {
           let content = await editor.saver.save();
-          
           // Put your logic here to save this data to your DB
           setEditorData(content);
         },
@@ -79,17 +65,8 @@ function Editor() {
             inlineToolbar: ['link', 'bold', 'italic'],
             config: {
               placeholder: 'Enter a header',
-            }
+            },
           },
-
-          // list:{
-          //   class: List,
-          //   inlineToolbar: true,
-          //   config: {
-          //     placeholder: 'List'
-          //   }
-          // },
-
 
           embed:{
             class: Embed
@@ -108,7 +85,11 @@ function Editor() {
           },
 
           nestedlist:{
-            class: NestedList
+            class: NestedList,
+            inlineToolbar: true,
+            config: {
+              placeholder: 'List'
+            },
           },
 
           quote:{
@@ -118,6 +99,19 @@ function Editor() {
         }, 
       });
     };
+    // This will run only once
+    useEffect(() => {
+        if (!ejInstance.current) {
+            initEditor();
+            
+        }
+        return () => {
+            ejInstance.current.destroy();
+            ejInstance.current = null;
+        }
+    }, []);
+    
+
     
     return (
         <React.Fragment>
