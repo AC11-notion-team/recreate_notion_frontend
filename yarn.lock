@@ -3769,6 +3769,11 @@ duplexer@^0.1.2:
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
 
+editorjs-drag-drop@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/editorjs-drag-drop/-/editorjs-drag-drop-1.1.5.tgz#fb3ee2e38f414bcd943ffa8db77cad0653ab1fbd"
+  integrity sha512-RNUtKZlKXfoUg0AUEoyEG5eP7c3j9FKiO/d3aElHq5Z3o3DmbiG+VrN4ZtNBDDz+wtOJSXMce5bZS8HGNy4qIA==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"

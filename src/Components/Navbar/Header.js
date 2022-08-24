@@ -7,7 +7,7 @@ import clock from "../image/clock.png"
 import emptyStar from "../image/empty-star.jpeg"
 import fullStar from "../image/full-star.png"
 import more from "../image/more.png"
-
+import './header.css'
 
 export default function Header(props){
     return(
