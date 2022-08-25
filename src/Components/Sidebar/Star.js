@@ -1,5 +1,5 @@
 import React from "react";
-import right from "../image/right.png"
+import pageButtonRight from "../image/pageButtonRight.png"
 import user from "../image/user.png"
 
 export default function Star({state}){
@@ -11,7 +11,7 @@ export default function Star({state}){
                 </div>
                 <div className="py-1 px-1">
                     <div className="flex items-center point px-1.5 py-1">
-                        <button className="mr-1"><img className="w-5 h-5 py-1.5 px-0.5" src={right} alt="right" /></button>
+                        <button className="mr-1"><img className="w-5 h-5 py-1.5 px-0.5" src={pageButtonRight} alt="right" /></button>
                         <img className="w-5 h-5" src={user} alt="pageImg" />
                         <p className="text-sm font-semibold text-gray-600 ml-2">頁面標題</p>
                     </div>
