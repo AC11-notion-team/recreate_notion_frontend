@@ -1,30 +1,39 @@
-import logo from './logo.svg';
-// import './App.css';
+import React from 'react';
+import './App.css';
 import PageHeader from "./Components/PageHeader";
-import Header from "./Components/Navbar/Header";
-import Sidebar from "./Components/Sidebar/Sidebar";
 import Editor from './Components/Editor';
-import React, {useState} from 'react'
+import EditableBlock from "./Components/EditableBlock";
+import Header from "./Components/Navbar/Header";
+import { useState } from 'react';
+import Sidebar from './Components/Sidebar/Sidebar';
+
 
 function App() {
-  const [showSidebar, setShowSidebar] = useState(true)
-  // const toggleSidebar = () => setShowSidebar(prev => !prev) 
-  function toggleSidebar(){
-    console.log("toggle")
-    setShowSidebar(prev => !prev)
+  const [isSide,setIsSide] = React.useState(true)
+  function toggleSide (){
+      setIsSide(prveSide => !prveSide)
   }
-  return (
-    <div className="flex w-full">
-        <div className="w-3/12">
-          { showSidebar && <Sidebar /> }
-        </div>
-        <div className="w-9/12">
-          < Header handleSidebar = {toggleSidebar} />
-          < PageHeader />
-          < Editor />
-      </div>
-    </div>
-  );
-}
+  const [isFavorite,setIsFavorite] = React.useState(false)
+  function toggleFavorite(){
+      setIsFavorite(prevIsFavorite => !prevIsFavorite)
+  }
 
+  return (
+    <div className="flex ">
+      <div>
+        {/* <div className='w-2/12'>
+            <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />
+        </div> */}
+      </div>
+      <div>
+        <div className="w-screen">
+            <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide}/>  
+        </div>
+        <h1 className="text-3xl font-bold underline"></h1>
+        < PageHeader />
+        < Editor />
+      </div>
+    </div>  
+  )
+}
 export default App;
