@@ -8,7 +8,7 @@ const App = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		console.log(payload);
+		// console.log(user);
 		setuser(payload);
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
@@ -19,8 +19,10 @@ const App = () => {
 		});
 
 		window.google.accounts.id.renderButton(googlebuttonref.current, {
+			theme: "outline",
 			size: "large",
 		});
+		window.google.id.prompt();
 	});
 	return (
 		<div
