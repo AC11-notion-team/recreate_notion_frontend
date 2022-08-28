@@ -8,8 +8,8 @@ import Login from "./Components/Login";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
-		<Login />
-		{/* <App className= "w-screen"/> */}
+		{/* <Login /> */}
+		<App className="w-screen" />
 	</>
 );
 
