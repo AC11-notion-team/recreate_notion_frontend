@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
+import axios from "axios";
 
 const App = () => {
 	const googlebuttonref = useRef();
@@ -8,8 +9,17 @@ const App = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		// console.log(user);
+		// console.log(payload);
 		setuser(payload);
+		axios
+			.post("http://localhost:3001/api/v1/auth/login", {
+				name: payload.name,
+				email: payload.email,
+			})
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => console.log(err));
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
 		window.google.accounts.id.initialize({
@@ -22,7 +32,7 @@ const App = () => {
 			theme: "outline",
 			size: "large",
 		});
-		window.google.id.prompt();
+		// window.google.id.prompt();
 	});
 	return (
 		<div
