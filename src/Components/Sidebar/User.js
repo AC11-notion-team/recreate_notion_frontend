@@ -1,0 +1,60 @@
+import React,{useState} from "react";
+import user from "../image/user.png"
+import userData from "../image/userData.png"
+import menuLeft from "../image/menu-left.png"
+import more from "../image/more.png"
+import drag from "../image/drag.png"
+import check from "../image/check.png"
+
+export default function User ({toggle}){
+    const [isUser,setIsUser] = useState(false)
+    const toggleUser = ()=>(setIsUser(prveUser => !prveUser))
+    return(
+        <div>
+            <div className="flex items-center justify-between point group  px-4 p-2">
+                <div className="flex items-center group-hover:opacity-80 py-1.5" onClick={toggleUser}>
+                    <img className="w-5 h-5 mr-2" src={user} alt="userImg" />
+                    <p className="mr-1 font-semibold text-sm"> user's Notion</p>
+                    <img className="w-4 h-3" src={userData} alt="userData" />     
+                </div>
+                <button className="w-6 h-6 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded" onClick={toggle}>
+                    <img  src={menuLeft} alt="menuLeft" />
+                </button>
+            </div>
+            {isUser && <div className="absolute bg-white left-3 w-64  box-shadow  border z-10 rounded">
+                <div className=" flex items-center justify-between p-2">
+                    <p className="text-sm">fdjfjfd@gmail.com</p>
+                    <button className="p-1">
+                        <img className="w-5 h-5 p-1" src={more} alt="moreButton" />
+                    </button>
+                </div>
+                <div className="flex items-center justify-between point mb-2 p-2">
+                    <div className="flex items-center">
+                        <button className="mr-1">
+                            <img className="w-5 h-5 p-0.5" src={drag} alt="" />
+                        </button>
+                        <img className="w-7 h-7 mr-2" src={user} alt="userImg" />
+                        <div>
+                            <p className="mr-1 font-semibold text-sm"> user's Notion</p>
+                            <p className="text-xs text-gray-600">Personal Pro Plan (free)</p>
+                        </div>
+                    </div>
+                    <img className="w-5 h-5 p-1" src={check} alt="check" />
+                </div>
+                <hr />
+                <div className="bg-gray-50">
+                    <div className="py-1">
+                        <p className="text-xs text-gray-600 py-1 px-3 point my-1">Create work account</p>
+                        <p className="text-xs text-gray-600 py-1 px-3 point my-1">Add another account</p>
+                        <p className="text-xs text-gray-600 py-1 px-3 point my-1">Log out all</p>
+                    </div>
+                    <hr />
+                    <div>
+                        <p className="text-xs text-gray-600 p-3 point">Get Mac app</p>
+                    </div>
+                </div>
+            </div>}
+            
+        </div>
+    )
+}

@@ -1,13 +1,10 @@
-import React from "react";
+import React,{useState} from "react";
 import star from "../image/full-star.png"
 
 export default function Title({state,toggle}){
-    const [isTitle,setIsTitle] = React.useState("標題")
+    const [isTitle,setIsTitle] = useState("標題")
     console.log(isTitle);
-    function handleChange (event){
-        setIsTitle(event.target.value)
-        //submit
-    }
+    const handleChange = (event) =>(setIsTitle(event.target.value))
     return(
         <div >
             <div className="flex items-center ml-3 point header-icon" onClick={toggle}>
