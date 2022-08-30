@@ -40,11 +40,7 @@ const DEFAULT_INITIAL_DATA = () => {
           "type": "link",
           "data": {
             "link": "https://www.google.com/search?q=react&sxsrf=ALiCzsauetnFkf9gsiDrSEo5gIaLcllhbg:1661410008491&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi-mYfLsuH5AhWGat4KHWInDg0Q_AUoAnoECAIQBA&biw=1920&bih=1001&dpr=2#imgrc=viJ6CsTiT3pOsM",
-            // "caption" : "Roadster // tesla.com",
-            // "withBorder" : false,
-            // "withBackground" : false,
-            // "stretched" : true
-            meta:{
+            "meta": {
               "title" : "CodeX Team",
             },
           }
@@ -83,6 +79,7 @@ function Editor() {
         onChange: async () => {
           let content = await editor.save();
           // Put your logic here to save this data to your DB
+          console.log(content);
           setEditorData(content);
         },
         autofocus: false,
@@ -108,14 +105,22 @@ function Editor() {
 
           embed: Embed,
 
-          image: SimpleImage,
+          image: {
+            class: ImageTool,
+            config:{
+              endpoints: {
+                byFile:  "https://ses41vns47.execute-api.us-west-2.amazonaws.com/dev/image-repo-zeltek",
+                byUrl: 'http://localhost:3000/api/v1/uploadImageByUrl',
+              }
+            }
+          },
 
-          // link:{
-          //   class: LinkTool,
-          //   config: {
-          //     endpoint: 'http://localhost:3000/fetchUrl', // Your backend endpoint for url data fetching
-          //   },
-          // },
+          link:{
+            class: LinkTool,
+            config: {
+              endpoint: 'http://localhost:3000/api/v1/fetch',
+            },
+          },
 
           marker:{
             class: Marker,
@@ -146,7 +151,6 @@ function Editor() {
             }
           },
 
-          link: LinkTool
         }, 
       });
   };
