@@ -6,22 +6,22 @@ import link from "../image/link.png"
 import right from "../image/forward.png"
 import question from "../image/question.png"
 
+
 export default function PageMore (){ 
     const [isPageMore,setIsPageMore] = useState(false)
-    const togglePageMore = (e) => {
-        if ((e.target.name === "pageMore")||(e.target.id === "pageMore")){
+    const handleToggle = (e) => {
+        if (e.target.className.includes("PageMore") === true){
             setIsPageMore(prvePageMore => !prvePageMore)
         }
     }
     return(
         <div>
-            <div name="pageMore" onClick={togglePageMore}>
-                <button name="pageMore" className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1" >
-                    <img name="pageMore" src={more} alt="sidePageMoreButton mr-2" />
+            <div className="PageMore" onClick={handleToggle}>
+                <button className="PageMore opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1" >
+                    <img className="PageMore" src={more} alt="sidePageMoreButton mr-2" />
                 </button>
             </div>
-            {isPageMore && <div id="pageMore" className="fixed bg-gray-300 bg-opacity-30 w-screen top-0 bottom-0 left-0" onClick={togglePageMore}>
-                <div className="fixed bg-white  box-shadow  border z-10 rounded w-60 ">
+            {isPageMore && <div className="PageMore fixed bg-white  box-shadow  border z-10 rounded w-60 ">
                     <div className="p-2">
                         <div className="point flex p-1 ">
                             <img src={trash} alt="delete" className="w-4 h-5 mr-2 pt-0.5"/>
@@ -69,8 +69,7 @@ export default function PageMore (){
                             <p className="text-xs text-gray-500">Learn about databases</p>
                         </div>
                     </div>
-                </div>
-            </div>}
+                </div>}
         </div>
     )
 }

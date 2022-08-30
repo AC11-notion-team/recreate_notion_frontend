@@ -10,42 +10,6 @@ import fullStar from "../image/full-star.png"
 
 
 export default function Header({isFavorite,state,toggleFavorite,toggle}){
-    const [isTitle,setIsTitle] = useState(false)
-    const toggleTitle = () => (
-        setIsTitle(prveTitle => {
-            if((isMore === true)|| (isShare === true)){
-                setIsMore()
-                setIsShare()
-               return false 
-            }else{
-              return  !prveTitle
-            }
-        })
-    )
-
-    const [isShare,setIsShare] = useState(false)
-    const toggleShare = () => (
-        setIsShare(prevIsShare => {
-            if((isMore === true)||(isTitle === true)){
-                setIsMore()
-                setIsTitle()
-               return false 
-            }else{
-              return  !prevIsShare
-            }
-        })  
-    )
-
-    const [isMore,setIsMore] = useState(false)
-    const toggleMOre = () => (setIsMore(prevIsMore => {
-        if((isShare === true)||(isTitle === true)){
-            setIsShare()
-            setIsTitle()
-            return false
-        }else{
-            return !prevIsMore
-        }
-    }))
 
     return(
        <div className="flex h-12 justify-between px-2 leading-10 relative z-10">
@@ -56,12 +20,12 @@ export default function Header({isFavorite,state,toggleFavorite,toggle}){
                     </button>
                 </div>}
                 <div className="flex items-center">
-                    <Title  state={isTitle} toggle={toggleTitle}/>
+                    <Title />
                 </div>
             </div >
             <div className="flex">
                 <div className="flex items-center">
-                    <Share state={isShare}  toggle={toggleShare}/>
+                    <Share />
                 </div>
                 <div className="flex items-center">
                     <img className="w-8 header-icon header-point"  src={updata} alt="updata" />
@@ -73,7 +37,7 @@ export default function Header({isFavorite,state,toggleFavorite,toggle}){
                 </div>
                 
                 <div className="flex items-center"> 
-                    <More state={isMore}  toggle={toggleMOre}/>
+                    <More />
                 </div>  
             </div>
        </div> 

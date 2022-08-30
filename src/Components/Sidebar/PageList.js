@@ -6,6 +6,7 @@ import PageMore from "./PageMore";
 
 
 export default function PageList (){
+    
     return(
         <div className="py-1 px-1">
             <div className="flex items-center justify-between point group px-1.5 py-1">
