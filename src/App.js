@@ -25,7 +25,7 @@ function App() {
         </div>
       </div>}
       <div className="flex-grow">
-        <div >
+        <div className="w-screen">
             <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide}/>  
         </div>
         <h1 className="text-3xl font-bold underline">hi</h1>
