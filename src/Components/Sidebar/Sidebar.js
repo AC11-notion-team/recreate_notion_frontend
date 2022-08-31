@@ -19,7 +19,7 @@ export default function Sidebar({isFavorite,state,toggleFavorite,toggle}){
     
     return(
         <div>
-            {state && <div className="relative inset-0 w-4/6 bg-gray-50 z-50"> 
+            {state && <div className="fixed inset-0 w-1/6 bg-gray-50 z-10"> 
                 <User toggle={toggle}/>
                 <div className="mb-2 px-1 py-2">
                     <QuickFind />
@@ -28,7 +28,7 @@ export default function Sidebar({isFavorite,state,toggleFavorite,toggle}){
                         <img src={updata2} alt="seach" className="w-5 h-5 p-0.5 mr-2"/>
                         <p className="text-sm font-semibold text-gray-600">Updates</p>
                     </div>
-                    <div className="flex bottom-0 items-center point py-1 px-3">
+                    <div className="flex items-center point py-1 px-3">
                         <img src={setting} alt="seach" className="w-5 h-5 p-0.5 mr-2"/>
                         <p className="text-sm font-semibold text-gray-600">Settings & members</p>
                     </div>

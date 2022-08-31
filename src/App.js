@@ -16,16 +16,19 @@ function App() {
 
   return (
     <div className="flex">
-      {isSide && <div className='w-2/12 h-full md:w-4/12'>
+      {isSide && <div className='w-2/12'>
         <div>
             <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />
+        </div>
+        <div>
+          
         </div>
       </div>}
       <div className="flex-grow">
         <div >
             <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide}/>  
         </div>
-
+        <h1 className="text-3xl font-bold underline">hi</h1>
         < PageHeader />
         < Editor />
       </div>
