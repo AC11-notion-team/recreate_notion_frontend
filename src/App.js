@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './App.css';
 import PageHeader from "./Components/PageHeader";
@@ -21,9 +22,9 @@ function App() {
   return (
     <div className="flex ">
       <div>
-        {/* <div className='w-2/12'>
+        <div className='w-2/12'>
             <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />
-        </div> */}
+        </div>
       </div>
       <div>
         <div className="w-screen">

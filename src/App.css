@@ -1,79 +1,41 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .point {
-  @apply hover:bg-gray-200 hover:rounded cursor-pointer;
+    @apply cursor-pointer;
 }
+
 .header-icon {
-  @apply px-2 py-1 mx-0.5;
+    @apply px-2 py-1 mx-0.5;
 }
 
 .button-bg {
-  background-color: rgb(44, 171, 219);
+    background-color: rgb(44, 171, 219);
 }
 
 .share-like-input {
-  box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px;
-  background-color: rgb(245, 245, 245);
-  color: rgba(55, 53, 47, 0.65);
-  width: 22rem;
+    box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px;
+    background-color: rgb(245, 245, 245);
+    color: rgba(55, 53, 47, 0.65);
+    width: 22rem;
 }
+
 .share-Universal {
-  @apply px-4 h-8 rounded;
+    @apply px-4 h-8 rounded;
 }
+
 .box-shadow {
-  box-shadow: rgb(15 15 15 / 10%) 2px 2px 5px;
+    box-shadow: rgb(15 15 15 / 10%) 2px 2px 5px;
 }
-share-transition {
-  transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
+
+.share-transition {
+    transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
 }
+
 .share-transition2 {
-  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
-  transform: translateX(0px) translateY(0px);
+    transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+    transform: translateX(0px) translateY(0px);
 }
+
 .title-width {
-  width: 380px;
-  min-width: 180px;
-  max-width: calc(100vw - 24px);
+    width: 380px;
+    min-width: 180px;
+    max-width: calc(100vw - 24px);
 }
