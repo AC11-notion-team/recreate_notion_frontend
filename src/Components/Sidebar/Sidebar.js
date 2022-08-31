@@ -13,7 +13,7 @@ import pageButtonRight from "../image/pageButtonRight.png"
 export default function Sidebar({isFavorite,state,toggleFavorite,toggle}){
 
     return(
-        <div>
+        <div className="w-screen">
             {state && <div className="fixed inset-0 w-1/6 bg-gray-50">
                 <div className="flex items-center justify-between point group  px-4 p-2">
                     <div className="flex items-center group-hover:opacity-80 py-1.5">

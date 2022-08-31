@@ -109,8 +109,26 @@ function Editor() {
             class: ImageTool,
             config:{
               endpoints: {
-                byFile:  "https://ses41vns47.execute-api.us-west-2.amazonaws.com/dev/image-repo-zeltek",
                 byUrl: 'http://localhost:3000/api/v1/uploadImageByUrl',
+              },
+              uploader: {
+                /**
+                 * Upload file to the server and return an uploaded image data
+                 
+                 
+                 */
+                uploadByFile(file){
+                  // your own uploading logic here
+                  // return MyAjax.upload(file).then(() => {
+                  //   return {
+                  //     success: 1,
+                  //     file: {
+                  //       url: 'https://codex.so/upload/redactor_images/o_80beea670e49f04931ce9e3b2122ac70.jpg',
+                  //       // any other image data you want to store, such as width, height, color, extension, etc
+                  //     }
+                  //   };
+                  // });
+                },
               }
             }
           },
