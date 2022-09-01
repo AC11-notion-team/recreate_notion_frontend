@@ -1,28 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
-import EditableBlock from "./Components/EditableBlock";
+import EditableBlock from "./Components/EditableBlock/other/index.jsx";
+import Features from "./Components/EditableBlock/other/Features.jsx";
+import Slideshow from './Components/EditableBlock/other/Slideshow.jsx';
+import StartNotion from './Components/EditableBlock/other/StartNotion.jsx';
+import Resources from './Components/EditableBlock/other/Resources.jsx';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
-      </header>
-      
-      <h1 className="text-3xl font-bold underline">here</h1>
       <EditableBlock />
-      
+      <Features />
+      <Slideshow />
+      <StartNotion />
+      <Resources />
     </div>
   );
 }
