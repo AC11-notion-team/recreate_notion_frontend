@@ -11,9 +11,14 @@ import NestedList from '@editorjs/nested-list';
 import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import DragDrop from 'editorjs-drag-drop';
-import SimpleImage from '@editorjs/simple-image';
 import Table from '@editorjs/table';
-// const SimpleImage = require('@editorjs/simple-image')
+import aws from 'aws-sdk';
+
+const bucketName = process.env.REACT_APP_S3BUCKET;
+const region = process.env.REACT_APP_S3REGION;
+const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
+const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
+const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVersion: 'v4'});
 
 const DEFAULT_INITIAL_DATA = () => {
     return {
@@ -48,7 +53,7 @@ const DEFAULT_INITIAL_DATA = () => {
       ]
     }
 }
-   
+
 const EDITTOR_HOLDER_ID = 'editorjs';
 
 function Editor() {
@@ -79,7 +84,6 @@ function Editor() {
         onChange: async () => {
           let content = await editor.save();
           // Put your logic here to save this data to your DB
-          console.log(content);
           setEditorData(content);
         },
         autofocus: false,
@@ -114,23 +118,38 @@ function Editor() {
               uploader: {
                 /**
                  * Upload file to the server and return an uploaded image data
-                 
-                 
                  */
-                uploadByFile(file){
-                  // your own uploading logic here
-                  // return MyAjax.upload(file).then(() => {
-                  //   return {
-                  //     success: 1,
-                  //     file: {
-                  //       url: 'https://codex.so/upload/redactor_images/o_80beea670e49f04931ce9e3b2122ac70.jpg',
-                  //       // any other image data you want to store, such as width, height, color, extension, etc
-                  //     }
-                  //   };
-                  // });
+                async uploadByFile(file){
+                  // your own uploading logic here  
+                  const ranBytes = Math.floor(Math.random()*10000000000000)
+                  const imageName = ranBytes.toString()
+                  console.log(bucketName)
+                  const params = {
+                    Bucket: bucketName,
+                    Key: imageName,
+                    Expires: 60
+                  }
+                  const url = await S3Client.getSignedUrlPromise('putObject', params)
+                  console.log("safeurl: " + url)
+                  
+                  return fetch(url, {
+                      method: "PUT",
+                      headers: {
+                        // "Content-Type": "image/*",
+                      },
+                      body: file
+                    }).then((res)=>{ 
+                      return {
+                        success: 1,
+                        file: {
+                          url: res.url.split('?')[0],
+                          // any other image data you want to store, such as width, height, color, extension, etc
+                        }
+                      }
+                    }).catch(err => console.log("fetch_image_error" + err))
                 },
-              }
-            }
+              },
+            },
           },
 
           link:{
@@ -174,7 +193,6 @@ function Editor() {
   };
    
   
-
   
   return (
       <React.Fragment>
