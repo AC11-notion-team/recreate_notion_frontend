@@ -1,13 +1,14 @@
-import EditableBlock from "./Subunit/";
-import Features from "./Subunit/Features.jsx.js";
-import Slideshow from './Subunit/Slideshow.jsx.js';
-import StartNotion from './Subunit/StartNotion.jsx.js';
-import Resources from './Subunit/Resources.jsx.js';
+import React from 'react';
+import EditableBlock from './Subunit/';
+import Features from './Subunit/Features.jsx';
+import Slideshow from './Subunit/Slideshow.jsx';
+import StartNotion from './Subunit/StartNotion.jsx';
+import Resources from './Subunit/Resources.jsx';
 
 
-function App() {
+function Homepage() {
   return (
-    <div className="App">
+    <div className="Homepage">
       <EditableBlock />
       <Features />
       <Slideshow />
@@ -17,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default Homepage;

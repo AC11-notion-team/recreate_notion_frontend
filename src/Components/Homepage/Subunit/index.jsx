@@ -1,7 +1,7 @@
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
 // import { SiNotion } from "react-icons/si";
-import Navlist from "./Navlist";
+import Navlist from "./Navlist.jsx";
 
 const  Nav = props => (
     <nav className="  md:flex  items-center max-w-7xl mx-auto  py-5 sticky top-0 left-0 right-0 bg-[#fffefc] z-20">

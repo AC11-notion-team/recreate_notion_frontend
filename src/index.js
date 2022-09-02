@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import HomePage from './Components/Homepage'
+import LoginPage from './Components/Loginpage/LoginPage.jsx'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
-    <App className= "w-screen"/>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={ <App />} />
+        <Route path="homepage" element={ <HomePage />} />
+        <Route path="login-page" element={ <LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   </>
 );
 
