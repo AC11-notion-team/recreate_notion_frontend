@@ -29,7 +29,6 @@ export default function Sidebar({isFavorite,toggleFavorite,toggle}){
                   <img src={setting} alt="seach" className="w-5 h-5 p-0.5 mr-2"/>
                   <p className="text-sm font-semibold text-gray-600">Settings & members</p>
               </div>
-
           </div>
           <div className="h-3/4 overflow-x-hidden overflow-y-auto">
               <div className="mb-4">
