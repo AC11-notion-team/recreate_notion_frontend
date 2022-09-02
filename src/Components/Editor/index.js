@@ -36,9 +36,6 @@ const DEFAULT_INITIAL_DATA = () => {
           "data": {
             "url": "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
             "caption" : "Roadster // tesla.com",
-            "withBorder" : false,
-            "withBackground" : false,
-            "stretched" : true
           }
         },
         {
@@ -166,9 +163,9 @@ function Editor() {
           list:{
             class: NestedList,
             inlineToolbar: true,
-            // config: {
-            //   placeholder: 'List',
-            // },
+            config: {
+              placeholder: 'List',
+            },
           },
 
           quote:{

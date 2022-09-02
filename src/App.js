@@ -2,7 +2,6 @@ import React,{ useState,useEffect,useLayoutEffect } from 'react';
 import './App.css';
 import PageHeader from "./Components/PageHeader";
 import Editor from './Components/Editor';
-// import EditableBlock from "./Components/EditableBlock";
 import Header from "./Components/Navbar/Header";
 import Sidebar from './Components/Sidebar/Sidebar';
 import Split from 'split.js'
