@@ -1,44 +1,43 @@
-import React,{ useState } from 'react';
+import React,{useState,useEffect} from "react";
 import Share from "./Share"
-import Updata from "./Updata"
 import More from "./More"
 import Title from "./Title";
-import updata from "../image/updata.png"
+import Updata from "./Updata"
 import menu from "../image/menu.png"
 import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
+import MenuButton from "./MenuButton";
 
 
-export default function Header({isFavorite,state,toggleFavorite,toggle}){
+export default function Header({isFavorite,isSide,toggleFavorite,toggleSide}){
+    const [displayDropdown, setDisplayDropdown] = useState(true);
+
+    const closeDropdown = () => {
+        setDisplayDropdown(false);
+    }
+    useEffect(()=>{
+        if(displayDropdown===false){
+            setDisplayDropdown(true)
+        }
+    },[displayDropdown])
 
     return(
-       <div className="flex h-12 justify-between px-2 leading-10 relative z-10">
+       <div className="flex h-12 justify-between px-2 leading-10 relative z-30">
             <div className="flex ">
-                {!state && <div className="flex items-center">
-                    <button className="w-4 h-4 point"onClick={toggle} >
-                        <img src={menu} alt="sidebarButton" />
-                    </button>
+                {!isSide && <div className="flex items-center">
+                    <MenuButton className="sidebarButton" handleClick={toggleSide} alt="sidebarButton"  src={menu} />
                 </div>}
                 <div className="flex items-center">
-                    <Title />
+                {displayDropdown && <Title  closeDropdown={closeDropdown} /> }
                 </div>
             </div >
             <div className="flex">
+                <Share />
+                <Updata />
                 <div className="flex items-center">
-                    <Share />
+                    <MenuButton className="IsFavorite" handleClick={toggleFavorite} alt="favoriteButton"  src={isFavorite ? fullStar:emptyStar} />
                 </div>
-                <div className="flex items-center">
-                    <img className="w-8 header-icon header-point"  src={updata} alt="updata" />
-                    <Updata />
-                </div>
-                <div className="flex items-center">
-                    <img className="w-8 header-icon point" 
-                        src={isFavorite ? fullStar:emptyStar} onClick={toggleFavorite} alt="favoriteButton"/>
-                </div>
-                
-                <div className="flex items-center"> 
-                    <More />
-                </div>  
+                <More />
             </div>
        </div> 
     )

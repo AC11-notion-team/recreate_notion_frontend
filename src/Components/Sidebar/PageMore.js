@@ -5,54 +5,41 @@ import star from "../image/empty-star.png"
 import link from "../image/link.png"
 import right from "../image/forward.png"
 import question from "../image/question.png"
+import ActionButton from "../Navbar/ActionButton"
+import duplicate from "../image/duplicate.png"
+import rename from "../image/empty-star.png"
+import { useDetectClickOutside } from 'react-detect-click-outside';
 
 
-export default function PageMore (){ 
+export default function PageMore ({ closeDropdown }){ 
     const [isPageMore,setIsPageMore] = useState(false)
-    const handleToggle = (e) => {
-        if (e.target.className.includes("PageMore") === true){
-            setIsPageMore(prvePageMore => !prvePageMore)
-        }
+    const handleToggle = () => {
+        setIsPageMore(prvePageMore => !prvePageMore)
     }
+   
+    const ref = useDetectClickOutside({
+        onTriggered: closeDropdown,
+        allowAnyKey: true,
+    });
+
     return(
-        <div>
-            <div className="PageMore" onClick={handleToggle}>
-                <button className="PageMore opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1" >
-                    <img className="PageMore" src={more} alt="sidePageMoreButton mr-2" />
+        <div ref={ref}>
+            <div onClick={handleToggle}>
+                <button className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1" >
+                    <img src={more} alt="sidePageMoreButton mr-2" />
                 </button>
             </div>
-            {isPageMore && <div className="PageMore fixed bg-white  box-shadow  border z-10 rounded w-60 ">
-                    <div className="p-2">
-                        <div className="point flex p-1 ">
-                            <img src={trash} alt="delete" className="w-4 h-5 mr-2 pt-0.5"/>
-                            <p className="text-sm mx-2">Delete</p>
-                        </div>
-                        <div className="point flex p-1 ">
-                            <img src={star} alt="undo" className="w-4 h-5 mr-2 py-0.5"/>
-                            <p className="text-sm mx-2">Add to Favorites</p>
-                        </div>
-                        <div className="point flex p-1 ">
-                            <img src={link} alt="pegeHistory" className="w-4 h-5 mr-2 py-0.5"/>
-                            <p className="text-sm mx-2 whitespace-pre">Duplicate                      </p>
-                            <span className="text-gray-400 text-xs whitespace-nowrap ml-2" >⌘+D</span>
-                        </div>
-                        <div className="point flex p-1 ">
-                            <img src={link} alt="showDeleted" className="w-4 h-5 mr-2 pt-0.5"/>
-                            <p className="text-sm mx-2 whitespace-pre">Copy link              </p>
-                            <span className="text-gray-400 text-xs whitespace-nowrap ml-2" >⌘+Shift+R</span>
-                        </div>
-                        <div className="point flex p-1 ">
-                            <img src={link} alt="showDeleted" className="w-4 h-5 mr-2 pt-0.5"/>
-                            <p className="text-sm mx-2">Rename</p>
-                        </div>
+            {isPageMore && <div className="fixed bg-white  box-shadow  border z-10 rounded w-60 ">
+                    <div className="p-1.5">
+                        <ActionButton src={trash} alt="delete" content="Delete" className="py-0.5"/>
+                        <ActionButton src={star} alt="Favorite" content="Add to Favorites" className="py-0.5"/>
+                        <ActionButton src={duplicate} alt="duplicate" content="Duplicate" className="py-0.5"/>
+                        <ActionButton src={link} alt="link" content="Copy link" className="py-0.5"/>
+                        <ActionButton src={rename} alt="rename" content="Rename" className="py-0.5"/ >
                     </div>
                     <hr />
                     <div className="p-2">
-                        <div className="point flex p-1 ">
-                            <img src={right} alt="moveTo" className="w-4 h-5 mr-2 "/>
-                            <p className="text-sm whitespace-pre mx-2">Move to                </p>
-                            <span className="text-gray-400 text-xs whitespace-nowrap ml-2" >⌘+Shift+P</span>
-                        </div>
+                        <ActionButton src={right} alt="moveTo" content="Move to"/>
                     </div>
                     <hr />
                     <div className="p-2">
@@ -63,12 +50,7 @@ export default function PageMore (){
 
                     </div>
                     <hr />
-                    <div className="p-2">
-                        <div className="point flex p-1 ">
-                            <img src={question} alt="learnAbout" className="w-4 h-5 mr-2 px-0.5 py-1"/>
-                            <p className="text-xs text-gray-500">Learn about databases</p>
-                        </div>
-                    </div>
+                    <ActionButton src={question}alt="learnAbout" illustrate="Learn about databases" className="py-1 px-0.5"/>
                 </div>}
         </div>
     )

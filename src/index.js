@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
-    <App className= "w-screen h-screen"/>
+    <App className= "w-screen"/>
   </>
 );
 
