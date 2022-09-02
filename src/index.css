@@ -1,4 +1,5 @@
 @tailwind base;
+<<<<<<< HEAD
 
 @layer base {
   h1 {
@@ -29,3 +30,21 @@
 
 @tailwind components;
 @tailwind utilities;
+=======
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+>>>>>>> 529a7bfe7a654be13e0e89b9046d2a27c268dd54
