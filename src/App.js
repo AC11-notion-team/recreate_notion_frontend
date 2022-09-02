@@ -20,17 +20,12 @@ function App() {
   }
 
   return (
-    <div className="flex ">
-      <div>
-        <div className='w-2/12'>
-            <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />
-        </div>
+    <div className="flex">
+      <div className='w-3/12'>
+        < Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />
       </div>
-      <div>
-        <div className="w-screen">
-            <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide}/>  
-        </div>
-        <h1 className="text-3xl font-bold underline"></h1>
+      <div className="w-9/12">
+        < Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} state={isSide} toggle={toggleSide} />  
         < PageHeader />
         < Editor />
       </div>
