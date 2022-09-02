@@ -1,33 +1,59 @@
-import logo from "./logo.svg";
-// import './App.css';
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import "./App.css";
 import PageHeader from "./Components/PageHeader";
+import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
-import Editor from "./Components/Editor";
-import React, { useState } from "react";
-import Login from "./Components/Login";
-import { Routes, Route } from "react-router-dom";
+import Split from "split.js";
 
 function App() {
-	const [showSidebar, setShowSidebar] = useState(true);
-	// const toggleSidebar = () => setShowSidebar(prev => !prev)
-	function toggleSidebar() {
-		console.log("toggle");
-		setShowSidebar((prev) => !prev);
-	}
+	const [isSide, setIsSide] = useState(true);
+	const toggleSide = () => setIsSide((prveSide) => !prveSide);
+
+	const [isFavorite, setIsFavorite] = useState(false);
+	const toggleFavorite = () =>
+		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
+	useLayoutEffect(() => {
+		if (isSide === true) {
+			Split(["#split-0", "#split-1"], {
+				sizes: [22, 78],
+				maxSize: [500, Infinity],
+				minSize: [200, 200],
+				gutterSize: 2,
+				dragInterval: 2,
+				gutterAlign: "start",
+			});
+		}
+	}, [isSide]);
+
 	return (
-		<div className="flex w-full">
-			<div className="w-3/12">{showSidebar && <Sidebar />}</div>
-			<div className="w-9/12">
-				<Header handleSidebar={toggleSidebar} />
-				<PageHeader />
-				<Editor />
+		<div>
+			<div class="split" className="h-screen w-full flex">
+				{isSide && (
+					<div id="split-0" className="relative w-60 flex-grow-0">
+						<div>
+							<Sidebar
+								isFavorite={isFavorite}
+								toggleFavorite={toggleFavorite}
+								toggle={toggleSide}
+							/>
+						</div>
+					</div>
+				)}
+
+				<div id="split-1" className="flex-grow w-full overflow-x-hidden">
+					<Header
+						isFavorite={isFavorite}
+						toggleFavorite={toggleFavorite}
+						isSide={isSide}
+						toggleSide={toggleSide}
+					/>
+					<PageHeader />
+					<Editor />
+				</div>
 			</div>
-			<Routes>
-				<Route path="/signin" element={<Login />} />
-			</Routes>
 		</div>
 	);
 }
-
 export default App;

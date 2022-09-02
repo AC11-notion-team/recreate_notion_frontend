@@ -1,43 +1,43 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Share from "./Share"
-import Updata from "./Updata"
-import Star from "./Star"
 import More from "./More"
-import clock from "../image/clock.png"
-import emptyStar from "../image/empty-star.jpeg"
+import Title from "./Title";
+import Updata from "./Updata"
+import menu from "../image/menu.png"
+import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
-import more from "../image/more.png"
+import MenuButton from "./MenuButton";
 
 
-export default function Header(props){
+export default function Header({isFavorite,isSide,toggleFavorite,toggleSide}){
+    const [displayDropdown, setDisplayDropdown] = useState(true);
+
+    const closeDropdown = () => {
+        setDisplayDropdown(false);
+    }
+    useEffect(()=>{
+        if(displayDropdown===false){
+            setDisplayDropdown(true)
+        }
+    },[displayDropdown])
+
     return(
-       <div className="flex  px-4 leading-10 ">
-           <div className="flex ">
-                <div className="mr-2" >
-                    <button onClick = {props.handleSidebar}>側邊欄選單</button>
-                </div>
-                <div>
-                    <img src="" />
-                    <p>標題</p>
-                </div>
-           </div>
+       <div className="flex h-12 justify-between px-2 leading-10 relative z-30">
             <div className="flex ">
-                <div className="mx-2">
-                    share
-                    <Share />
+                {!isSide && <div className="flex items-center">
+                    <MenuButton className="sidebarButton" handleClick={toggleSide} alt="sidebarButton"  src={menu} />
+                </div>}
+                <div className="flex items-center">
+                {displayDropdown && <Title  closeDropdown={closeDropdown} /> }
                 </div>
-                <div className="mx-2 flex items-center">
-                    <img className="w-5 "  src={clock} alt="updata" />
-                    <Updata />
+            </div >
+            <div className="flex">
+                <Share />
+                <Updata />
+                <div className="flex items-center">
+                    <MenuButton className="IsFavorite" handleClick={toggleFavorite} alt="favoriteButton"  src={isFavorite ? fullStar:emptyStar} />
                 </div>
-                <div className="mx-2 flex items-center">
-                    <img className="w-5" src={emptyStar}  />
-                    <Star />
-                </div>
-                <div className="mx-2 flex items-center"> 
-                    <img className="w-5 " src={more}  />
-                    <More />
-                </div>  
+                <More />
             </div>
        </div> 
     )

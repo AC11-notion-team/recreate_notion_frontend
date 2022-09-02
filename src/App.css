@@ -1,43 +1,57 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-.App {
-  text-align: center;
+.point:hover {
+  cursor: pointer;
+  background-color: #e9e9e9be;
+  border-radius: 5px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header-icon {
+  @apply px-2 py-1 mx-0.5;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.button-bg {
+  background-color: rgb(44, 171, 219);
 }
 
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.share-like-input {
+  box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px;
+  background-color: rgb(245, 245, 245);
+  color: rgba(55, 53, 47, 0.65);
+}
+
+.share-Universal {
+  @apply px-4 h-8 rounded;
+}
+
+.box-shadow {
+  box-shadow: rgb(15 15 15 / 10%) 2px 2px 5px;
+}
+
+.share-transition {
+  transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
+}
+
+.share-transition2 {
+  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+  transform: translateX(0px) translateY(0px);
+}
+.side-minW {
+  min-width: 200px;
+}
+.split {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
-
-.App-link {
-  color: #61dafb;
+  flex-direction: row;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+.gutter.gutter-horizontal {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+  cursor: col-resize;
+}
+.header-minW {
+  min-width: 200px;
 }
