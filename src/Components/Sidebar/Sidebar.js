@@ -15,8 +15,6 @@ import addPage from "../image/plus.png";
 import { useEffect, useState } from "react";
 
 export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
-	// TODO  增加鈕未完成
-	let initPages;
 	const [page, setPage] = useState([]);
 	useEffect(() => {
 		axios({
@@ -32,11 +30,11 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 				return JSON.stringify(result.data.pages);
 			})
 			.then((datas) => {
-				let a = JSON.parse(datas);
-				return a;
+				let data = JSON.parse(datas);
+				return data;
 			})
-			.then((datas1) => {
-				setPage(datas1);
+			.then((data) => {
+				setPage(data);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -44,7 +42,6 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 	}, []);
 
 	const addPage1 = () => {
-		console.log(123);
 		axios({
 			method: "post",
 			baseURL: "http://localhost:3001",

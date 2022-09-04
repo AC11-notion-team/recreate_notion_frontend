@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import user from "../image/user.png";
-import pageButtonRight from "../image/pageButtonRight.png";
-import addPage from "../image/plus.png";
-import PageMore from "./PageMore";
-import Emoji from "../Navbar/EmojiPicker";
-import axios from "axios";
+
 import Page from "./Page";
 
 const PageList = ({ page }) => {
