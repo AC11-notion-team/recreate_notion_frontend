@@ -7,7 +7,7 @@ const GoogleLogin = () => {
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
 	useEffect(() => {
-		if (user == false) {
+		if (user === false) {
 			localStorage.removeItem("zettelk_user_token");
 		}
 	}, [user]);
@@ -24,6 +24,7 @@ const GoogleLogin = () => {
 			.then((res) => {
 				console.log(res.data);
 				localStorage.setItem("zettelk_user_token", res.data.auth_token);
+				localStorage.setItem("zettelk_user_id", res.data.user_id);
 			})
 			.catch((err) => console.log(err));
 	};

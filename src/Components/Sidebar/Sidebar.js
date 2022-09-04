@@ -10,8 +10,59 @@ import Trash from "./Trash";
 import User from "./User";
 import QuickFind from "./QuickFind";
 import newPage from "../image/plus.png";
+import axios from "axios";
+import addPage from "../image/plus.png";
+import { useEffect, useState } from "react";
 
 export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
+	// TODO  增加鈕未完成
+	let initPages;
+	const [page, setPage] = useState([]);
+	useEffect(() => {
+		axios({
+			method: "get",
+			baseURL: "http://localhost:3001",
+			url: "/api/v1/users/" + localStorage.getItem("zettelk_user_id"),
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+			},
+		})
+			.then((result) => {
+				return JSON.stringify(result.data.pages);
+			})
+			.then((datas) => {
+				let a = JSON.parse(datas);
+				return a;
+			})
+			.then((datas1) => {
+				setPage(datas1);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
+
+	const addPage1 = () => {
+		console.log(123);
+		axios({
+			method: "post",
+			baseURL: "http://localhost:3001",
+			url: "/api/v1/pages",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+			},
+		})
+			.then((result) => {
+				let datas = JSON.stringify(result.data.pages);
+				let jsonData = JSON.parse(datas);
+				setPage(jsonData);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
 	return (
 		<div className="relative inset-0 h-screen side-minW bg-gray-50 z-30">
 			<User toggle={toggle} />
@@ -37,10 +88,19 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 					<Share />
 				</div>
 				<div className="mb-4">
-					<div className="py-1 px-4">
+					<div className="py-1 px-4 flex items-center justify-between point group px-1.5 py-1">
 						<p className="text-xs font-semibold text-gray-500 point">PRIVATE</p>
+						<button
+							className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
+							data-aa="bb"
+							onClick={addPage1}
+						>
+							<img src={addPage} alt="sidePageMoreButton" />
+						</button>
+						{/* TODO add page here */}
 					</div>
-					<Private />
+					{/* TODO list page */}
+					<Private page={page} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />

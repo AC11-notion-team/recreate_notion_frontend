@@ -17,6 +17,7 @@ root.render(
 				<Route path="/" element={<App />} />
 				<Route path="homepage" element={<HomePage />} />
 				<Route path="login-page" element={<LoginPage />} />
+				<Route path="login-page-google" element={<GoogleLogin />} />
 			</Routes>
 		</BrowserRouter>
 	</>

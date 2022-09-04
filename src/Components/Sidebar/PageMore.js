@@ -21,20 +21,13 @@ export default function PageMore({ closeDropdown }) {
 		onTriggered: closeDropdown,
 		allowAnyKey: true,
 	});
-	// TODO  增加鈕未完成
-	const [page, setpage] = useState([]);
-	const addPage = () => {
-		axios.post("http://localhost:3001/api/v1/pages").than((res) => {
-			console.log(123);
-		});
-	};
 
 	return (
 		<div ref={ref}>
 			<div onClick={handleToggle}>
 				<button
 					className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
-					onClick={addPage}
+					data-aa="aa"
 				>
 					<img src={more} alt="sidePageMoreButton mr-2" />
 				</button>
