@@ -96,7 +96,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji
 						</button>
 					</div>
 
-					<Private page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
+					<Private page={page} page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />

@@ -8,6 +8,13 @@ import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
 
+export default function Header({
+	isFavorite,
+	isSide,
+	toggleFavorite,
+	toggleSide,
+}) {
+	const [displayDropdown, setDisplayDropdown] = useState(true);
 
 export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,chosenEmoji,onEmojiClick,title,handleChange}){
     
