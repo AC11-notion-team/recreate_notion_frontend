@@ -6,15 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.jsx";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import GoogleLogin from "./Components/GoogleLogin";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
+		{/* <GoogleLogin /> */}
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<App />} />
 				<Route path="homepage" element={<HomePage />} />
 				<Route path="login-page" element={<LoginPage />} />
+				<Route path="login-page-google" element={<GoogleLogin />} />
 			</Routes>
 		</BrowserRouter>
 	</>

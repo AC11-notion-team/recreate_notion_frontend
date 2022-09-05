@@ -1,11 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
 
-const App = () => {
+const GoogleLogin = () => {
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
+	useEffect(() => {
+		if (user === false) {
+			localStorage.removeItem("zettelk_user_token");
+		}
+	}, [user]);
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
@@ -17,7 +22,9 @@ const App = () => {
 				email: payload.email,
 			})
 			.then((res) => {
-				console.log(res);
+				console.log(res.data);
+				localStorage.setItem("zettelk_user_token", res.data.auth_token);
+				localStorage.setItem("zettelk_user_id", res.data.user_id);
 			})
 			.catch((err) => console.log(err));
 	};
@@ -63,4 +70,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default GoogleLogin;
