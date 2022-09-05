@@ -6,7 +6,7 @@ import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 
 
-export default function PageList (){
+export default function PageList ({chosenEmoji,onEmojiClick,title}){
     const [displayDropdown, setDisplayDropdown] = useState(true);
 
     const closeDropdown = () => {
@@ -23,8 +23,8 @@ export default function PageList (){
             <div className="flex items-center justify-between point group px-1.5 py-1">
                 <div className="flex items-center">
                     <button className="mr-1"><img className="w-5 h-5 py-1.5 px-0.5" src={pageButtonRight} alt="right" /></button>
-                    <Emoji/>
-                    <p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden">頁面標題</p>
+                    <Emoji chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick}/>
+                    <p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden">{title}</p>
                 </div>
                 <div className="flex items-center mx-2">
                     {displayDropdown && <PageMore closeDropdown={closeDropdown} /> }

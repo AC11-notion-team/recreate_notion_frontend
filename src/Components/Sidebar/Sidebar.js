@@ -13,10 +13,10 @@ import newPage from "../image/plus.png"
 
 
 
-export default function Sidebar({isFavorite,toggleFavorite,toggle}){
+export default function Sidebar({isFavorite,toggleFavorite,toggle,chosenEmoji,onEmojiClick,title}){
 
   return(
-      <div className="relative inset-0 h-screen side-minW bg-gray-50 z-30"> 
+      <div className="relative inset-0 h-screen bg-gray-50 z-30"> 
           <User toggle={toggle}/>
           <div className="mb-2 px-1 py-2">
               <QuickFind />
@@ -41,7 +41,7 @@ export default function Sidebar({isFavorite,toggleFavorite,toggle}){
                   <div className="py-1 px-4">
                       <p className="text-xs font-semibold text-gray-500 point">PRIVATE</p>
                   </div>
-                  <Private />
+                  <Private chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title}/>
               </div>
               <div className="px-1 py-2">
                   <Templates />
@@ -49,7 +49,7 @@ export default function Sidebar({isFavorite,toggleFavorite,toggle}){
                   <Trash/>
               </div>
           </div>
-          <div className="w-full bottom-0 flex items-center py-3 px-2 shadow-inner point mt-auto">
+          <div className="absolute w-full bottom-0 flex items-center py-3 px-2 shadow-inner point mt-auto">
 
               <img className="w-5 h-5 p-0.5 mr-2" src={newPage} alt="newPage" />
               <p className="text-sm font-semibold text-gray-600">New page</p>

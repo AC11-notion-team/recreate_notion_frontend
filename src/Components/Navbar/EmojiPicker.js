@@ -1,26 +1,19 @@
 import React,{useState} from "react";
 import Picker from 'emoji-picker-react';
-import star from "../image/full-star.png"
 
 
-export default function Emoji(){
+export default function Emoji({chosenEmoji, onEmojiClick}){
+
     const [isEmoji,setIsEmoji] = useState(false)
-    const [chosenEmoji, setChosenEmoji] = useState(null);
-
-
-    const onEmojiClick = (event, emojiObject) => {
-        setChosenEmoji(emojiObject);
-        toggleEmoji()  
-    };
-    const toggleEmoji = () => {setIsEmoji(prveEmoji => !prveEmoji)}
-
+    const toggleEmoji = () => (setIsEmoji(prveIsEmoji => !prveIsEmoji))
+   
     return(
         <div>
             <div>
-                {chosenEmoji ? (<span className="h-7 mr-2 header-point p-1 border rounded" alt="title" onClick={toggleEmoji}>{chosenEmoji.emoji}</span>):false}
+                <span alt="title" onClick={toggleEmoji}>{chosenEmoji ? chosenEmoji.emoji : "🙃"}</span>
             </div>
             {isEmoji && <div className="absolute ">
-                <Picker onEmojiClick={onEmojiClick}  />
+                <Picker onEmojiClick={(event, emojiObject)=> onEmojiClick(event, emojiObject)}  />
             </div>}
         </div>
         

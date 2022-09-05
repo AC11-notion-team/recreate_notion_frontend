@@ -7,7 +7,7 @@ import right from "../image/forward.png"
 import question from "../image/question.png"
 import ActionButton from "../Navbar/ActionButton"
 import duplicate from "../image/duplicate.png"
-import rename from "../image/empty-star.png"
+import rename from "../image/edit.png"
 import { useDetectClickOutside } from 'react-detect-click-outside';
 
 

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React from "react";
 import Share from "./Share"
 import More from "./More"
 import Title from "./Title";
@@ -9,26 +9,17 @@ import fullStar from "../image/full-star.png"
 import MenuButton from "./MenuButton";
 
 
-export default function Header({isFavorite,isSide,toggleFavorite,toggleSide}){
-    const [displayDropdown, setDisplayDropdown] = useState(true);
-
-    const closeDropdown = () => {
-        setDisplayDropdown(false);
-    }
-    useEffect(()=>{
-        if(displayDropdown===false){
-            setDisplayDropdown(true)
-        }
-    },[displayDropdown])
+export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,chosenEmoji,onEmojiClick,title,handleChange}){
+    
 
     return(
-       <div className="flex h-12 justify-between px-2 leading-10 relative z-30">
+       <div className="flex h-12 justify-between px-2 leading-10 relative">
             <div className="flex ">
                 {!isSide && <div className="flex items-center">
                     <MenuButton className="sidebarButton" handleClick={toggleSide} alt="sidebarButton"  src={menu} />
                 </div>}
                 <div className="flex items-center">
-                {displayDropdown && <Title  closeDropdown={closeDropdown} /> }
+                <Title chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/> 
                 </div>
             </div >
             <div className="flex">
@@ -37,7 +28,7 @@ export default function Header({isFavorite,isSide,toggleFavorite,toggleSide}){
                 <div className="flex items-center">
                     <MenuButton className="IsFavorite" handleClick={toggleFavorite} alt="favoriteButton"  src={isFavorite ? fullStar:emptyStar} />
                 </div>
-                <More />
+                <More isFavorite={isFavorite} toggleFavorite={toggleFavorite}/>
             </div>
        </div> 
     )
