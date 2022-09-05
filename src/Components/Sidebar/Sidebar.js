@@ -49,7 +49,7 @@ export default function Sidebar({isFavorite,toggleFavorite,toggle}){
                   <Trash/>
               </div>
           </div>
-          <div className="w-full bottom-0 flex items-center py-3 px-2 shadow-inner point mt-auto">
+          <div className="absolute w-full bottom-0 flex items-center py-3 px-2 shadow-inner point mt-auto">
 
               <img className="w-5 h-5 p-0.5 mr-2" src={newPage} alt="newPage" />
               <p className="text-sm font-semibold text-gray-600">New page</p>

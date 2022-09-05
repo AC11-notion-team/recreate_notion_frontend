@@ -1,18 +1,23 @@
 import React, {useRef, useState, useEffect} from "react";
 import EditorJS from '@editorjs/editorjs';
-import Header from '@editorjs/header'; 
 import Code from '@editorjs/code';
 import Checklist from '@editorjs/checklist';
+import Delimiter from '@editorjs/delimiter'
+import DragDrop from 'editorjs-drag-drop';
 import Embed from '@editorjs/embed';
+import Footnotes from '@editorjs/footnotes';
+import Header from '@editorjs/header'; 
 import ImageTool from '@editorjs/image'
+import InlineCode from '@editorjs/inline-code'
 import LinkTool from '@editorjs/link';
 import Marker from '@editorjs/marker';
 import NestedList from '@editorjs/nested-list';
 import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
-import DragDrop from 'editorjs-drag-drop';
 import Table from '@editorjs/table';
+import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
+import axios from 'axios';
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -34,8 +39,13 @@ const DEFAULT_INITIAL_DATA = () => {
         {
           "type": "image",
           "data": {
-            "url": "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
+            "file": {
+              "url": "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
+            },
             "caption" : "Roadster // tesla.com",
+            "withBorder" : false,
+            "withBackground" : false,
+            "stretched" : false
           }
         },
         {
@@ -55,23 +65,41 @@ const EDITTOR_HOLDER_ID = 'editorjs';
 
 function Editor() {
     const ejInstance = useRef();
-    const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
-     // This will run only once
-    useEffect(() => {
-      if (!ejInstance.current) {
-          initEditor();
-      }
+    const [editorData, setEditorData] = useState("");
+      
+
+    useEffect(()=>{
+      const config = {
+        method: "get",
+        url: `http://localhost:3000/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
+        headers:{
+          Authorization: "Bearer " + localStorage.getItem("zettelk_user_token") || null,
+        },
+      } 
+      axios(config)
+      .then(res => {
+        const initialData = {
+          "time": Date.now(),
+          "blocks": res.data.blocks
+        }
+        setEditorData(initialData)
+        if (!ejInstance.current) {
+            initEditor(initialData);
+        }
+      })
+      .catch(err => console.error(err))
+
       return () => {
           ejInstance.current.destroy();
           ejInstance.current = null;
       }
-    }, []);
+    }, [])
 
-    const initEditor = () => {
+    const initEditor = (initialData) => {
       const editor = new EditorJS({
         holder: EDITTOR_HOLDER_ID,
         logLevel: "ERROR",
-        data: editorData,
+        data: initialData,
         inlineToolbar: true,
         placeholder:'Let`s write an awesome story!',
         onReady: () => {
@@ -81,6 +109,25 @@ function Editor() {
         onChange: async () => {
           let content = await editor.save();
           // Put your logic here to save this data to your DB
+          const config = {
+            method: "post",
+            url: `http://localhost:3000/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+            headers:{
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("zettelk_user_token") || null,
+            },
+            data:{
+              "title":"sssssss",
+              "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+              "icon": "aaa1111111111a",
+              "cover": "wwwwwwwww",
+              "api": content,
+            }
+          } 
+          axios(config)
+          .then(res => res)
+          .catch(err => console.error(err))
+
           setEditorData(content);
         },
         autofocus: false,
@@ -96,6 +143,12 @@ function Editor() {
             inlineToolbar:true,
           },
 
+          embed: Embed,
+
+          delimeter: Delimiter,
+
+          footnotes: Footnotes,
+
           header: {
             class: Header,
             inlineToolbar: true,
@@ -103,8 +156,6 @@ function Editor() {
               placeholder: 'Enter a header',
             },
           },
-
-          embed: Embed,
 
           image: {
             class: ImageTool,
@@ -149,6 +200,8 @@ function Editor() {
             },
           },
 
+          inlineCode: InlineCode, 
+          
           link:{
             class: LinkTool,
             config: {
@@ -184,6 +237,8 @@ function Editor() {
               withHeadings: true,
             }
           },
+
+          textVariant: TextVariantTune,
 
         }, 
       });
