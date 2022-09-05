@@ -7,7 +7,7 @@ const PageList = ({ page }) => {
 	return (
 		<div className="py-1 px-1 ">
 			{pages.map((ele) => {
-				return <Page key={ele.id} />;
+				return <Page key={ele.id} title={ele.title} />;
 			})}
 		</div>
 	);

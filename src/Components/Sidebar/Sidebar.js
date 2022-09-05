@@ -94,9 +94,8 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 						>
 							<img src={addPage} alt="sidePageMoreButton" />
 						</button>
-						{/* TODO add page here */}
 					</div>
-					{/* TODO list page */}
+
 					<Private page={page} />
 				</div>
 				<div className="px-1 py-2">

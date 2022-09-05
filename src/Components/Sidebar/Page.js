@@ -4,7 +4,7 @@ import addPage from "../image/plus.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 
-const Page = () => {
+const Page = (props) => {
 	const [displayDropdown, setDisplayDropdown] = useState(true);
 
 	const closeDropdown = () => {
@@ -27,9 +27,11 @@ const Page = () => {
 						/>
 					</button>
 					<Emoji />
-					<p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden">
-						頁面標題
-					</p>
+					<a href="#">
+						<p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden">
+							{props.title}
+						</p>
+					</a>
 				</div>
 				<div className="flex items-center mx-2">
 					{displayDropdown && <PageMore closeDropdown={closeDropdown} />}
