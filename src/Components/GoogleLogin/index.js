@@ -31,6 +31,7 @@ const App = () => {
 		window.google.accounts.id.renderButton(googlebuttonref.current, {
 			theme: "outline",
 			size: "large",
+			width: "800px",
 		});
 		// window.google.id.prompt();
 	});
@@ -40,7 +41,8 @@ const App = () => {
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
-				height: "100vh",
+				height: "36px",
+				width:"100%",
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}

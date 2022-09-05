@@ -55,3 +55,6 @@
 .header-minW {
   min-width: 200px;
 }
+#container{
+  width: 100%;
+}
