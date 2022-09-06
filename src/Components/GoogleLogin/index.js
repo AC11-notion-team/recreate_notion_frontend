@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const GoogleLogin = () => {
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
+	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		if (user === false) {
 			localStorage.removeItem("zettel_user_token");
@@ -14,10 +16,9 @@ const GoogleLogin = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		// console.log(payload);
 		setuser(payload);
 		axios
-			.post("http://localhost:3001/api/v1/auth/third_party_login", {
+			.post(`${baseUrl}/auth/third_party_login`, {
 				name: payload.name,
 				email: payload.email,
 			})
@@ -38,8 +39,8 @@ const GoogleLogin = () => {
 		window.google.accounts.id.renderButton(googlebuttonref.current, {
 			theme: "outline",
 			size: "large",
+			
 		});
-		// window.google.id.prompt();
 	});
 	return (
 		<div
@@ -47,24 +48,25 @@ const GoogleLogin = () => {
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
-				height: "100vh",
+				height: "60px",
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
 			{user && (
-				<div>
-					<h1>{user.name}</h1>
-					<img src={user.picture} alt="profile" />
-					<p>{user.email}</p>
+				// <div>
+				// 	<h1>{user.name}</h1>
+				// 	<img src={user.picture} alt="profile" />
+				// 	<p>{user.email}</p>
 
-					<button
-						onClick={() => {
-							setuser(false);
-						}}
-					>
-						Logout
-					</button>
-				</div>
+				// 	<button
+				// 		onClick={() => {
+				// 			setuser(false);
+				// 		}}
+				// 	>
+				// 		Logout
+				// 	</button>
+				// </div>
+				< Navigate to="/" replace={true} />
 			)}
 		</div>
 	);

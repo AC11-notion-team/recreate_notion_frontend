@@ -1,10 +1,10 @@
 import React from "react";
 import PageList from "./PageList";
 
-export default function Private(props) {
+export default function Private({page, chosenEmoji, onEmojiClick, title}) {
 	return (
 		<div>
-			<PageList page={props.page} />
+			<PageList page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
 		</div>
 	);
 }

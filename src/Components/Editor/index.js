@@ -84,7 +84,7 @@ function Editor() {
       .then(res => {
         const initialData = {
           "time": Date.now(),
-          "blocks": res.data.blocks || {
+          "blocks": res.data.blocks.length !== 0 ? res.data.blocks : {
             "type" : "header",
             "data" : {
               "text" : "Check out our projects on a <a href=\"https://github.com/codex-team\">GitHub page</a>.",
@@ -115,27 +115,50 @@ function Editor() {
           ejInstance.current = editor;
           new DragDrop(editor);
         },
-        onChange: async () => {
+        onChange: async (api, event) => {
+          console.log(api)
+          console.log(event)
+          console.log(event.type)
+          console.log(event.detail.target.id)
           let content = await editor.save();
           // Put your logic here to save this data to your DB
-          const config = {
-            method: "post",
-            url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
-            headers:{
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-            },
-            data:{
-              "title":"sssssss",
-              "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
-              "icon": "aaa1111111111a",
-              "cover": "wwwwwwwww",
-              "api": content,
+          if (event.type == "block-removed"){
+            const config = {
+              method: "delete",
+              url: `${baseUrl}/pages/delete_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "block_id": event.detail.target.id,
+              }
             }
-          } 
-          axios(config)
-          .then(res => res)
-          .catch(err => console.error(err))
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
+          if (event.type !== "block-removed"){
+            const config = {
+              method: "post",
+              url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "title":"sssssss",
+                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "icon": "aaa1111111111a",
+                "cover": "wwwwwwwww",
+                "api": content,
+              }
+            }
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
 
           setEditorData(content);
         },

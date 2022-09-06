@@ -2,7 +2,6 @@ import React,{useState} from "react";
 import more from "../image/more.png"
 import right from "../image/forward.png"
 import lock from "../image/lock.png"
-import star from "../image/empty-star.png"
 import link from "../image/link.png"
 import notion from "../image/notion.png"
 import left from "../image/left.png"
@@ -15,8 +14,10 @@ import connect from "../image/connect.png"
 import question from "../image/question.png"
 import MenuButton from "./MenuButton";
 import ActionButton from "./ActionButton"
+import emptyStar from "../image/empty-star.png"
+import fullStar from "../image/full-star.png"
 
-export default function More(){
+export default function More({isFavorite,toggleFavorite}){
     const [isMore,setIsMore] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("IsMore") === true){
@@ -39,7 +40,7 @@ export default function More(){
                     </div>
                     <hr />
                     <div className="p-1.5">
-                        <ActionButton src={star} alt="favorite" content="Add to Favorites" className="py-0.5" />
+                        <ActionButton src={isFavorite ? fullStar:emptyStar} alt="favorite" content={isFavorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={toggleFavorite} />
                         <ActionButton src={link} alt="copyLink" content="Copy link" className="py-0.5"/>
                         <ActionButton src={notion} alt="openInMacApp" content="Open in Mac app" className="py-0.5"/>
                     </div>

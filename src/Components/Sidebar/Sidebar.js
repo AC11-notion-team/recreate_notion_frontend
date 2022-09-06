@@ -14,13 +14,13 @@ import axios from "axios";
 import addPage from "../image/plus.png";
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
+export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji, onEmojiClick, title }) {
 	const [page, setPage] = useState([]);
+	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		axios({
 			method: "get",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/users/" + localStorage.getItem("zettel_user_id"),
+			url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
@@ -44,8 +44,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 	const addPage1 = () => {
 		axios({
 			method: "post",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/pages",
+			url: `${baseUrl}/pages`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
@@ -61,7 +60,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 			});
 	};
 	return (
-		<div className="relative inset-0 h-screen side-minW bg-gray-50 z-30">
+		<div className="inset-0 h-screen side-minW bg-gray-50 z-30">
 			<User toggle={toggle} />
 			<div className="mb-2 px-1 py-2">
 				<QuickFind />
@@ -96,7 +95,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 						</button>
 					</div>
 
-					<Private page={page} />
+					<Private page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />
