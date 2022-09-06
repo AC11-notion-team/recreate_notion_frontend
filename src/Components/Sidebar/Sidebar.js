@@ -14,7 +14,7 @@ import axios from "axios";
 import addPage from "../image/plus.png";
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
+export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji, onEmojiClick, title }) {
 	const [page, setPage] = useState([]);
 	useEffect(() => {
 		axios({
@@ -96,7 +96,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle }) {
 						</button>
 					</div>
 
-					<Private page={page} />
+					<Private page={page} page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />
