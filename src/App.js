@@ -44,7 +44,7 @@ function App() {
   
   return (
     <div>
-      <div class="split" className="h-screen w-full flex" >
+      <div className="split h-screen w-full flex" >
         {isSide && <div id="split-0" className="relative side-minW flex-grow-0">
           <Sidebar className = "fixed" isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/>
         </div>}

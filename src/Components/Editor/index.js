@@ -84,12 +84,7 @@ function Editor() {
       .then(res => {
         const initialData = {
           "time": Date.now(),
-          "blocks": res.data.blocks.length !== 0 ? res.data.blocks : {
-            "type" : "header",
-            "data" : {
-              "text" : "Check out our projects on a <a href=\"https://github.com/codex-team\">GitHub page</a>.",
-            }
-          } 
+          "blocks": res.data.blocks
         }
         setEditorData(initialData)
         if (!ejInstance.current) {
@@ -116,13 +111,10 @@ function Editor() {
           new DragDrop(editor);
         },
         onChange: async (api, event) => {
-          console.log(api)
-          console.log(event)
-          console.log(event.type)
-          console.log(event.detail.target.id)
           let content = await editor.save();
           // Put your logic here to save this data to your DB
-          if (event.type == "block-removed"){
+          if (event.type == "block-removed" && !event.detail.target.isEmpty){
+            console.log(event)
             const config = {
               method: "delete",
               url: `${baseUrl}/pages/delete_data`,
