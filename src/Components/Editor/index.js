@@ -71,16 +71,22 @@ function Editor() {
     useEffect(()=>{
       const config = {
         method: "get",
-        url: `http://localhost:3000/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
+        url: `http://localhost:3001/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
         headers:{
-          Authorization: "Bearer " + localStorage.getItem("zettelk_user_token") || null,
+          Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
         },
-      } 
+      }
+      
       axios(config)
       .then(res => {
         const initialData = {
           "time": Date.now(),
-          "blocks": res.data.blocks
+          "blocks": res.data.blocks || {
+            "type" : "header",
+            "data" : {
+              "text" : "Check out our projects on a <a href=\"https://github.com/codex-team\">GitHub page</a>.",
+            }
+          } 
         }
         setEditorData(initialData)
         if (!ejInstance.current) {
@@ -111,7 +117,7 @@ function Editor() {
           // Put your logic here to save this data to your DB
           const config = {
             method: "post",
-            url: `http://localhost:3000/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+            url: `http://localhost:3001/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
             headers:{
               "Content-Type": "application/json",
               Authorization: "Bearer " + localStorage.getItem("zettelk_user_token") || null,
@@ -161,7 +167,7 @@ function Editor() {
             class: ImageTool,
             config:{
               endpoints: {
-                byUrl: 'http://localhost:3000/api/v1/uploadImageByUrl',
+                byUrl: 'http://localhost:3001/api/v1/uploadImageByUrl',
               },
               uploader: {
                 /**
@@ -205,7 +211,7 @@ function Editor() {
           link:{
             class: LinkTool,
             config: {
-              endpoint: 'http://localhost:3000/api/v1/fetch',
+              endpoint: 'http://localhost:3001/api/v1/fetch',
             },
           },
 
