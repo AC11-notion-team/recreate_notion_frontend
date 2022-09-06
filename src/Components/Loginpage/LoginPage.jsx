@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import GoogleLogin from '../GoogleLogin'
 import { useForm } from "react-hook-form";
 import axios from 'axios';
@@ -8,10 +8,25 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let navigate = useNavigate();
-
+  
 
   // 第一個state 記載 是否已經發給後端判斷email存不存在
   const [status, setstatus] = useState("init")
+  const [submitBtn, setsubmitBtn] = useState("continue with email")
+  let btn ={
+    "init" : "continue with email",
+    "register": "register",
+    "unvertify":"please vertify",
+    "login":"login"
+  }
+  useEffect(()=>{
+    console.log("----------");
+    console.log(btn[status]);
+    console.log("----------");
+
+    setsubmitBtn(btn[status]);
+    
+  },[status])
 
   async function testEmailExist(data){
     try{
@@ -75,7 +90,7 @@ export default function LoginPage() {
   async function goToLogin(data){
     try{
       await axios({
-        method:"get",
+        method:"post",
         baseURL:"http://localhost:3001",
         url:"/api/v1/users/login",
         params:{
@@ -83,10 +98,13 @@ export default function LoginPage() {
           password: data.password,
         }
       }).then((res)=>{
-        if(res.data.status=="login"){
-          
+        console.log(res);
+        if(res.data.status=="success"){
+          localStorage.setItem("zettelk_user_token", res.data.auth_token);
+				  localStorage.setItem("zettelk_user_id", res.data.user_id);
           return navigate("/");
         }
+        console.log("i loose");
         setstatus(res.data.status)
       })
     }catch(error){
@@ -105,9 +123,6 @@ export default function LoginPage() {
     }else if(status=="login"){
       goToLogin(data)
     }
-    
-    
-    
   }
   
   return (
@@ -128,7 +143,7 @@ export default function LoginPage() {
             <div className=" border-b-2  border-grey-100  "/>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              { (status=="init")||(status=="login")&&
+              { ((status=="init")||(status=="login"))&&
                 <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
@@ -167,7 +182,7 @@ export default function LoginPage() {
               }
               
               {
-                (status==="register")||(status=="login") && 
+                ((status==="register")||(status=="login")) && 
                 <div>
                 <label htmlFor="password" className="sr-only">
                   Password
@@ -230,7 +245,7 @@ export default function LoginPage() {
                 type="submit"
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-rose-50 py-2 px-4 text-lg font-medium text-rose-500 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:bg-rose-50 focus:ring-offset-2"
               >
-                {status}
+                {submitBtn}
               </button>
             </div>
           </form>
