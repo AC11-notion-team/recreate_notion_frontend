@@ -217,6 +217,9 @@ function Editor() {
             class: LinkTool,
             config: {
               endpoint: `${baseUrl}/fetch`,
+              headers:{
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
             },
           },
 
