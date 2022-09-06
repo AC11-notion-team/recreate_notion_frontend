@@ -24,6 +24,8 @@ const region = process.env.REACT_APP_S3REGION;
 const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVersion: 'v4'});
+const baseUrl = process.env.REACT_APP_BASEURL;
+
 
 const DEFAULT_INITIAL_DATA = () => {
     return {
@@ -69,9 +71,10 @@ function Editor() {
       
 
     useEffect(()=>{
+      
       const config = {
         method: "get",
-        url: `http://localhost:3001/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
+        url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
         headers:{
           Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
         },
@@ -117,10 +120,10 @@ function Editor() {
           // Put your logic here to save this data to your DB
           const config = {
             method: "post",
-            url: `http://localhost:3001/api/v1/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+            url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
             headers:{
               "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("zettelk_user_token") || null,
+              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
             },
             data:{
               "title":"sssssss",
@@ -167,7 +170,10 @@ function Editor() {
             class: ImageTool,
             config:{
               endpoints: {
-                byUrl: 'http://localhost:3001/api/v1/uploadImageByUrl',
+                byUrl: `${baseUrl}/uploadImageByUrl`,
+              },
+              additionalRequestHeaders:{
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
               },
               uploader: {
                 /**
@@ -184,7 +190,6 @@ function Editor() {
                     Expires: 60
                   }
                   const url = await S3Client.getSignedUrlPromise('putObject', params)
-                  console.log("safeurl: " + url)
                   
                   return fetch(url, {
                       method: "PUT",
@@ -211,7 +216,7 @@ function Editor() {
           link:{
             class: LinkTool,
             config: {
-              endpoint: 'http://localhost:3001/api/v1/fetch',
+              endpoint: `${baseUrl}/fetch`,
             },
           },
 
