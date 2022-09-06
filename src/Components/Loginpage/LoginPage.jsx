@@ -1,6 +1,115 @@
-import React from 'react'
+import React,{useState} from 'react'
 import GoogleLogin from '../GoogleLogin'
+import { useForm } from "react-hook-form";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+
 export default function LoginPage() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  let navigate = useNavigate();
+
+
+  // 第一個state 記載 是否已經發給後端判斷email存不存在
+  const [status, setstatus] = useState("init")
+
+  async function testEmailExist(data){
+    try{
+      await axios({
+        method:"get",
+        baseURL:"http://localhost:3001",
+        url:"/api/v1/users/email_present.json",
+        params:{
+          email:data.email
+        }
+      }).then((res)=>{
+        setstatus(res.data.status)
+      })
+    }catch(error){
+      console.log(error);
+    }
+  }
+  async function goToRigister(data){
+    try{
+      await axios({
+        method:"post",
+        baseURL:"http://localhost:3001",
+        url:"/api/v1/users",
+        params:{
+          email:data.email,
+          username: data.username,
+          password: data.password
+        }
+      }).then((res)=>{
+        setstatus("unvertify")
+        console.log(status);
+      }).then(()=>{
+        console.log(status);
+      })
+    }catch(error){
+      console.log(error);
+    }
+  }
+  async function goToVertify(data){
+    try{
+      await axios({
+        method:"get",
+        baseURL:"http://localhost:3001",
+        url:"/api/v1/users/email_confirmed",
+        params:{
+          email:data.email,
+          username: data.username,
+          password: data.password,
+          confirm_token: data.confirm_token
+        }
+      }).then((res)=>{
+        if(res.data.status=="login"){
+          window.location.reload(false);
+        }
+        setstatus(res.data.status)
+      })
+    }catch(error){
+      console.log(error);
+    }
+  }
+  async function goToLogin(data){
+    try{
+      await axios({
+        method:"get",
+        baseURL:"http://localhost:3001",
+        url:"/api/v1/users/login",
+        params:{
+          email:data.email,
+          password: data.password,
+        }
+      }).then((res)=>{
+        if(res.data.status=="login"){
+          
+          return navigate("/");
+        }
+        setstatus(res.data.status)
+      })
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const onSubmit = (data)=>{
+    console.log(data)
+    if (status=="init"){
+      testEmailExist(data)
+    }else if (status=="register"){
+      goToRigister(data)
+    }else if (status=="unvertify"){
+      goToVertify(data)
+    }else if(status=="login"){
+      goToLogin(data)
+    }
+    
+    
+    
+  }
+  
   return (
     <>
       <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 "><img src="/zittel1.png" alt="" />
@@ -14,16 +123,19 @@ export default function LoginPage() {
               Log in
             </h2>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit(onSubmit)}>
             <GoogleLogin />
             <div className=" border-b-2  border-grey-100  "/>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              <div>
+              { (status=="init")||(status=="login")&&
+                <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
+                
                 <input
+                {...register("email")}
                   id="email-address"
                   name="email"
                   type="email"
@@ -33,11 +145,35 @@ export default function LoginPage() {
                   placeholder="Email address"
                 />
               </div>
-              <div>
+              }
+
+              { status==="register"   &&
+                <div>
+                <label htmlFor="username" className="sr-only">
+                  UserName
+                </label>
+                
+                <input
+                {...register("username")}
+                  id="username"
+                  name="username"
+                  type="text"
+                  // autoComplete="email"
+                  required
+                  className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  placeholder="username"
+                />
+              </div>
+              }
+              
+              {
+                (status==="register")||(status=="login") && 
+                <div>
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
                 <input
+                {...register("password")}
                   id="password"
                   name="password"
                   type="password"
@@ -46,7 +182,27 @@ export default function LoginPage() {
                   className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Password"
                 />
-              </div>
+              </div> 
+              }
+              {
+                 status =="unvertify" &&
+                <div>
+                <label htmlFor="confirm_token" className="sr-only">
+                confirm_token
+                </label>
+                <input
+                {...register("confirm_token")}
+                  id="confirm_token"
+                  name="confirm_token"
+                  type="text"
+                  autoComplete="current-password"
+                  required
+                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  placeholder="請輸入passcode"
+                />
+              </div> 
+              }
+               
             </div>
 
             <div className="flex items-center justify-between">
@@ -74,7 +230,7 @@ export default function LoginPage() {
                 type="submit"
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-rose-50 py-2 px-4 text-lg font-medium text-rose-500 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:bg-rose-50 focus:ring-offset-2"
               >
-                Continue with email
+                {status}
               </button>
             </div>
           </form>

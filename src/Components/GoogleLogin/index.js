@@ -42,7 +42,7 @@ const App = () => {
 				justifyContent: "center",
 				alignItems: "center",
 				height: "36px",
-				width:"100%",
+				width: "100%",
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}

@@ -26,7 +26,7 @@ const  Nav = props => (
         <div className="flex-1 flex justify-end max-auto">
             <ul className="flex flex-wrap items-center  text-xlg ">
                 <NavItem href="/Contact sales" classname="border-r-1 relative after:absolute after:bg-gray-100 after:w-0.5 after:h-6 after:-right-2" text="Contact sales"/>
-                <NavItem href="/Log in" text="Log in" />
+                <NavItem href="/login-page" text="Log in" />
                 <Button type="submit" >Try Zettel free</Button>
             </ul>
         </div>
