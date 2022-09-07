@@ -5,8 +5,10 @@ import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from './Components/Sidebar/Sidebar';
 import Split from 'split.js'
-// import Calendar from './Components/Editor/Calendar';
 import axios from "axios";
+// import Calendar from './Components/Calendar/Calendar';
+
+
 
 
 function App() {
@@ -60,14 +62,14 @@ function App() {
 
   // setpage
   const [page, setPage] = useState([]);
+	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		axios({
 			method: "get",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/users/" + localStorage.getItem("zettelk_user_id"),
+			url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		})
 			.then((result) => {
@@ -84,14 +86,14 @@ function App() {
 				console.error(err);
 			});
 	}, []);
-  const addPage1 = () => {
+
+	const addPage1 = () => {
 		axios({
 			method: "post",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/pages",
+			url: `${baseUrl}/pages`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		})
 			.then((result) => {
@@ -126,14 +128,14 @@ function App() {
   
   return (
     <div>
-      <div class="split" className="h-screen w-full flex" >
+      <div className="split h-screen w-full flex" >
         {isSide && <div id="split-0" className="relative side-minW flex-grow-0">
               <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} titleGroup={titleGroup}  onEmojiClick={onEmojiClick} page={page} addPage1={addPage1} handlePageID={handlePageID} currentPageID={currentPageID} />
         </div>}
 
         <div id="split-1" className="flex-grow w-full overflow-hidden">
           <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} isSide={isSide} toggleSide={toggleSide}  titleGroup={titleGroup} onEmojiClick={onEmojiClick}/>  
-            < PageHeader />
+            {/* < PageHeader /> */}
             < Editor currentPageID={currentPageID} />
             {/* <Calendar /> */}
           
