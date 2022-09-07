@@ -5,10 +5,8 @@ import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from './Components/Sidebar/Sidebar';
 import Split from 'split.js'
-import Calendar from './Components/Editor/Calendar';
+// import Calendar from './Components/Editor/Calendar';
 import axios from "axios";
-
-
 
 
 function App() {
