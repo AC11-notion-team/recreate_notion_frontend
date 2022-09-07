@@ -8,7 +8,7 @@ export default function Share(){
     const [isShare,setIsShare] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("IsShare") === true){
-            setIsShare(prveShare => !prveShare)
+            setIsShare(prevShare => !prevShare)
         }
     };
     return(

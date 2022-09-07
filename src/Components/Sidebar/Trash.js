@@ -3,7 +3,7 @@ import trash from "../image/trash.png"
 
 export default function Trash (){
     const [isTrash, setIsTrash] = useState(false)
-    const toggleTrash = () => {setIsTrash(prveTrash => !prveTrash)}
+    const toggleTrash = () => {setIsTrash(prevTrash => !prevTrash)}
     
     return(
         <div>

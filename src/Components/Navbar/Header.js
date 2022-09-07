@@ -8,7 +8,8 @@ import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
 
-export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,chosenEmoji,onEmojiClick,title,handleChange}){
+
+export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,onEmojiClick,titleGroup}){
     
 
     return(
@@ -22,7 +23,7 @@ export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,chos
                     src={menu} />
                 </div>}
                 <div className="flex items-center">
-                <Title chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/> 
+                <Title titleGroup={titleGroup}  onEmojiClick={onEmojiClick}/> 
                 </div>
             </div >
             <div className="flex">
