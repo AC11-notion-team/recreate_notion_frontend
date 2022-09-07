@@ -16,10 +16,12 @@ export default function User ({toggle}){
     return(
         <div>
             <div className="User flex items-center justify-between point group  px-4 p-2">
-                <div className="User flex items-center group-hover:opacity-80 py-1.5" onClick={handleToggle}>
+                <div className="User flex items-center group-hover:opacity-80 py-1.5 px-0.5 w-full" onClick={handleToggle}>
                     <img className="User w-5 h-5 mr-2" src={user} alt="userImg" />
-                    <p className="User mr-1 font-semibold text-sm"> user's Notion</p>
-                    <img className="User w-4 h-3" src={userData} alt="userData" />     
+                    <div className="flex items-center">
+                        <p className="User mr-1 font-semibold text-sm"> user's Notion</p>
+                        <img className="User w-4 h-3" src={userData} alt="userData" />  
+                    </div>   
                 </div>
                 <button className="w-6 h-6 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded" onClick={toggle}>
                     <img src={menuLeft} alt="menuLeft" />

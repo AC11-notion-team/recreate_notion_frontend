@@ -1,208 +1,286 @@
-import React, { useRef, useState, useEffect } from "react";
-import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import Code from "@editorjs/code";
-import Checklist from "@editorjs/checklist";
-import Embed from "@editorjs/embed";
-import ImageTool from "@editorjs/image";
-import LinkTool from "@editorjs/link";
-import Marker from "@editorjs/marker";
-import NestedList from "@editorjs/nested-list";
-import Quote from "@editorjs/quote";
-import Underline from "@editorjs/underline";
-import DragDrop from "editorjs-drag-drop";
-import Table from "@editorjs/table";
-import aws from "aws-sdk";
+import React, {useRef, useState, useEffect} from "react";
+import EditorJS from '@editorjs/editorjs';
+import Code from '@editorjs/code';
+import Checklist from '@editorjs/checklist';
+import Delimiter from '@editorjs/delimiter'
+import DragDrop from 'editorjs-drag-drop';
+import Embed from '@editorjs/embed';
+import Footnotes from '@editorjs/footnotes';
+import Header from '@editorjs/header'; 
+import ImageTool from '@editorjs/image'
+import InlineCode from '@editorjs/inline-code'
+import LinkTool from '@editorjs/link';
+import Marker from '@editorjs/marker';
+import NestedList from '@editorjs/nested-list';
+import Quote from '@editorjs/quote';
+import Underline from '@editorjs/underline';
+import Table from '@editorjs/table';
+import TextVariantTune from '@editorjs/text-variant-tune';
+import aws from 'aws-sdk';
+import axios from 'axios';
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
 const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
-const S3Client = new aws.S3({
-	region,
-	accessKeyId,
-	secretAccessKey,
-	signatureVersion: "v4",
-});
+const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVersion: 'v4'});
+const baseUrl = process.env.REACT_APP_BASEURL;
+
 
 const DEFAULT_INITIAL_DATA = () => {
-	return {
-		time: new Date().getTime(),
-		blocks: [
-			{
-				type: "header",
-				data: {
-					text: "This is my awesome editor!",
-					level: 1,
-				},
-			},
-			{
-				type: "image",
-				data: {
-					url: "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
-					caption: "Roadster // tesla.com",
-				},
-			},
-			{
-				type: "link",
-				data: {
-					link: "https://www.google.com/search?q=react&sxsrf=ALiCzsauetnFkf9gsiDrSEo5gIaLcllhbg:1661410008491&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi-mYfLsuH5AhWGat4KHWInDg0Q_AUoAnoECAIQBA&biw=1920&bih=1001&dpr=2#imgrc=viJ6CsTiT3pOsM",
-					meta: {
-						title: "CodeX Team",
-					},
-				},
-			},
-		],
-	};
-};
+    return {
+      "time": new Date().getTime(),
+      "blocks": [
+        {
+          "type": "header",
+          "data": {
+            "text": "This is my awesome editor!",
+            "level": 1
+          }
+        },
+        {
+          "type": "image",
+          "data": {
+            "file": {
+              "url": "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
+            },
+            "caption" : "Roadster // tesla.com",
+            "withBorder" : false,
+            "withBackground" : false,
+            "stretched" : false
+          }
+        },
+        {
+          "type": "link",
+          "data": {
+            "link": "https://www.google.com/search?q=react&sxsrf=ALiCzsauetnFkf9gsiDrSEo5gIaLcllhbg:1661410008491&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi-mYfLsuH5AhWGat4KHWInDg0Q_AUoAnoECAIQBA&biw=1920&bih=1001&dpr=2#imgrc=viJ6CsTiT3pOsM",
+            "meta": {
+              "title" : "CodeX Team",
+            },
+          }
+        },
+      ]
+    }
+}
 
-const EDITTOR_HOLDER_ID = "editorjs";
+const EDITTOR_HOLDER_ID = 'editorjs';
 
 function Editor() {
-	const ejInstance = useRef();
-	const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
-	// This will run only once
-	useEffect(() => {
-		if (!ejInstance.current) {
-			initEditor();
-		}
-		return () => {
-			ejInstance.current.destroy();
-			ejInstance.current = null;
-		};
-	}, []);
+    const ejInstance = useRef();
+    const [editorData, setEditorData] = useState("");
+      
 
-	const initEditor = () => {
-		const editor = new EditorJS({
-			holder: EDITTOR_HOLDER_ID,
-			logLevel: "ERROR",
-			data: editorData,
-			inlineToolbar: true,
-			placeholder: "Let`s write an awesome story!",
-			onReady: () => {
-				ejInstance.current = editor;
-				new DragDrop(editor);
-			},
-			onChange: async () => {
-				let content = await editor.save();
-				// Put your logic here to save this data to your DB
-				setEditorData(content);
-			},
-			autofocus: false,
-			tools: {
-				checklist: {
-					class: Checklist,
-					inlineToolbar: true,
-				},
+    useEffect(()=>{
+      
+      const config = {
+        method: "get",
+        url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
+        headers:{
+          Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+        },
+      }
+      
+      axios(config)
+      .then(res => {
+        const initialData = {
+          "time": Date.now(),
+          "blocks": res.data.blocks
+        }
+        setEditorData(initialData)
+        if (!ejInstance.current) {
+            initEditor(initialData);
+        }
+      })
+      .catch(err => console.error(err))
 
-				code: {
-					class: Code,
-					inlineToolbar: true,
-				},
+      return () => {
+          ejInstance.current.destroy();
+          ejInstance.current = null;
+      }
+    }, [])
 
-				header: {
-					class: Header,
-					inlineToolbar: true,
-					config: {
-						placeholder: "Enter a header",
-					},
-				},
+    const initEditor = (initialData) => {
+      const editor = new EditorJS({
+        holder: EDITTOR_HOLDER_ID,
+        logLevel: "ERROR",
+        data: initialData,
+        inlineToolbar: true,
+        placeholder:'Let`s write an awesome story!',
+        onReady: () => {
+          ejInstance.current = editor;
+          new DragDrop(editor);
+        },
+        onChange: async (api, event) => {
+          let content = await editor.save();
+          // Put your logic here to save this data to your DB
+          if (event.type == "block-removed" && !event.detail.target.isEmpty){
+            console.log(event)
+            const config = {
+              method: "delete",
+              url: `${baseUrl}/pages/delete_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "block_id": event.detail.target.id,
+              }
+            }
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
+          if (event.type !== "block-removed"){
+            const config = {
+              method: "post",
+              url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "title":"sssssss",
+                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "icon": "aaa1111111111a",
+                "cover": "wwwwwwwww",
+                "api": content,
+              }
+            }
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
 
-				embed: Embed,
+          setEditorData(content);
+        },
+        autofocus: false,
+        tools: { 
 
-				image: {
-					class: ImageTool,
-					config: {
-						endpoints: {
-							byUrl: "http://localhost:3000/api/v1/uploadImageByUrl",
-						},
-						uploader: {
-							/**
-							 * Upload file to the server and return an uploaded image data
-							 */
-							async uploadByFile(file) {
-								// your own uploading logic here
-								const ranBytes = Math.floor(Math.random() * 10000000000000);
-								const imageName = ranBytes.toString();
-								console.log(bucketName);
-								const params = {
-									Bucket: bucketName,
-									Key: imageName,
-									Expires: 60,
-								};
-								const url = await S3Client.getSignedUrlPromise(
-									"putObject",
-									params
-								);
-								console.log("safeurl: " + url);
+          checklist:{
+            class: Checklist,
+            inlineToolbar:true,
+          },
 
-								return fetch(url, {
-									method: "PUT",
-									headers: {
-										// "Content-Type": "image/*",
-									},
-									body: file,
-								})
-									.then((res) => {
-										return {
-											success: 1,
-											file: {
-												url: res.url.split("?")[0],
-												// any other image data you want to store, such as width, height, color, extension, etc
-											},
-										};
-									})
-									.catch((err) => console.log("fetch_image_error" + err));
-							},
-						},
-					},
-				},
+          code:{
+            class: Code,
+            inlineToolbar:true,
+          },
 
-				link: {
-					class: LinkTool,
-					config: {
-						endpoint: "http://localhost:3000/api/v1/fetch",
-					},
-				},
+          embed: Embed,
 
-				marker: {
-					class: Marker,
-				},
+          delimeter: Delimiter,
 
-				list: {
-					class: NestedList,
-					inlineToolbar: true,
-					config: {
-						placeholder: "List",
-					},
-				},
+          footnotes: Footnotes,
 
-				quote: {
-					class: Quote,
-					inlineToolbar: true,
-				},
+          header: {
+            class: Header,
+            inlineToolbar: true,
+            config: {
+              placeholder: 'Enter a header',
+            },
+          },
 
-				underline: {
-					class: Underline,
-				},
+          image: {
+            class: ImageTool,
+            config:{
+              endpoints: {
+                byUrl: `${baseUrl}/uploadImageByUrl`,
+              },
+              additionalRequestHeaders:{
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              uploader: {
+                /**
+                 * Upload file to the server and return an uploaded image data
+                 */
+                async uploadByFile(file){
+                  // your own uploading logic here  
+                  const ranBytes = Math.floor(Math.random()*10000000000000)
+                  const imageName = ranBytes.toString()
+                  console.log(bucketName)
+                  const params = {
+                    Bucket: bucketName,
+                    Key: imageName,
+                    Expires: 60
+                  }
+                  const url = await S3Client.getSignedUrlPromise('putObject', params)
+                  
+                  return fetch(url, {
+                      method: "PUT",
+                      headers: {
+                        // "Content-Type": "image/*",
+                      },
+                      body: file
+                    }).then((res)=>{ 
+                      return {
+                        success: 1,
+                        file: {
+                          url: res.url.split('?')[0],
+                          // any other image data you want to store, such as width, height, color, extension, etc
+                        }
+                      }
+                    }).catch(err => console.log("fetch_image_error" + err))
+                },
+              },
+            },
+          },
 
-				table: {
-					class: Table,
-					inlineToolbar: true,
-					config: {
-						withHeadings: true,
-					},
-				},
-			},
-		});
-	};
+          inlineCode: InlineCode, 
+          
+          link:{
+            class: LinkTool,
+            config: {
+              endpoint: `${baseUrl}/fetch`,
+              headers:{
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+            },
+          },
 
-	return (
-		<React.Fragment>
-			<div id={EDITTOR_HOLDER_ID}> </div>
-			{/* <button onClick= {()=> console.log(editorData)}> data</button> */}
-		</React.Fragment>
-	);
+          marker:{
+            class: Marker,
+          },
+
+          list:{
+            class: NestedList,
+            inlineToolbar: true,
+            config: {
+              placeholder: 'List',
+            },
+          },
+
+          quote:{
+            class: Quote,
+            inlineToolbar:true,
+          },
+
+          underline:{
+            class: Underline,
+          },
+
+          table:{
+            class: Table,
+            inlineToolbar: true,
+            config:{
+              withHeadings: true,
+            }
+          },
+
+          textVariant: TextVariantTune,
+
+        }, 
+      });
+  };
+   
+  
+  
+  return (
+      <React.Fragment>
+          <div id={EDITTOR_HOLDER_ID}> </div>
+          <button onClick= {()=> console.log(editorData)}> data</button>
+      </React.Fragment>
+  );
 }
 
 export default Editor;

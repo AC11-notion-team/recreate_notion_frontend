@@ -8,26 +8,26 @@ const GoogleLogin = () => {
 	let navigate = useNavigate();
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
+	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		if (user === false) {
-			localStorage.removeItem("zettelk_user_token");
+			localStorage.removeItem("zettel_user_token");
 		}
 	}, [user]);
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		// console.log(payload);
 		setuser(payload);
 
 		axios
-			.post("http://localhost:3001/api/v1/auth/login", {
+			.post(`${baseUrl}/auth/third_party_login`, {
 				name: payload.name,
 				email: payload.email,
 			})
 			.then((res) => {
 				console.log(res.data);
-				localStorage.setItem("zettelk_user_token", res.data.auth_token);
-				localStorage.setItem("zettelk_user_id", res.data.user_id);
+				localStorage.setItem("zettel_user_token", res.data.auth_token);
+				localStorage.setItem("zettel_user_id", res.data.user_id);
 			})
 			.catch((err) => console.log(err));
 		navigate("/");
@@ -44,7 +44,6 @@ const GoogleLogin = () => {
 			size: "large",
 			width: "800px",
 		});
-		// window.google.id.prompt();
 	});
 	return (
 		<div
@@ -54,6 +53,7 @@ const GoogleLogin = () => {
 				alignItems: "center",
 				height: "36px",
 				width: "100%",
+				height: "60px",
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}

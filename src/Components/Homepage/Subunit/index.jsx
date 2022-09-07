@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
-// import { SiNotion } from "react-icons/si";
+import { Link } from "react-router-dom";
 import Navlist from "./Navlist.jsx";
 
 const  Nav = props => (
