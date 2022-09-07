@@ -118,9 +118,6 @@ function App() {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
       },
-      params:{
-        id: pageID
-      }
     })
   }
   
@@ -131,11 +128,11 @@ function App() {
               <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} titleGroup={titleGroup}  onEmojiClick={onEmojiClick} page={page} addPage1={addPage1} handlePageID={handlePageID} currentPageID={currentPageID} />
         </div>}
 
-        <div id="split-1" className="flex-grow w-full overflow-hidden">
+        <div id="split-1" className="flex-grow overflow-hidden">
           <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} isSide={isSide} toggleSide={toggleSide}  titleGroup={titleGroup} onEmojiClick={onEmojiClick}/>  
-            {/* < PageHeader /> */}
-            < Editor currentPageID={currentPageID} />
-            {/* <Calendar /> */}
+               {/* < PageHeader /> */}
+              < Editor currentPageID={currentPageID} />
+              {/* <Calendar /> */}
           
         </div>
       </div>  
