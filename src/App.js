@@ -109,6 +109,11 @@ function App() {
 
 	// click and set page_id
 	const [currentPageID, setcurrentPageID] = useState("");
+	useEffect(() => {
+		console.log("---------e2-----");
+		console.log(currentPageID);
+		console.log("---------fe-----");
+	}, [currentPageID]);
 
 	const handlePageID = (pageID) => {
 		setcurrentPageID(pageID);

@@ -9,6 +9,14 @@ import Swal from 'sweetalert2'
 export default function LoginPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let navigate = useNavigate();
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
+  })
+  
   
 
   // 第一個state 記載 是否已經發給後端判斷email存不存在
@@ -18,15 +26,11 @@ export default function LoginPage() {
     "init" : "continue with email",
     "register": "register",
     "unvertify":"please vertify",
-    "login":"login"
+    "login":"login",
+    "third":"third",
   }
   useEffect(()=>{
-    console.log("----------");
-    console.log(btn[status]);
-    console.log("----------");
-
     setsubmitBtn(btn[status]);
-    
   },[status])
 
   async function testEmailExist(data){
@@ -39,10 +43,28 @@ export default function LoginPage() {
           email:data.email
         }
       }).then((res)=>{
-        setstatus(res.data.status)
+        console.log("hfugjukkufiug");
+        console.log(res.data.message);
+        console.log("hfugjukkufiug");
+        if(res.data.status == "third"){
+          setstatus("init")
+          Swal.fire({
+            icon: 'error',
+            title: 'oops...',
+            text: '已於google登入註冊，請使用google登入',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
+        }else{
+          setstatus(res.data.status)
+        }
       })
     }catch(error){
-      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'oops...',
+        text: 'server wrong',
+        footer: '<a href="">Why do I have this issue?</a>'
+      })
     }
   }
   async function goToRigister(data){
@@ -105,7 +127,12 @@ export default function LoginPage() {
 				  localStorage.setItem("zettel_user_id", res.data.user_id);
           return navigate("/");
         }
-        console.log("i loose");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '密碼錯了',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
         setstatus(res.data.status)
       })
     }catch(error){
@@ -114,7 +141,9 @@ export default function LoginPage() {
   }
 
   const onSubmit = (data)=>{
-    console.log(data)
+    console.log("fuck");
+    console.log(status);
+    console.log("fuck");
     if (status=="init"){
       testEmailExist(data)
     }else if (status=="register"){
@@ -124,12 +153,7 @@ export default function LoginPage() {
     }else if(status=="login"){
       goToLogin(data)
     }else if(status=="third"){
-      Swal.fire({
-        title: 'Error!',
-        text: 'Do you want to continue',
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
+      setstatus("init")
     }
   }
   
