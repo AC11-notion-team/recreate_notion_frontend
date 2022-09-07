@@ -52,22 +52,7 @@ const GoogleLogin = () => {
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
-			{user && (
-				// <div>
-				// 	<h1>{user.name}</h1>
-				// 	<img src={user.picture} alt="profile" />
-				// 	<p>{user.email}</p>
-
-				// 	<button
-				// 		onClick={() => {
-				// 			setuser(false);
-				// 		}}
-				// 	>
-				// 		Logout
-				// 	</button>
-				// </div>
-				< Navigate to="/" replace={true} />
-			)}
+			{ user && ( < Navigate to="/" replace={true} /> )}
 		</div>
 	);
 };

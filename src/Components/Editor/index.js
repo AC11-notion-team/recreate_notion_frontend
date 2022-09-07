@@ -272,13 +272,11 @@ function Editor() {
         }, 
       });
   };
-   
-  
   
   return (
       <React.Fragment>
-          <div id={EDITTOR_HOLDER_ID}> </div>
-          <button onClick= {()=> console.log(editorData)}> data</button>
+          <div id={EDITTOR_HOLDER_ID} > </div>
+          {/* <button onClick= {()=> console.log(editorData)}> data</button> */}
       </React.Fragment>
   );
 }
