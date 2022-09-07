@@ -13,11 +13,10 @@ export default function QuickFind(){
     const [isQuickFind, setIsQuickFind] = useState(false);
     const handleToggle = (e) => {
         if(e.target.className.includes("QuickFind") === true){
-            setIsQuickFind(prveQuickFind => !prveQuickFind)
+            setIsQuickFind(prevQuickFind => !prevQuickFind)
         }
     };
     const [isSearchText,setIsSearchText] = useState("")
-    console.log(isSearchText);
     const handleChange = (event) =>(setIsSearchText(event.target.value))
     const SearchPageList = () => {
         return(

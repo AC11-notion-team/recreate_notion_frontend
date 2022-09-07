@@ -17,7 +17,7 @@ const GoogleLogin = () => {
 		// console.log(payload);
 		setuser(payload);
 		axios
-			.post("http://localhost:3001/api/v1/auth/login", {
+			.post("http://localhost:3001/api/v1/auth/third_party_login", {
 				name: payload.name,
 				email: payload.email,
 			})

@@ -22,10 +22,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "@toast-ui/react-calendar": "^2.1.3",
-=======
->>>>>>> bdb17776bcee08d3703d0b5d7ea6ed764e84c7dd
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "jwt-decode": "^3.1.2",

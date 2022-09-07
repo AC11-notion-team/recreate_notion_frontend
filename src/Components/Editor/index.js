@@ -53,7 +53,8 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor() {
+function Editor({currentPageID}) {
+    console.log(currentPageID)
     const ejInstance = useRef();
     const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
      // This will run only once
@@ -193,7 +194,7 @@ function Editor() {
   
   return (
       <React.Fragment>
-          <div id={EDITTOR_HOLDER_ID}> </div>
+          <div  id={EDITTOR_HOLDER_ID}> </div>
           <button onClick= {()=> console.log(editorData)}> data</button>
       </React.Fragment>
   );
