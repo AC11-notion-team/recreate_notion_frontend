@@ -101,8 +101,8 @@ export default function LoginPage() {
       }).then((res)=>{
         console.log(res);
         if(res.data.status=="success"){
-          localStorage.setItem("zettelk_user_token", res.data.auth_token);
-				  localStorage.setItem("zettelk_user_id", res.data.user_id);
+          localStorage.setItem("zettel_user_token", res.data.auth_token);
+				  localStorage.setItem("zettel_user_id", res.data.user_id);
           return navigate("/");
         }
         console.log("i loose");
