@@ -21,7 +21,7 @@ export default function More({isFavorite,toggleFavorite}){
     const [isMore,setIsMore] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("IsMore") === true){
-            setIsMore(prveMore => !prveMore)
+            setIsMore(prevMore => !prevMore)
         }
     };
     
@@ -36,7 +36,7 @@ export default function More({isFavorite,toggleFavorite}){
                     </div>
                     <hr />
                     <div className="p-1.5">
-                        <ActionButton src={lock} alt="lockDatabase" content="Lock database" className="px-0.5 py-1"/>
+                        <ActionButton src={lock} alt="lockDatabase" content="Lock database" className="px-0.5 py-0.5"/>
                     </div>
                     <hr />
                     <div className="p-1.5">

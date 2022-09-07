@@ -10,7 +10,7 @@ export default function User ({toggle}){
     const [isUser,setIsUser] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("User") === true){
-            setIsUser(prveUser => !prveUser)
+            setIsUser(prevUser => !prevUser)
         }
     };
     return(
