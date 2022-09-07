@@ -14,7 +14,7 @@ import axios from "axios";
 export default function PageMore({ closeDropdown }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const handleToggle = () => {
-		setIsPageMore((prvePageMore) => !prvePageMore);
+		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
 
 	const ref = useDetectClickOutside({

@@ -65,7 +65,9 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor() {
+function Editor(currentPageID) {
+    // const currentPageID = "2f6a8807-4f87-445c-a5c1-4e0901cbb3cc";
+    console.log(currentPageID)
     const ejInstance = useRef();
     const [editorData, setEditorData] = useState("");
       
@@ -74,7 +76,7 @@ function Editor() {
       
       const config = {
         method: "get",
-        url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb.json`,
+        url: `${baseUrl}/pages/${currentPageID}.json`,
         headers:{
           Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
         },
@@ -123,7 +125,7 @@ function Editor() {
                 Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
               },
               data:{
-                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "page_id": {currentPageID},
                 "block_id": event.detail.target.id,
               }
             }
@@ -134,7 +136,7 @@ function Editor() {
           if (event.type !== "block-removed"){
             const config = {
               method: "post",
-              url: `${baseUrl}/pages/8abe36ff-a465-4660-b980-9c7261a1dfdb/save_data`,
+              url: `${baseUrl}/pages/${currentPageID}/save_data`,
               headers:{
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
@@ -276,10 +278,12 @@ function Editor() {
   
   
   return (
+    <div className="relative content overflow-auto ">
       <React.Fragment>
-          <div id={EDITTOR_HOLDER_ID}> </div>
+          <div  id={EDITTOR_HOLDER_ID}> </div>
           <button onClick= {()=> console.log(editorData)}> data</button>
       </React.Fragment>
+    </div>
   );
 }
 
