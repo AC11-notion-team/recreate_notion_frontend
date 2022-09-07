@@ -18,11 +18,7 @@ const GoogleLogin = () => {
 		let payload = jwt_deocde(userCred);
 		setuser(payload);
 		axios
-<<<<<<< HEAD
-			.post("http://localhost:3001/api/v1/auth/third_party_login", {
-=======
 			.post(`${baseUrl}/auth/third_party_login`, {
->>>>>>> bf72d98ee13b046418e1d194c9ab163cbdcd66ab
 				name: payload.name,
 				email: payload.email,
 			})

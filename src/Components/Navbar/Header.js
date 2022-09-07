@@ -8,12 +8,8 @@ import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
 
-<<<<<<< HEAD
 
 export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,onEmojiClick,titleGroup}){
-=======
-export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,chosenEmoji,onEmojiClick,title,handleChange}){
->>>>>>> bf72d98ee13b046418e1d194c9ab163cbdcd66ab
     
 
     return(

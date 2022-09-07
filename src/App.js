@@ -12,6 +12,7 @@ import axios from "axios";
 
 
 function App() {
+  const baseUrl = process.env.REACT_APP_BASEURL
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
   useLayoutEffect(()=>{
@@ -51,18 +52,16 @@ function App() {
     }
     axios({
       method: "put",
-      baseURL: "http://localhost:3001",
-      url: "/api/v1/pages/"+currentPageID,
+      url: `${baseUrl}/pages/`+currentPageID,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+        Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
       },
     })
   }
 
   // setpage
   const [page, setPage] = useState([]);
-	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -111,14 +110,13 @@ function App() {
 
   const handlePageID = (pageID)=>{
     setcurrentPageID(pageID)
-    localStorage.setItem("current_zettelk_page_id",pageID)
+    localStorage.setItem("current_zettel_page_id",pageID)
     axios({
       method: "get",
-      baseURL: "http://localhost:3001",
-      url: "/api/v1/pages/" + pageID + ".json",
+      url: `${baseUrl}/pages/` + pageID + ".json",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+        Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
       },
       params:{
         id: pageID

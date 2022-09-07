@@ -13,7 +13,7 @@ import newPage from "../image/plus.png";
 import addPage from "../image/plus.png";
 
 
-export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji, onEmojiClick, title,page ,addPage1,currentPageID,handlePageID}) {
+export default function Sidebar({ isFavorite, toggleFavorite, toggle,titleGroup, onEmojiClick, page ,addPage1,currentPageID,handlePageID}) {
 	
 
 	
@@ -53,7 +53,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji
 						</button>
 					</div>
 
-					<Private page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handlePageID={handlePageID} />
+					<Private page={page} titleGroup={titleGroup} onEmojiClick = {onEmojiClick} handlePageID={handlePageID} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />
