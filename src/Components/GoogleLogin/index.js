@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const GoogleLogin = () => {
+	let navigate = useNavigate();
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
 	useEffect(() => {
@@ -16,6 +18,7 @@ const GoogleLogin = () => {
 		let payload = jwt_deocde(userCred);
 		// console.log(payload);
 		setuser(payload);
+
 		axios
 			.post("http://localhost:3001/api/v1/auth/login", {
 				name: payload.name,
@@ -27,6 +30,7 @@ const GoogleLogin = () => {
 				localStorage.setItem("zettelk_user_id", res.data.user_id);
 			})
 			.catch((err) => console.log(err));
+		navigate("/");
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
 		window.google.accounts.id.initialize({
@@ -53,21 +57,6 @@ const GoogleLogin = () => {
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
-			{user && (
-				<div>
-					<h1>{user.name}</h1>
-					<img src={user.picture} alt="profile" />
-					<p>{user.email}</p>
-
-					<button
-						onClick={() => {
-							setuser(false);
-						}}
-					>
-						Logout
-					</button>
-				</div>
-			)}
 		</div>
 	);
 };

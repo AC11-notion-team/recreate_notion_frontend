@@ -3,6 +3,7 @@ import GoogleLogin from '../GoogleLogin'
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 export default function LoginPage() {
@@ -122,6 +123,13 @@ export default function LoginPage() {
       goToVertify(data)
     }else if(status=="login"){
       goToLogin(data)
+    }else if(status=="third"){
+      Swal.fire({
+        title: 'Error!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
     }
   }
   
@@ -143,7 +151,7 @@ export default function LoginPage() {
             <div className=" border-b-2  border-grey-100  "/>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              { ((status=="init")||(status=="login"))&&
+              { ((status=="init")||(status=="login")||(status=="register"))&&
                 <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
