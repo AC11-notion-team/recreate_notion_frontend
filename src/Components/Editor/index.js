@@ -69,43 +69,37 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = "editorjs";
 
-function Editor() {
-	const currentPageID = "ad38f9fb-3882-40c0-a82e-7092075b8309";
-	console.log(currentPageID);
-	const ejInstance = useRef();
-	const [editorData, setEditorData] = useState("");
 
-	// TODO bug
-	useEffect(() => {
-		const config = {
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageID}.json`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization:
-					"Bearer " + localStorage.getItem("zettel_user_token") || null,
-			},
-		};
+function Editor(currentPageID) {
+    // const currentPageID = "2f6a8807-4f87-445c-a5c1-4e0901cbb3cc";
+    console.log(currentPageID)
+    const ejInstance = useRef();
+    const [editorData, setEditorData] = useState("");
+      
 
-		axios(config)
-			.then((res) => {
-				const initialData = {
-					time: Date.now(),
-					blocks: res.data.blocks,
-				};
-				setEditorData(initialData);
-				if (!ejInstance.current) {
-					initEditor(initialData);
-				}
-				console.log(res);
-			})
-			.catch((err) => console.error(err));
-
-		return () => {
-			ejInstance.current.destroy();
-			ejInstance.current = null;
-		};
-	}, [currentPageID]);
+    useEffect(()=>{
+      
+      const config = {
+        method: "get",
+        url: `${baseUrl}/pages/${currentPageID}.json`,
+        headers:{
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+        },
+      }
+      
+      axios(config)
+      .then(res => {
+        const initialData = {
+          "time": Date.now(),
+          "blocks": res.data.blocks
+        }
+        setEditorData(initialData)
+        if (!ejInstance.current) {
+            initEditor(initialData);
+        }
+      })
+      .catch(err => console.error(err))
 
 	const initEditor = (initialData) => {
 		const editor = new EditorJS({
@@ -162,6 +156,7 @@ function Editor() {
 						.catch((err) => console.error(err));
 				}
 
+<<<<<<< HEAD
 				setEditorData(content);
 			},
 			autofocus: false,
@@ -170,6 +165,60 @@ function Editor() {
 					class: Checklist,
 					inlineToolbar: true,
 				},
+=======
+    const initEditor = (initialData) => {
+      const editor = new EditorJS({
+        holder: EDITTOR_HOLDER_ID,
+        logLevel: "ERROR",
+        data: initialData,
+        inlineToolbar: true,
+        placeholder:'Let`s write an awesome story!',
+        onReady: () => {
+          ejInstance.current = editor;
+          new DragDrop(editor);
+        },
+        onChange: async (api, event) => {
+          let content = await editor.save();
+          // Put your logic here to save this data to your DB
+          if (event.type == "block-removed" && !event.detail.target.isEmpty){
+            console.log(event)
+            const config = {
+              method: "delete",
+              url: `${baseUrl}/pages/delete_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "page_id": {currentPageID},
+                "block_id": event.detail.target.id,
+              }
+            }
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
+          if (event.type !== "block-removed"){
+            const config = {
+              method: "post",
+              url: `${baseUrl}/pages/${currentPageID}/save_data`,
+              headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              },
+              data:{
+                "title":"sssssss",
+                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+                "icon": "aaa1111111111a",
+                "cover": "wwwwwwwww",
+                "api": content,
+              }
+            }
+            axios(config)
+            .then(res => res)
+            .catch(err => console.error(err))
+          }
+>>>>>>> 0b5e3d304c1bdafc8c086c94118b370520ab9ee8
 
 				code: {
 					class: Code,
@@ -288,12 +337,29 @@ function Editor() {
 		});
 	};
 
+<<<<<<< HEAD
 	return (
 		<React.Fragment>
 			<div id={EDITTOR_HOLDER_ID}> </div>
 			<button onClick={() => console.log(editorData)}> data</button>
 		</React.Fragment>
 	);
+=======
+        }, 
+      });
+  };
+   
+  
+  
+  return (
+    <div className="relative content overflow-auto ">
+      <React.Fragment>
+          <div  id={EDITTOR_HOLDER_ID}> </div>
+          <button onClick= {()=> console.log(editorData)}> data</button>
+      </React.Fragment>
+    </div>
+  );
+>>>>>>> 0b5e3d304c1bdafc8c086c94118b370520ab9ee8
 }
 
 export default Editor;

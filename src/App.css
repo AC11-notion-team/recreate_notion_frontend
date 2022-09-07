@@ -55,6 +55,7 @@
 .header-minW {
   min-width: 200px;
 }
-#container{
-  width: 100%;
+
+.content {
+  height: calc(100vh - 45px);
 }
