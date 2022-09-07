@@ -5,7 +5,7 @@ import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from './Components/Sidebar/Sidebar';
 import Split from 'split.js'
-import Calendar from './Components/Editor/Calendar';
+import Calendar from './Components/Calendar/Calendar';
 
 
 
@@ -28,18 +28,6 @@ function App() {
   };
   const [title,setTitle] = useState("PageTitle")
   const handleChange = (e)=>{setTitle(e.target.value)}
-  // const [title,setTitle] = useState({
-  //     title:"Pagetitle",
-  //     pageIcon:null
-  // })
-  // const handleChange = (event,emojiObject) =>{
-  //   const {title,pageIcon} = event.target.value
-  //   setTitle(prevTitle =>({
-  //     ...prevTitle,
-  //     title:title,
-  //     pageIcon: pageIcon ? emojiObject.emoji : "🙃"
-  //   }))
-  // }
 
   useLayoutEffect(()=>{
     if(isSide){
@@ -56,16 +44,14 @@ function App() {
   
   return (
     <div>
-      <div class="split" className="h-screen w-full flex" >
+      <div className="split h-screen w-full flex" >
         {isSide && <div id="split-0" className="relative side-minW flex-grow-0">
-          <div >
-              <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/>
-          </div>
+          <Sidebar className = "fixed" isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/>
         </div>}
 
         <div id="split-1" className="flex-grow w-full">
           <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} isSide={isSide} toggleSide={toggleSide}  chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} handleChange={handleChange}/>  
-          < PageHeader />
+          {/* < PageHeader /> */}
           < Editor />
           {/* <Calendar /> */}
         </div>

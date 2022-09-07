@@ -16,14 +16,14 @@ import { useEffect, useState } from "react";
 
 export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji, onEmojiClick, title }) {
 	const [page, setPage] = useState([]);
+	const baseUrl = process.env.REACT_APP_BASEURL
 	useEffect(() => {
 		axios({
 			method: "get",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/users/" + localStorage.getItem("zettelk_user_id"),
+			url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		})
 			.then((result) => {
@@ -44,11 +44,10 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji
 	const addPage1 = () => {
 		axios({
 			method: "post",
-			baseURL: "http://localhost:3001",
-			url: "/api/v1/pages",
+			url: `${baseUrl}/pages`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettelk_user_token"),
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		})
 			.then((result) => {
@@ -61,7 +60,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji
 			});
 	};
 	return (
-		<div className="relative inset-0 h-screen side-minW bg-gray-50 z-30">
+		<div className="inset-0 h-screen side-minW bg-gray-50 z-30">
 			<User toggle={toggle} />
 			<div className="mb-2 px-1 py-2">
 				<QuickFind />
@@ -96,7 +95,7 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle,chosenEmoji
 						</button>
 					</div>
 
-					<Private page={page} page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
+					<Private page={page} chosenEmoji = {chosenEmoji} onEmojiClick = {onEmojiClick} title={title} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />
