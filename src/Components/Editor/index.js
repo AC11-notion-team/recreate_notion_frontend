@@ -69,13 +69,13 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = "editorjs";
 
-function Editor() {
-	const currentPageID = "ad38f9fb-3882-40c0-a82e-7092075b8309";
+function Editor({ currentPageID }) {
+	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
+	// const [pageId, setPageId] = useState(currentPageID)
 	console.log(currentPageID);
 	const ejInstance = useRef();
 	const [editorData, setEditorData] = useState("");
 
-	// TODO bug
 	useEffect(() => {
 		const config = {
 			method: "get",
@@ -97,12 +97,11 @@ function Editor() {
 				if (!ejInstance.current) {
 					initEditor(initialData);
 				}
-				console.log(res);
 			})
 			.catch((err) => console.error(err));
 
 		return () => {
-			ejInstance.current.destroy();
+			ejInstance.current?.destroy();
 			ejInstance.current = null;
 		};
 	}, [currentPageID]);
@@ -151,7 +150,7 @@ function Editor() {
 						},
 						data: {
 							title: "sssssss",
-							page_id: { currentPageID },
+							page_id: "8abe36ff-a465-4660-b980-9c7261a1dfdb",
 							icon: "aaa1111111111a",
 							cover: "wwwwwwwww",
 							api: content,
@@ -292,7 +291,7 @@ function Editor() {
 		<div className="relative content overflow-auto ">
 			<React.Fragment>
 				<div id={EDITTOR_HOLDER_ID}> </div>
-				<button onClick={() => console.log(editorData)}> data</button>
+				{/* <button onClick= {()=> console.log(editorData)}> data</button> */}
 			</React.Fragment>
 		</div>
 	);

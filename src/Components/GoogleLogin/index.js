@@ -5,10 +5,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const GoogleLogin = () => {
-	let navigate = useNavigate();
+	let Navigate = useNavigate();
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
-	const baseUrl = process.env.REACT_APP_BASEURL
+	const baseUrl = process.env.REACT_APP_BASEURL;
 	useEffect(() => {
 		if (user === false) {
 			localStorage.removeItem("zettel_user_token");
@@ -30,7 +30,7 @@ const GoogleLogin = () => {
 				localStorage.setItem("zettel_user_id", res.data.user_id);
 			})
 			.catch((err) => console.log(err));
-		navigate("/");
+		Navigate("/");
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
 		window.google.accounts.id.initialize({
@@ -57,6 +57,7 @@ const GoogleLogin = () => {
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
+			{user && <Navigate to="/" replace={true} />}
 		</div>
 	);
 };
