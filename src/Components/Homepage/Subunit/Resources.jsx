@@ -59,7 +59,7 @@ const Company = [
 export default function Resources (props) {
     return (
     <>
-        <div className="max-w-7xl mx-auto pb-28 border-b-2  border-grey-100 mt-32 mb-20"/>
+        <div className="max-w-7xl mx-auto pb-28 border-b-2  border-grey-100 mt-32 mb-20 bg-[#fffefc]"/>
         <div className="max-w-7xl mx-auto  flex ">   
              <div className=" w-full justify-between md:flex">
                 <div className="flex mr-5">
