@@ -9,8 +9,6 @@ import axios from "axios";
 // import Calendar from './Components/Calendar/Calendar';
 
 
-
-
 function App() {
   const baseUrl = process.env.REACT_APP_BASEURL
 	const [isSide, setIsSide] = useState(true);
@@ -80,7 +78,7 @@ function App() {
     }
     axios({
       method: "put",
-      url: `${baseUrl}/pages/${thePageId}`,
+      url: `${baseUrl}/pages`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),

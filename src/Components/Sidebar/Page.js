@@ -19,10 +19,10 @@ const Page = ({onEmojiClick,pageTitle,handlePageID,pageIcon,pageID}) => {
 	return (
 		<div className="py-1 px-1 ">
 			<div className="flex items-center justify-between point group px-1.5 py-1">
-				<div className="flex items-center">
-					<button className="mr-1 flex">
+				<div className="flex items-center w-full">
+					<button className="mr-1 flex items-center w-5 h-5">
 						<img
-							className="w-5 h-5 py-1.5 px-0.5"
+							className="w-5 h-5 py-1.5 mr-1"
 							src={pageButtonRight}
 							alt="right"
 						/>
@@ -36,7 +36,7 @@ const Page = ({onEmojiClick,pageTitle,handlePageID,pageIcon,pageID}) => {
 					</button>
 				</div>
 				<div className="flex items-center mx-2">
-				{displayDropdown && <PageMore  closeDropdown={closeDropdown}/>}
+					{displayDropdown && <PageMore  closeDropdown={closeDropdown}/>}
 
 					<button
 						className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
