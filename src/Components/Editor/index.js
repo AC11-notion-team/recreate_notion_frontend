@@ -10,6 +10,7 @@ import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image'
 import InlineCode from '@editorjs/inline-code'
 import LinkTool from '@editorjs/link';
+import LinkPage from './LinkPage/link-page.js'
 import Marker from '@editorjs/marker';
 import NestedList from '@editorjs/nested-list';
 import Quote from '@editorjs/quote';
@@ -66,8 +67,7 @@ const DEFAULT_INITIAL_DATA = () => {
 const EDITTOR_HOLDER_ID = 'editorjs';
 
 function Editor({currentPageID}) {
-  // const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
-  // const [pageId, setPageId] = useState(currentPageID)
+  
   console.log(currentPageID)
   const ejInstance = useRef();
   const [editorData, setEditorData] = useState("");
@@ -239,6 +239,10 @@ function Editor({currentPageID}) {
               Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
             },
           },
+        },
+
+        linkpage: {
+          class: LinkPage,
         },
 
         marker:{

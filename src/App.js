@@ -30,7 +30,7 @@ function App() {
   },[isSide])
 
   const [isFavorite,setIsFavorite] = useState(false)
-  const toggleFavorite = () => (setIsFavorite(prevIsFavorite => !prevIsFavorite))
+    const toggleFavorite = () => (setIsFavorite(prevIsFavorite => !prevIsFavorite))
   
   const [titleGroup,setTitleGroup] = useState({ icon :null,title : "Untitled"})
   const onEmojiClick = (event,emojiObject) =>{
