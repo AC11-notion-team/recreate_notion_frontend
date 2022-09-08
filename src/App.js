@@ -109,26 +109,10 @@ function App() {
 
 	// click and set page_id
 	const [currentPageID, setcurrentPageID] = useState("");
-	useEffect(() => {
-		console.log("---------e2-----");
-		console.log(currentPageID);
-		console.log("---------fe-----");
-	}, [currentPageID]);
 
 	const handlePageID = (pageID) => {
 		setcurrentPageID(pageID);
 		localStorage.setItem("current_zettel_page_id", pageID);
-		axios({
-			method: "get",
-			url: `${baseUrl}/pages/` + pageID + ".json",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-			params: {
-				id: pageID,
-			},
-		});
 	};
 
 	return (
@@ -158,6 +142,7 @@ function App() {
 						toggleSide={toggleSide}
 						titleGroup={titleGroup}
 						onEmojiClick={onEmojiClick}
+						currentPageID={currentPageID}
 					/>
 					{/* < PageHeader /> */}
 					<Editor currentPageID={currentPageID} />
