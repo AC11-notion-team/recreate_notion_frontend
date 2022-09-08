@@ -98,9 +98,15 @@ function App() {
 			},
 		})
 			.then((result) => {
-				let datas = JSON.stringify(result.data.pages);
+				// console.log(result);
+				let datas = JSON.stringify(result.data);
 				let jsonData = JSON.parse(datas);
-				setPage(jsonData);
+				console.log(jsonData);
+				console.log(page);
+				setPage((prevPage) => {
+					return [...prevPage, jsonData];
+				});
+				console.log(page);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -109,26 +115,9 @@ function App() {
 
 	// click and set page_id
 	const [currentPageID, setcurrentPageID] = useState("");
-	useEffect(() => {
-		console.log("---------e2-----");
-		console.log(currentPageID);
-		console.log("---------fe-----");
-	}, [currentPageID]);
 
 	const handlePageID = (pageID) => {
 		setcurrentPageID(pageID);
-		localStorage.setItem("current_zettel_page_id", pageID);
-		axios({
-			method: "get",
-			url: `${baseUrl}/pages/` + pageID + ".json",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-			params: {
-				id: pageID,
-			},
-		});
 	};
 
 	return (
