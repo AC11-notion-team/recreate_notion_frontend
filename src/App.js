@@ -61,8 +61,6 @@ function App() {
 		});
 	};
 
-	// setpage
-	// TODO bug
 	const [page, setPage] = useState([]);
 	useEffect(() => {
 		axios({
@@ -78,6 +76,8 @@ function App() {
 			})
 			.then((datas) => {
 				let data = JSON.parse(datas);
+				setcurrentPageID(data[0]["id"]);
+
 				return data;
 			})
 			.then((data) => {

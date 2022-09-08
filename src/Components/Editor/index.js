@@ -68,7 +68,6 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const EDITTOR_HOLDER_ID = "editorjs";
-
 function Editor({ currentPageID }) {
 	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
 	// const [pageId, setPageId] = useState(currentPageID)
