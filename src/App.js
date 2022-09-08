@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import "./App.css";
-import PageHeader from "./Components/PageHeader";
 import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
@@ -98,15 +97,11 @@ function App() {
 			},
 		})
 			.then((result) => {
-				// console.log(result);
 				let datas = JSON.stringify(result.data);
 				let jsonData = JSON.parse(datas);
-				console.log(jsonData);
-				console.log(page);
 				setPage((prevPage) => {
 					return [...prevPage, jsonData];
 				});
-				console.log(page);
 			})
 			.catch((err) => {
 				console.error(err);
