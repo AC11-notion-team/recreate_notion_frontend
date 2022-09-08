@@ -9,15 +9,6 @@ import Swal from 'sweetalert2'
 export default function LoginPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   let navigate = useNavigate();
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger'
-    },
-    buttonsStyling: false
-  })
-  
-  
 
   // 第一個state 記載 是否已經發給後端判斷email存不存在
   const [status, setstatus] = useState("init")
