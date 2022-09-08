@@ -109,31 +109,23 @@ function App() {
   const [currentPageID, setcurrentPageID] = useState("")
 
   const handlePageID = (pageID)=>{
+    console.log(pageID)
     setcurrentPageID(pageID)
     localStorage.setItem("current_zettel_page_id",pageID)
-    axios({
-      method: "get",
-      url: `${baseUrl}/pages/` + pageID + ".json",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-      },
-    })
   }
   
   return (
     <div>
       <div className="split h-screen w-full flex" >
         {isSide && <div id="split-0" className="relative side-minW flex-grow-0">
-              <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} titleGroup={titleGroup}  onEmojiClick={onEmojiClick} page={page} addPage1={addPage1} handlePageID={handlePageID} currentPageID={currentPageID} />
+              <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} titleGroup={titleGroup}  onEmojiClick={onEmojiClick} page={page} addPage1={addPage1} handlePageID={handlePageID} />
         </div>}
 
         <div id="split-1" className="flex-grow overflow-hidden">
           <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} isSide={isSide} toggleSide={toggleSide}  titleGroup={titleGroup} onEmojiClick={onEmojiClick}/>  
-               {/* < PageHeader /> */}
-              < Editor currentPageID={currentPageID} />
-              {/* <Calendar /> */}
-          
+          {/* < PageHeader /> */}
+          < Editor currentPageID={currentPageID} />
+          {/* <Calendar /> */}
         </div>
       </div>  
     </div>

@@ -65,223 +65,222 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor(currentPageID) {
-    // const currentPageID = "2f6a8807-4f87-445c-a5c1-4e0901cbb3cc";
-    console.log(currentPageID)
-    const ejInstance = useRef();
-    const [editorData, setEditorData] = useState("");
-      
+function Editor({currentPageID}) {
+  // const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
+  // const [pageId, setPageId] = useState(currentPageID)
+  console.log(currentPageID)
+  const ejInstance = useRef();
+  const [editorData, setEditorData] = useState("");
+    
 
-    useEffect(()=>{
-      
-      const config = {
-        method: "get",
-        url: `${baseUrl}/pages/${currentPageID}.json`,
-        headers:{
-          Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-        },
+  useEffect(()=>{
+    const config = {
+      method: "get",
+      url: `${baseUrl}/pages/${currentPageID}.json`,
+      headers:{
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+      },
+    }
+    
+    axios(config)
+    .then(res => {
+      const initialData = {
+        "time": Date.now(),
+        "blocks": res.data.blocks
       }
-      
-      axios(config)
-      .then(res => {
-        const initialData = {
-          "time": Date.now(),
-          "blocks": res.data.blocks
-        }
-        setEditorData(initialData)
-        if (!ejInstance.current) {
-            initEditor(initialData);
-        }
-      })
-      .catch(err => console.error(err))
-
-      return () => {
-          ejInstance.current.destroy();
-          ejInstance.current = null;
+      setEditorData(initialData)
+      if (!ejInstance.current) {
+          initEditor(initialData);
       }
-    }, [])
+    })
+    .catch(err => console.error(err))
 
-    const initEditor = (initialData) => {
-      const editor = new EditorJS({
-        holder: EDITTOR_HOLDER_ID,
-        logLevel: "ERROR",
-        data: initialData,
-        inlineToolbar: true,
-        placeholder:'Let`s write an awesome story!',
-        onReady: () => {
-          ejInstance.current = editor;
-          new DragDrop(editor);
-        },
-        onChange: async (api, event) => {
-          let content = await editor.save();
-          // Put your logic here to save this data to your DB
-          if (event.type == "block-removed" && !event.detail.target.isEmpty){
-            console.log(event)
-            const config = {
-              method: "delete",
-              url: `${baseUrl}/pages/delete_data`,
-              headers:{
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-              },
-              data:{
-                "page_id": {currentPageID},
-                "block_id": event.detail.target.id,
-              }
-            }
-            axios(config)
-            .then(res => res)
-            .catch(err => console.error(err))
-          }
-          if (event.type !== "block-removed"){
-            const config = {
-              method: "post",
-              url: `${baseUrl}/pages/${currentPageID}/save_data`,
-              headers:{
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-              },
-              data:{
-                "title":"sssssss",
-                "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
-                "icon": "aaa1111111111a",
-                "cover": "wwwwwwwww",
-                "api": content,
-              }
-            }
-            axios(config)
-            .then(res => res)
-            .catch(err => console.error(err))
-          }
+    return () => {
+        ejInstance.current?.destroy();
+        ejInstance.current = null;
+    }
+  }, [currentPageID])
 
-          setEditorData(content);
-        },
-        autofocus: false,
-        tools: { 
-
-          checklist:{
-            class: Checklist,
-            inlineToolbar:true,
-          },
-
-          code:{
-            class: Code,
-            inlineToolbar:true,
-          },
-
-          embed: Embed,
-
-          delimeter: Delimiter,
-
-          footnotes: Footnotes,
-
-          header: {
-            class: Header,
-            inlineToolbar: true,
-            config: {
-              placeholder: 'Enter a header',
+  const initEditor = (initialData) => {
+    const editor = new EditorJS({
+      holder: EDITTOR_HOLDER_ID,
+      logLevel: "ERROR",
+      data: initialData,
+      inlineToolbar: true,
+      placeholder:'Let`s write an awesome story!',
+      onReady: () => {
+        ejInstance.current = editor;
+        new DragDrop(editor);
+      },
+      onChange: async (api, event) => {
+        let content = await editor.save();
+        // Put your logic here to save this data to your DB
+        if (event.type == "block-removed" && !event.detail.target.isEmpty){
+          console.log(event)
+          const config = {
+            method: "delete",
+            url: `${baseUrl}/pages/delete_data`,
+            headers:{
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
             },
-          },
+            data:{
+              "page_id": {currentPageID},
+              "block_id": event.detail.target.id,
+            }
+          }
+          axios(config)
+          .then(res => res)
+          .catch(err => console.error(err))
+        }
+        if (event.type !== "block-removed"){
+          const config = {
+            method: "post",
+            url: `${baseUrl}/pages/${currentPageID}/save_data`,
+            headers:{
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+            },
+            data:{
+              "title":"sssssss",
+              "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
+              "icon": "aaa1111111111a",
+              "cover": "wwwwwwwww",
+              "api": content,
+            }
+          }
+          axios(config)
+          .then(res => res)
+          .catch(err => console.error(err))
+        }
 
-          image: {
-            class: ImageTool,
-            config:{
-              endpoints: {
-                byUrl: `${baseUrl}/uploadImageByUrl`,
-              },
-              additionalRequestHeaders:{
-                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-              },
-              uploader: {
-                /**
-                 * Upload file to the server and return an uploaded image data
-                 */
-                async uploadByFile(file){
-                  // your own uploading logic here  
-                  const ranBytes = Math.floor(Math.random()*10000000000000)
-                  const imageName = ranBytes.toString()
-                  console.log(bucketName)
-                  const params = {
-                    Bucket: bucketName,
-                    Key: imageName,
-                    Expires: 60
-                  }
-                  const url = await S3Client.getSignedUrlPromise('putObject', params)
-                  
-                  return fetch(url, {
-                      method: "PUT",
-                      headers: {
-                        // "Content-Type": "image/*",
-                      },
-                      body: file
-                    }).then((res)=>{ 
-                      return {
-                        success: 1,
-                        file: {
-                          url: res.url.split('?')[0],
-                          // any other image data you want to store, such as width, height, color, extension, etc
-                        }
+        setEditorData(content);
+      },
+      autofocus: false,
+      tools: { 
+
+        checklist:{
+          class: Checklist,
+          inlineToolbar:true,
+        },
+
+        code:{
+          class: Code,
+          inlineToolbar:true,
+        },
+
+        embed: Embed,
+
+        delimeter: Delimiter,
+
+        footnotes: Footnotes,
+
+        header: {
+          class: Header,
+          inlineToolbar: true,
+          config: {
+            placeholder: 'Enter a header',
+          },
+        },
+
+        image: {
+          class: ImageTool,
+          config:{
+            endpoints: {
+              byUrl: `${baseUrl}/uploadImageByUrl`,
+            },
+            additionalRequestHeaders:{
+              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+            },
+            uploader: {
+              /**
+               * Upload file to the server and return an uploaded image data
+               */
+              async uploadByFile(file){
+                // your own uploading logic here  
+                const ranBytes = Math.floor(Math.random()*10000000000000)
+                const imageName = ranBytes.toString()
+                console.log(bucketName)
+                const params = {
+                  Bucket: bucketName,
+                  Key: imageName,
+                  Expires: 60
+                }
+                const url = await S3Client.getSignedUrlPromise('putObject', params)
+                
+                return fetch(url, {
+                    method: "PUT",
+                    headers: {
+                      // "Content-Type": "image/*",
+                    },
+                    body: file
+                  }).then((res)=>{ 
+                    return {
+                      success: 1,
+                      file: {
+                        url: res.url.split('?')[0],
+                        // any other image data you want to store, such as width, height, color, extension, etc
                       }
-                    }).catch(err => console.log("fetch_image_error" + err))
-                },
+                    }
+                  }).catch(err => console.log("fetch_image_error" + err))
               },
             },
           },
+        },
 
-          inlineCode: InlineCode, 
-          
-          link:{
-            class: LinkTool,
-            config: {
-              endpoint: `${baseUrl}/fetch`,
-              headers:{
-                Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-              },
+        inlineCode: InlineCode, 
+        
+        link:{
+          class: LinkTool,
+          config: {
+            endpoint: `${baseUrl}/fetch`,
+            headers:{
+              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
             },
           },
+        },
 
-          marker:{
-            class: Marker,
+        marker:{
+          class: Marker,
+        },
+
+        list:{
+          class: NestedList,
+          inlineToolbar: true,
+          config: {
+            placeholder: 'List',
           },
+        },
 
-          list:{
-            class: NestedList,
-            inlineToolbar: true,
-            config: {
-              placeholder: 'List',
-            },
-          },
+        quote:{
+          class: Quote,
+          inlineToolbar:true,
+        },
 
-          quote:{
-            class: Quote,
-            inlineToolbar:true,
-          },
+        underline:{
+          class: Underline,
+        },
 
-          underline:{
-            class: Underline,
-          },
+        table:{
+          class: Table,
+          inlineToolbar: true,
+          config:{
+            withHeadings: true,
+          }
+        },
 
-          table:{
-            class: Table,
-            inlineToolbar: true,
-            config:{
-              withHeadings: true,
-            }
-          },
+        textVariant: TextVariantTune,
 
-          textVariant: TextVariantTune,
-
-        }, 
-      });
+      }, 
+    });
   };
-   
-  
   
   return (
     <div className="relative content overflow-auto ">
       <React.Fragment>
           <div  id={EDITTOR_HOLDER_ID}> </div>
-          <button onClick= {()=> console.log(editorData)}> data</button>
+          {/* <button onClick= {()=> console.log(editorData)}> data</button> */}
       </React.Fragment>
     </div>
   );
