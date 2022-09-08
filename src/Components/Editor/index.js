@@ -65,9 +65,8 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const EDITTOR_HOLDER_ID = 'editorjs';
 
-function Editor(currentPageID) {
+function Editor({currentPageID}) {
     // const currentPageID = "2f6a8807-4f87-445c-a5c1-4e0901cbb3cc";
-    console.log(currentPageID)
     const ejInstance = useRef();
     const [editorData, setEditorData] = useState("");
       
@@ -96,10 +95,10 @@ function Editor(currentPageID) {
       .catch(err => console.error(err))
 
       return () => {
-          ejInstance.current.destroy();
+          ejInstance.current?.destroy();
           ejInstance.current = null;
       }
-    }, [])
+    }, [currentPageID])
 
     const initEditor = (initialData) => {
       const editor = new EditorJS({

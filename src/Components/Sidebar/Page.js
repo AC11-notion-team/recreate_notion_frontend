@@ -4,7 +4,8 @@ import addPage from "../image/plus.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 
-const Page = ({pageID,titleGroup,onEmojiClick,title1,handlePageID}) => {
+const Page = ({onEmojiClick,pageTitle,handlePageID,pageIcon,pageID}) => {
+
 	const [displayDropdown, setDisplayDropdown] = useState(true);
 
 	const closeDropdown = () => {
@@ -25,16 +26,17 @@ const Page = ({pageID,titleGroup,onEmojiClick,title1,handlePageID}) => {
 							src={pageButtonRight}
 							alt="right"
 						/>
-                    	<Emoji titleGroup={titleGroup}  onEmojiClick={onEmojiClick} />
+                    	<Emoji pageID={pageID} pageIcon={pageIcon} onEmojiClick={onEmojiClick} />
+						
 					</button>
 					<button  onClick={()=>{handlePageID(pageID)}}>
-						<p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden" value={titleGroup.title}>
-							{titleGroup.title}
+						<p className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden" value={pageTitle}>
+							{pageTitle}
 						</p>
 					</button>
 				</div>
 				<div className="flex items-center mx-2">
-					{displayDropdown && <PageMore closeDropdown={closeDropdown} />}
+				{displayDropdown && <PageMore  closeDropdown={closeDropdown}/>}
 
 					<button
 						className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
