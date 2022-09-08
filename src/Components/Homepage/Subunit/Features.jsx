@@ -12,7 +12,7 @@ const Button = props => (
 export default function Features (props) {
     return (
     <>
-    <div className="mx-auto max-w-7xl "> 
+    <div className="mx-auto max-w-7xl bg-[#fffefc] "> 
         <div className="md:flex mt-20">
             <div className="w-8/12  drop-shadow-2xl">
                 <img className="rounded-xl" src={require('./img/features1.png')} alt="" />
@@ -60,9 +60,9 @@ export default function Features (props) {
                 <p className="text-xl text-gray-400">Get inspiration from thousands of community-made templates, integrations, and events.You'll never want for resources or support..</p>
             </div>
         </div>
-        <div className="pb-28 border-b-2  border-grey-100 "/>
+        <div className="pb-28 border-b-2  border-grey-100 bg-[#fffefc] "/>
     </div>    
-        <div className="max-w-7xl mx-auto md:flex justify-between mb-14">
+        <div className="max-w-7xl mx-auto md:flex justify-between mb-14 bg-[#fffefc]">
             <div className="mt-20 ">
                 <h2 className="font-bold text-5xl leading-tight  mb-2">Built for endless uses.<br/>Across all teams.</h2>
                 <h3 className="text-2xl font-light leading-9 mb-4 text-gray-400 ">Notion solves problems common and unique to<br/> every team. These are just a few.</h3>

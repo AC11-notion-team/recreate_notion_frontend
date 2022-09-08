@@ -32,7 +32,7 @@ export default function Slideshow (props) {
 
         return (
             <>
-            <div className="md:flex justify-between max-w-7xl mx-auto ">
+            <div className="md:flex justify-between max-w-7xl mx-auto bg-[#fffefc]">
               <div className="md:flex flex-col text-2xl font-bold " >
             {BUTTONS.map((button) => (
                 <button
@@ -48,7 +48,7 @@ export default function Slideshow (props) {
             </div>
             {renderPage[status]}
             </div>
-            <div className="max-w-7xl mx-auto pb-28 border-b-2  border-grey-100 mb-20"/>
+            <div className="max-w-7xl mx-auto pb-28 border-b-2  border-grey-100 mb-20 bg-[#fffefc]"/>
             </>
         );
     

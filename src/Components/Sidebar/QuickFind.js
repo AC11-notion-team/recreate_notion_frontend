@@ -46,7 +46,7 @@ export default function QuickFind(){
                 <p className="QuickFind text-sm font-semibold text-gray-600">Quick find</p>
             </div>  
             {isQuickFind && <div onClick={handleToggle}  className="QuickFind absolute bg-gray-500 bg-opacity-30 w-screen top-0 bottom-0 left-0 flex-grow">
-                <div className="relative  w-6/12 h-3/6 m-auto top-40 left-10 right-10 bg-white opacity-100 rounded-lg">
+                <div className="relative  w-6/12 h-3/5 m-auto top-40 left-10 right-10 bg-white opacity-100 rounded-lg">
                     <div className="px-5 py-3 flex items-center">
                         <img className="w-5 h-5 mr-3" src={search} alt="seach" />
                         <input type="text" placeholder="Search username's Notion..." onChange={handleChange} className="focus:outline-none w-full text-xl"/>
@@ -83,7 +83,7 @@ export default function QuickFind(){
                         </div>
                     </div>
 
-                    <div className="relative flex items-center overflow-x-hidden px-5 py-1 mt-auto border-t">
+                    <div className="relative flex items-center overflow-x-hidden px-5 py-3 mt-auto border-t ">
                         <div className="flex items-center mr-5 flex-nowrap">
                             <img className="w-5 h-5 p-1" src={backIcon} alt="back-icon" />
                             <p className="text-sm text-gray-400">Open</p>

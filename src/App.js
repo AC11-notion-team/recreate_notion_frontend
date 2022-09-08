@@ -3,36 +3,37 @@ import "./App.css";
 import PageHeader from "./Components/PageHeader";
 import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
-import Sidebar from './Components/Sidebar/Sidebar';
-import Split from 'split.js'
+import Sidebar from "./Components/Sidebar/Sidebar";
+import Split from "split.js";
 import axios from "axios";
 // import Calendar from './Components/Calendar/Calendar';
 
 
 function App() {
-  const baseUrl = process.env.REACT_APP_BASEURL
+	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
-  useLayoutEffect(()=>{
-    if(isSide){
-      Split(["#split-0", "#split-1"], {
-        sizes: [20, 80],
-        maxSize: [500, Infinity],
-        minSize: [200, 200],
-        gutterSize: 2,
-        dragInterval: 2,
-        gutterAlign: 'start'
-      })
-    }
-  },[isSide])
+	useLayoutEffect(() => {
+		if (isSide) {
+			Split(["#split-0", "#split-1"], {
+				sizes: [20, 80],
+				maxSize: [500, Infinity],
+				minSize: [200, 200],
+				gutterSize: 2,
+				dragInterval: 2,
+				gutterAlign: "start",
+			});
+		}
+	}, [isSide]);
 
-  const [isFavorite,setIsFavorite] = useState(false)
-  const toggleFavorite = () => (setIsFavorite(prevIsFavorite => !prevIsFavorite))
-  
-  
+	const [isFavorite, setIsFavorite] = useState(false);
+	const toggleFavorite = () =>
+		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
   
   // setpages
   const [pages, setPages] = useState([]);
+	
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -47,6 +48,8 @@ function App() {
 			})
 			.then((datas) => {
 				let data = JSON.parse(datas);
+				setcurrentPageID(data[0]["id"]);
+
 				return data;
 			})
 			.then((data) => {
@@ -56,6 +59,7 @@ function App() {
 				console.error(err);
 			});
 	}, []);
+  
   const onEmojiClick = (event,emojiObject,thePageId) =>{
     const {type,id,value,className}=event.target
     console.log(emojiObject)
@@ -78,7 +82,7 @@ function App() {
     }
     axios({
       method: "put",
-      url: `${baseUrl}/pages`,
+      url: `${baseUrl}/pages/${thePageId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
@@ -106,8 +110,14 @@ function App() {
 			});
 	};
 
-  // click and set page_id
-  const [currentPageID, setcurrentPageID] = useState("")
+	// click and set page_id
+	const [currentPageID, setcurrentPageID] = useState("");
+	useEffect(() => {
+		console.log("---------e2-----");
+		console.log(currentPageID);
+		console.log("---------fe-----");
+	}, [currentPageID]);
+
 
   const handlePageID = (pageID)=>{
     setcurrentPageID(pageID)
