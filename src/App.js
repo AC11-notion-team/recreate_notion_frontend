@@ -6,13 +6,14 @@ import Header from "./Components/Navbar/Header";
 import Sidebar from './Components/Sidebar/Sidebar';
 import Split from 'split.js'
 import axios from "axios";
-// import Calendar from './Components/Calendar/Calendar';
+import {useParams} from 'react-router-dom'
 
 
 
 
 function App() {
-  const baseUrl = process.env.REACT_APP_BASEURL
+  const baseUrl = process.env.REACT_APP_BASEURL;
+  const params = useParams();
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
   useLayoutEffect(()=>{
@@ -106,7 +107,7 @@ function App() {
 	};
 
   // click and set page_id
-  const [currentPageID, setcurrentPageID] = useState("")
+  const [currentPageID, setcurrentPageID] = useState(params["page_id"])
 
   const handlePageID = (pageID)=>{
     console.log(pageID)
