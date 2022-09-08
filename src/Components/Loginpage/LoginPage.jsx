@@ -103,6 +103,13 @@ export default function LoginPage() {
       }).then((res)=>{
         if(res.data.status=="login"){
           window.location.reload(false);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'oops...',
+            text: 'passcode wrong',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
         }
         setstatus(res.data.status)
       })
@@ -125,6 +132,13 @@ export default function LoginPage() {
         if(res.data.status=="success"){
           localStorage.setItem("zettel_user_token", res.data.auth_token);
 				  localStorage.setItem("zettel_user_id", res.data.user_id);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been success login',
+            showConfirmButton: false,
+            timer: 1500
+          })
           return navigate("/");
         }
         Swal.fire({
@@ -141,9 +155,6 @@ export default function LoginPage() {
   }
 
   const onSubmit = (data)=>{
-    console.log("fuck");
-    console.log(status);
-    console.log("fuck");
     if (status=="init"){
       testEmailExist(data)
     }else if (status=="register"){
