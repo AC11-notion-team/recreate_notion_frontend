@@ -5,8 +5,11 @@ import MenuButton from "../Share/../MenuButton";
 import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
 import LearnMore from "./component/LearnMore";
+import axios from "axios";
+import { Switch } from "@headlessui/react";
 
-export default function Share() {
+export default function Share({ currentPageID }) {
+	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(false);
 	const handleToggle = (e) => {
@@ -14,21 +17,38 @@ export default function Share() {
 			setIsShare((prevShare) => !prevShare);
 		}
 	};
-	const [isInvite, setIsInvite] = useState(false);
+	const [isInvite, setIsInvite] = useState(true);
+	const inviteUrl = domainUrl + "/page" + `/${currentPageID}`;
 	useEffect(() => {
-		if (isInvite) {
-			// axios({
-			// 	method: "put",
-			// 	url: `${baseUrl}/pages/` + currentPageID,
-			// 	headers: {
-			// 		"Content-Type": "application/json",
-			// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			// 	},
-			// });
-		}
+		axios({
+			method: "get",
+			url: `${baseUrl}/pages/${currentPageID}/share`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+			params: {
+				id: `${currentPageID}`,
+			},
+		});
 	}, [isInvite]);
 	const IsInvite1 = () => {
 		setIsInvite((prevIsInvite) => !prevIsInvite);
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${currentPageID}/share`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+			params: {
+				id: `${currentPageID}`,
+			},
+		});
+	};
+	const [isEditable, setIsEditable] = useState(false);
+	const handleEditable = () => {
+		setIsEditable((prevIsEditable) => !prevIsEditable);
 	};
 
 	return (
@@ -61,22 +81,29 @@ export default function Share() {
 									</div>
 								</div>
 
-								<label
-									for="default-toggle"
-									class="inline-flex relative items-center cursor-pointer"
+								<Switch
+									checked={isInvite}
+									onChange={setIsInvite}
+									className={`${
+										isInvite ? "bg-blue-600" : "bg-gray-200"
+									} relative inline-flex h-6 w-11 items-center rounded-full`}
 								>
-									<input
-										type="checkbox"
-										value=""
-										id="default-toggle"
-										class="sr-only peer"
-										onClick={IsInvite1}
+									<span className="sr-only">Enable notifications</span>
+									<span
+										className={`${
+											isInvite ? "translate-x-6" : "translate-x-1"
+										} inline-block h-4 w-4 transform rounded-full bg-white transition`}
 									/>
-									<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-								</label>
+								</Switch>
 							</div>
 						</div>
-						{isInvite && <ShareLink />}
+						{isInvite && (
+							<ShareLink
+								inviteUrl={inviteUrl}
+								isEditable={isEditable}
+								handleEditable={handleEditable}
+							/>
+						)}
 
 						<hr />
 						<LearnMore />
