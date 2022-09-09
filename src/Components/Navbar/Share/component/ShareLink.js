@@ -1,5 +1,5 @@
 import React from "react";
-import pencil from "../image/pencil.png";
+import pencil from "../../../image/pencil.png";
 
 const ShareLink = () => {
 	return (

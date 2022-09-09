@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import globe from "../image/globe.png";
-import question from "../image/question.png";
-import link from "../image/link.png";
-import http from "../image/http.png";
-import MenuButton from "./MenuButton";
-import axios from "axios";
-import ShareLink from "./ShareLink";
+import globe from "../../image/globe.png";
 
-export default function Share(props) {
-	console.log("--------");
-	console.log(props);
-	console.log("--------");
+import MenuButton from "../Share/../MenuButton";
+import ShareLink from "./component/ShareLink";
+import ShareToParticularPerson from "./component/ShareToParticularPerson";
+import LearnMore from "./component/LearnMore";
 
+export default function Share() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(false);
 	const handleToggle = (e) => {
@@ -50,18 +45,7 @@ export default function Share(props) {
 					className="IsShare fixed  w-screen top-0 bottom-0 left-0 z-20"
 				>
 					<div className="absolute border-2 bg-white box-shadow right-4 top-12 rounded w-4/12 min-w-min">
-						<div className="flex p-1 m-2 items-center justify-between flex-nowrap ">
-							<input
-								type="text"
-								className="flex-nowrap share-Universal text-left boredr-1 mr-2 share-like-input point min-w-min overflow-x-hidden w-full"
-								placeholder="Add emails,people,integratons..."
-							/>
-							<button className="share-Universal button-bg">
-								<p className="leading-5 text-white whitespace-nowra overflow-x-hidden">
-									Invite
-								</p>
-							</button>
-						</div>
+						<ShareToParticularPerson />
 						<hr />
 						<div className="point">
 							<div className="flex justify-between items-center py-3 px-2">
@@ -95,23 +79,7 @@ export default function Share(props) {
 						{isInvite && <ShareLink />}
 
 						<hr />
-
-						<div>
-							<div className="p-2 flex justify-between">
-								<div className="flex items-center p-1 point">
-									<img
-										src={question}
-										alt="shareHelp"
-										className="w-3 h-3 mr-2 "
-									/>
-									<p className="text-xs text-gray-500">Learn about sharing</p>
-								</div>
-								<div className="flex items-center point p-1">
-									<img src={link} alt="linkButton" className="w-4 h-4 mr-2" />
-									<p className="text-xs overflow-x-hidden">Copy link</p>
-								</div>
-							</div>
-						</div>
+						<LearnMore />
 					</div>
 				</div>
 			)}
