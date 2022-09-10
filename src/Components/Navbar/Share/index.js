@@ -22,18 +22,16 @@ export default function Share({ currentPageID }) {
 	useEffect(() => {
 		axios({
 			method: "get",
-			url: `${baseUrl}/pages/${currentPageID}/share`,
+			url: `${baseUrl}/pages/${currentPageID}`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
-			params: {
-				id: `${currentPageID}`,
-			},
+		}).then((res) => {
+			console.log(res);
 		});
-	}, [isInvite]);
-	const IsInvite1 = () => {
-		setIsInvite((prevIsInvite) => !prevIsInvite);
+	}, []);
+	useEffect(() => {
 		axios({
 			method: "put",
 			url: `${baseUrl}/pages/${currentPageID}/share`,
@@ -45,7 +43,8 @@ export default function Share({ currentPageID }) {
 				id: `${currentPageID}`,
 			},
 		});
-	};
+	}, [isInvite]);
+
 	const [isEditable, setIsEditable] = useState(false);
 	const handleEditable = () => {
 		setIsEditable((prevIsEditable) => !prevIsEditable);
