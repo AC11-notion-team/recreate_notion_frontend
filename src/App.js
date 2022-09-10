@@ -92,15 +92,6 @@ function App() {
 		});
 	};
 
-	axios({
-		method: "put",
-		url: `${baseUrl}/pages/${currentPageID}`,
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-		},
-	});
-
 	const addPage1 = () => {
 		axios({
 			method: "post",
