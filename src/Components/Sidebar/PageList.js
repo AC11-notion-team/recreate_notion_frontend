@@ -2,7 +2,7 @@ import React from "react";
 import Page from "./Page";
 
 const PageList = ({page, titleGroup, onEmojiClick,handlePageID}) => {
-	const pages = [...page];
+	const pages = [...page]; //{}
 	return (
 		<div className="py-1 px-1 ">
 			{pages.map((ele) => {

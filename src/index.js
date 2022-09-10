@@ -12,7 +12,6 @@ import RequireAuth from "./Components/RequireAuth"
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
-		{/* <GoogleLogin /> */}
 		<BrowserRouter>
 			<Routes>
 				<Route element={< RequireAuth />}>
@@ -21,7 +20,6 @@ root.render(
 				</Route>
 				<Route path="homepage" element={<HomePage />} />
 				<Route path="login-page" element={<LoginPage />} />
-				<Route path="login-page-google" element={<GoogleLogin />} />
 			</Routes>
 		</BrowserRouter>
 	</>

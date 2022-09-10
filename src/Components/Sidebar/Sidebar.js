@@ -13,7 +13,7 @@ import newPage from "../image/plus.png";
 import addPage from "../image/plus.png";
 
 
-export default function Sidebar({ isFavorite, toggleFavorite, toggle,titleGroup, onEmojiClick, page ,addPage1,currentPageID,handlePageID}) {
+export default function Sidebar({ isFavorite, toggleFavorite, toggle,titleGroup, onEmojiClick, page ,addPage1, handlePageID}) {
 	
 
 	

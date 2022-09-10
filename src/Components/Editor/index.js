@@ -7,7 +7,7 @@ import DragDrop from 'editorjs-drag-drop';
 import Embed from '@editorjs/embed';
 import Footnotes from '@editorjs/footnotes';
 import Header from '@editorjs/header'; 
-import ImageTool from '@editorjs/image'
+  import ImageTool from '@editorjs/image'
 import InlineCode from '@editorjs/inline-code'
 import LinkTool from '@editorjs/link';
 import LinkPage from './LinkPage/link-page.js'
