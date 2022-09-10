@@ -8,6 +8,7 @@ import Split from "split.js";
 import axios from "axios";
 import {useParams} from 'react-router-dom'
 
+
 function App() {
   const baseUrl = process.env.REACT_APP_BASEURL;
   const params = useParams();
@@ -30,39 +31,10 @@ function App() {
 	const toggleFavorite = () =>
 		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 
-	const [titleGroup, setTitleGroup] = useState({
-		icon: null,
-		title: "Untitled",
-	});
-	const onEmojiClick = (event, emojiObject) => {
-		const { id, value, className } = event.target;
-		if (className === "emoji-img") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					icon: emojiObject.emoji,
-				};
-			});
-		}
-		if (id === "pageTitle") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					title: value,
-				};
-			});
-		}
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/` + currentPageID,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		});
-	};
-
-	const [page, setPage] = useState([]);
+  
+  // setpages
+  const [pages, setPages] = useState([]);
+	
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -82,12 +54,43 @@ function App() {
 				return data;
 			})
 			.then((data) => {
-				setPage(data);
+				setPages(data);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
 	}, []);
+  
+  const onEmojiClick = (event,emojiObject,thePageId) =>{
+    const {type,id,value,className}=event.target
+    console.log(emojiObject)
+    console.log(thePageId)
+    if(className === "emoji-img"){
+      setPages(prevPages=> {
+        return prevPages.map((item) => {
+       
+          return item.id === thePageId ? {...item, icon: emojiObject.emoji} : item
+        })
+      })
+    }
+    if(type === "text"){
+      setPages(prevPages=> {
+        return prevPages.map((item) => {
+          // console.log(item);
+          return item.id === id ? {...item, title: value} : item
+        })
+      })
+    }
+    axios({
+      method: "put",
+      url: `${baseUrl}/pages/${thePageId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+      },
+    })
+  }
+
 
 	const addPage1 = () => {
 		axios({
@@ -101,7 +104,7 @@ function App() {
 			.then((result) => {
 				let datas = JSON.stringify(result.data.pages);
 				let jsonData = JSON.parse(datas);
-				setPage(jsonData);
+				setPages(jsonData);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -112,44 +115,28 @@ function App() {
 	console.log(params["page_id"])
 	const [currentPageID, setcurrentPageID] = useState(params["page_id"]);
 
-	const handlePageID = (pageID) => {
-		setcurrentPageID(pageID);
-	};
 
-	return (
-		<div>
-			<div className="split h-screen w-full flex">
-				{isSide && (
-					<div id="split-0" className="relative side-minW flex-grow-0">
-						<Sidebar
-							isFavorite={isFavorite}
-							toggleFavorite={toggleFavorite}
-							toggle={toggleSide}
-							titleGroup={titleGroup}
-							onEmojiClick={onEmojiClick}
-							page={page}
-							addPage1={addPage1}
-							handlePageID={handlePageID}
-							currentPageID={currentPageID}
-						/>
-					</div>
-				)}
+  const handlePageID = (pageID)=>{
+    setcurrentPageID(pageID)
+  }
+  
+  return (
+    <div>
+      <div className="split h-screen w-full flex" >
+        {isSide && <div id="split-0" className="relative side-minW flex-grow-0">
+              <Sidebar isFavorite={isFavorite} toggleFavorite={toggleFavorite} toggle={toggleSide} onEmojiClick={onEmojiClick} pages={pages} addPage1={addPage1} handlePageID={handlePageID} currentPageID={currentPageID} />
+        </div>}
 
-				<div id="split-1" className="flex-grow w-full overflow-hidden">
-					<Header
-						isFavorite={isFavorite}
-						toggleFavorite={toggleFavorite}
-						isSide={isSide}
-						toggleSide={toggleSide}
-						titleGroup={titleGroup}
-						onEmojiClick={onEmojiClick}
-					/>
-					{/* < PageHeader /> */}
-					<Editor currentPageID={currentPageID} />
-					{/* <Calendar /> */}
-				</div>
-			</div>
-		</div>
-	);
+        <div id="split-1" className="flex-grow overflow-hidden">
+          <Header isFavorite={isFavorite} toggleFavorite={toggleFavorite} isSide={isSide} toggleSide={toggleSide} pages={pages} onEmojiClick={onEmojiClick} currentPageID={currentPageID}/>  
+               {/* < PageHeader /> */}
+              < Editor currentPageID={currentPageID} />
+              {/* <Calendar /> */}
+          
+        </div>
+      </div>  
+    </div>
+    
+  )
 }
 export default App;

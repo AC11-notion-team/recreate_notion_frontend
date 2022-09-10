@@ -11,7 +11,7 @@ import rename from "../image/empty-star.png";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
 
-export default function PageMore({ closeDropdown }) {
+export default function PageMore({closeDropdown}) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);

@@ -60,7 +60,7 @@ export default function More({isFavorite,toggleFavorite}){
                     <div className="p-1.5">
                         <ActionButton src={connect} alt="connectSlackChannel" content="Connect Slack channel" className="py-0.5"/>
                         <div className="mb-2 mt-4">
-                            <p className="text-xs text-gray-400">Last edited by 莊茹瑄</p>
+                            <p className="text-xs text-gray-400">Last edited by user</p>
                             <p className="text-xs text-gray-400">Today at 9:40 PM</p>
                         </div>
                     </div>

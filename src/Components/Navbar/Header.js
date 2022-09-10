@@ -9,8 +9,15 @@ import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
 
 
-export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,onEmojiClick,titleGroup}){
-    
+export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,pages, onEmojiClick, currentPageID}){
+    console.log(currentPageID);
+    // const currentPageID ="937648ca-4cc7-411d-ac40-5021b75be1e4";
+    const pageItem = pages.filter(item =>{
+       return item.id === currentPageID
+    })
+    const pageTitle = pageItem[0]?.title 
+    const pageIcon = pageItem[0]?.icon 
+
 
     return(
        <div className="flex h-12 justify-between px-2 leading-10 relative">
@@ -23,7 +30,7 @@ export default function Header({isFavorite,isSide,toggleFavorite,toggleSide,onEm
                     src={menu} />
                 </div>}
                 <div className="flex items-center">
-                <Title titleGroup={titleGroup}  onEmojiClick={onEmojiClick}/> 
+                <Title pageTitle={pageTitle} pageIcon={pageIcon} currentPageID={currentPageID} onEmojiClick={onEmojiClick}/> 
                 </div>
             </div >
             <div className="flex">
