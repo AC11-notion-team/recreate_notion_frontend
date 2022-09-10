@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import "./App.css";
-import PageHeader from "./Components/PageHeader";
 import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
@@ -12,6 +11,7 @@ function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+	const [currentPageID, setcurrentPageID] = useState("");
 	useLayoutEffect(() => {
 		if (isSide) {
 			Split(["#split-0", "#split-1"], {
@@ -33,35 +33,8 @@ function App() {
 		icon: null,
 		title: "Untitled",
 	});
-	const onEmojiClick = (event, emojiObject) => {
-		const { id, value, className } = event.target;
-		if (className === "emoji-img") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					icon: emojiObject.emoji,
-				};
-			});
-		}
-		if (id === "pageTitle") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					title: value,
-				};
-			});
-		}
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/` + currentPageID,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		});
-	};
 
-	const [page, setPage] = useState([]);
+	const [pages, setPages] = useState([]);
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -81,12 +54,43 @@ function App() {
 				return data;
 			})
 			.then((data) => {
-				setPage(data);
+				setPages(data);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
 	}, []);
+
+	const onEmojiClick = (event, emojiObject, currentPageID) => {
+		const { type, id, value, className } = event.target;
+		console.log(emojiObject);
+		console.log(currentPageID);
+		if (className === "emoji-img") {
+			setPages((prevPages) => {
+				return prevPages.map((item) => {
+					return item.id === currentPageID
+						? { ...item, icon: emojiObject.emoji }
+						: item;
+				});
+			});
+		}
+		if (type === "text") {
+			setPages((prevPages) => {
+				return prevPages.map((item) => {
+					// console.log(item);
+					return item.id === id ? { ...item, title: value } : item;
+				});
+			});
+		}
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${currentPageID}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		});
+	};
 
 	const addPage1 = () => {
 		axios({
@@ -98,9 +102,11 @@ function App() {
 			},
 		})
 			.then((result) => {
-				let datas = JSON.stringify(result.data.pages);
-				let jsonData = JSON.parse(datas);
-				setPage(jsonData);
+				let data = JSON.stringify(result.data);
+				let jsonData = JSON.parse(data);
+				setPages((prevPages) => {
+					return [...prevPages, jsonData];
+				});
 			})
 			.catch((err) => {
 				console.error(err);
@@ -108,11 +114,9 @@ function App() {
 	};
 
 	// click and set page_id
-	const [currentPageID, setcurrentPageID] = useState("");
 
 	const handlePageID = (pageID) => {
 		setcurrentPageID(pageID);
-		localStorage.setItem("current_zettel_page_id", pageID);
 	};
 
 	return (
@@ -124,9 +128,8 @@ function App() {
 							isFavorite={isFavorite}
 							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
-							titleGroup={titleGroup}
 							onEmojiClick={onEmojiClick}
-							page={page}
+							pages={pages}
 							addPage1={addPage1}
 							handlePageID={handlePageID}
 							currentPageID={currentPageID}
@@ -134,13 +137,13 @@ function App() {
 					</div>
 				)}
 
-				<div id="split-1" className="flex-grow w-full overflow-hidden">
+				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
 						isFavorite={isFavorite}
 						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
-						titleGroup={titleGroup}
+						pages={pages}
 						onEmojiClick={onEmojiClick}
 						currentPageID={currentPageID}
 					/>

@@ -13,10 +13,18 @@ export default function Header({
 	isSide,
 	toggleFavorite,
 	toggleSide,
+	pages,
 	onEmojiClick,
-	titleGroup,
 	currentPageID,
 }) {
+	console.log(currentPageID);
+	// const currentPageID ="937648ca-4cc7-411d-ac40-5021b75be1e4";
+	const pageItem = pages.filter((item) => {
+		return item.id === currentPageID;
+	});
+	const pageTitle = pageItem[0]?.title;
+	const pageIcon = pageItem[0]?.icon;
+
 	return (
 		<div className="flex h-12 justify-between px-2 leading-10 relative">
 			<div className="flex ">
@@ -31,11 +39,16 @@ export default function Header({
 					</div>
 				)}
 				<div className="flex items-center">
-					<Title titleGroup={titleGroup} onEmojiClick={onEmojiClick} />
+					<Title
+						pageTitle={pageTitle}
+						pageIcon={pageIcon}
+						currentPageID={currentPageID}
+						onEmojiClick={onEmojiClick}
+					/>
 				</div>
 			</div>
 			<div className="flex">
-				<Share currentPageID={currentPageID} />
+				<Share />
 				<Updata />
 				<div className="flex items-center">
 					<MenuButton
