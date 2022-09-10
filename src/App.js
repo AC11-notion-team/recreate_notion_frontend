@@ -11,6 +11,7 @@ function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+	const [currentPageID, setcurrentPageID] = useState("");
 	useLayoutEffect(() => {
 		if (isSide) {
 			Split(["#split-0", "#split-1"], {
@@ -33,7 +34,7 @@ function App() {
 		title: "Untitled",
 	});
 
-	const [page, setPage] = useState([]);
+	const [pages, setPages] = useState([]);
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -53,28 +54,28 @@ function App() {
 				return data;
 			})
 			.then((data) => {
-				setPage(data);
+				setPages(data);
 			})
 			.catch((err) => {
 				console.error(err);
 			});
 	}, []);
 
-	const onEmojiClick = (event, emojiObject, thePageId) => {
+	const onEmojiClick = (event, emojiObject, currentPageID) => {
 		const { type, id, value, className } = event.target;
 		console.log(emojiObject);
-		console.log(thePageId);
+		console.log(currentPageID);
 		if (className === "emoji-img") {
-			setPage((prevPages) => {
+			setPages((prevPages) => {
 				return prevPages.map((item) => {
-					return item.id === thePageId
+					return item.id === currentPageID
 						? { ...item, icon: emojiObject.emoji }
 						: item;
 				});
 			});
 		}
 		if (type === "text") {
-			setPage((prevPages) => {
+			setPages((prevPages) => {
 				return prevPages.map((item) => {
 					// console.log(item);
 					return item.id === id ? { ...item, title: value } : item;
@@ -83,13 +84,22 @@ function App() {
 		}
 		axios({
 			method: "put",
-			url: `${baseUrl}/pages/${thePageId}`,
+			url: `${baseUrl}/pages/${currentPageID}`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		});
 	};
+
+	axios({
+		method: "put",
+		url: `${baseUrl}/pages/${currentPageID}`,
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+		},
+	});
 
 	const addPage1 = () => {
 		axios({
@@ -101,10 +111,10 @@ function App() {
 			},
 		})
 			.then((result) => {
-				let datas = JSON.stringify(result.data);
-				let jsonData = JSON.parse(datas);
-				setPage((prevPage) => {
-					return [...prevPage, jsonData];
+				let data = JSON.stringify(result.data);
+				let jsonData = JSON.parse(data);
+				setPages((prevPages) => {
+					return [...prevPages, jsonData];
 				});
 			})
 			.catch((err) => {
@@ -113,7 +123,6 @@ function App() {
 	};
 
 	// click and set page_id
-	const [currentPageID, setcurrentPageID] = useState("");
 
 	const handlePageID = (pageID) => {
 		setcurrentPageID(pageID);
@@ -128,9 +137,8 @@ function App() {
 							isFavorite={isFavorite}
 							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
-							titleGroup={titleGroup}
 							onEmojiClick={onEmojiClick}
-							page={page}
+							pages={pages}
 							addPage1={addPage1}
 							handlePageID={handlePageID}
 							currentPageID={currentPageID}
@@ -138,14 +146,15 @@ function App() {
 					</div>
 				)}
 
-				<div id="split-1" className="flex-grow w-full overflow-hidden">
+				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
 						isFavorite={isFavorite}
 						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
-						titleGroup={titleGroup}
+						pages={pages}
 						onEmojiClick={onEmojiClick}
+						currentPageID={currentPageID}
 					/>
 					{/* < PageHeader /> */}
 					<Editor currentPageID={currentPageID} />
