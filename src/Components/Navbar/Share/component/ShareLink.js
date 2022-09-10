@@ -3,6 +3,9 @@ import pencil from "../../../image/pencil.png";
 import { Switch } from "@headlessui/react";
 
 const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
+	const copyToClipBoard = () => {
+		navigator.clipboard.writeText(inviteUrl);
+	};
 	return (
 		<div className="point">
 			<div className="">
@@ -19,7 +22,7 @@ const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
 					<button
 						type="submit"
 						class="text-white absolute right-1.5  top-0.5   bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-						onClick={navigator.clipboard.writeText(inviteUrl)}
+						onClick={copyToClipBoard()}
 					>
 						Copy
 					</button>
