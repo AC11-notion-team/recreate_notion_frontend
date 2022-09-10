@@ -32,33 +32,6 @@ function App() {
 		icon: null,
 		title: "Untitled",
 	});
-	const onEmojiClick = (event, emojiObject) => {
-		const { id, value, className } = event.target;
-		if (className === "emoji-img") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					icon: emojiObject.emoji,
-				};
-			});
-		}
-		if (id === "pageTitle") {
-			setTitleGroup((prevTitleGroup) => {
-				return {
-					...prevTitleGroup,
-					title: value,
-				};
-			});
-		}
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/` + currentPageID,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		});
-	};
 
 	const [page, setPage] = useState([]);
 	useEffect(() => {
@@ -86,6 +59,37 @@ function App() {
 				console.error(err);
 			});
 	}, []);
+
+	const onEmojiClick = (event, emojiObject, thePageId) => {
+		const { type, id, value, className } = event.target;
+		console.log(emojiObject);
+		console.log(thePageId);
+		if (className === "emoji-img") {
+			setPage((prevPages) => {
+				return prevPages.map((item) => {
+					return item.id === thePageId
+						? { ...item, icon: emojiObject.emoji }
+						: item;
+				});
+			});
+		}
+		if (type === "text") {
+			setPage((prevPages) => {
+				return prevPages.map((item) => {
+					// console.log(item);
+					return item.id === id ? { ...item, title: value } : item;
+				});
+			});
+		}
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${thePageId}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		});
+	};
 
 	const addPage1 = () => {
 		axios({
