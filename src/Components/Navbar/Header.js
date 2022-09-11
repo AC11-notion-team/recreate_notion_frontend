@@ -7,18 +7,21 @@ import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
+import { usePages } from "../../Pages";
+import { useCurrentPageId } from "../../CurrentPageId";
 
 export default function Header({
 	isFavorite,
 	isSide,
 	toggleFavorite,
 	toggleSide,
-	pages,
 	onEmojiClick,
-	currentPageID,
 }) {
+	const pages = usePages();
+	const currentPageId = useCurrentPageId();
+
 	const pageItem = pages.filter((item) => {
-		return item.id === currentPageID;
+		return item.id === currentPageId;
 	});
 	const pageTitle = pageItem[0]?.title;
 	const pageIcon = pageItem[0]?.icon;
@@ -40,7 +43,6 @@ export default function Header({
 					<Title
 						pageTitle={pageTitle}
 						pageIcon={pageIcon}
-						currentPageID={currentPageID}
 						onEmojiClick={onEmojiClick}
 					/>
 				</div>

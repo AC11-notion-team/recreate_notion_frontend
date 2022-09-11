@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Picker from "emoji-picker-react";
+import { onEmojiClick } from "./hook/TitleController";
 
-export default function Emoji({ emojiPageID, pageIcon, onEmojiClick }) {
+export default function Emoji({ pageIcon }) {
 	const [isEmoji, setIsEmoji] = useState(false);
 	const toggleEmoji = () => setIsEmoji((prevIsEmoji) => !prevIsEmoji);
 
@@ -15,8 +16,8 @@ export default function Emoji({ emojiPageID, pageIcon, onEmojiClick }) {
 			{isEmoji && (
 				<div className="absolute ">
 					<Picker
-						onEmojiClick={(event, emojiObject, emojiPageID) =>
-							onEmojiClick(event, emojiObject, emojiPageID)
+						onEmojiClick={(event, emojiObject, currentPageID) =>
+							onEmojiClick(event, currentPageID, emojiObject)
 						}
 					/>
 				</div>

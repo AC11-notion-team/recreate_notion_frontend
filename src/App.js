@@ -1,26 +1,21 @@
-import React, {
-	useState,
-	useEffect,
-	useLayoutEffect,
-	useCallback,
-} from "react";
+import React, { useState, useLayoutEffect } from "react";
 import "./App.css";
 import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import axios from "axios";
-// import Calendar from './Components/Calendar/Calendar';
+import { usePagesUpdate } from "./Pages";
 
 function App() {
+	const changePages = usePagesUpdate();
+
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-	const [currentPageID, setcurrentPageID] = useState("");
+	// const [currentPageID, setcurrentPageID] = useState("");
 	//我的最愛
 	const [isFavorite, setIsFavorite] = useState(false);
-	//管理當前使用者所有page
-	const [pages, setPages] = useState([]);
 	// 控制sidebar 出現跟消失
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
 
@@ -41,33 +36,13 @@ function App() {
 		}
 	}, [isSide]);
 
-	useEffect(() => {
-		(async () => {
-			try {
-				const response = await axios({
-					method: "get",
-					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
-					headers: {
-						"Content-Type": "application/json",
-						Authorization:
-							"Bearer " + localStorage.getItem("zettel_user_token"),
-					},
-				});
-				let currentPage = await response.data.pages[0]["id"];
-				await setcurrentPageID(currentPage);
-			} catch (error) {
-				console.log(error);
-			}
-		})();
-	}, []);
-
-	// Title & EmojiClick 那一組
-	const onEmojiClick = (event, emojiObject, currentPageID) => {
+	const onEmojiClick = (event, currentPageID, emojiObject) => {
 		const { type, id, value, className } = event.target;
+		console.log(123);
 		console.log(emojiObject);
 		console.log(currentPageID);
 		if (className === "emoji-img") {
-			setPages((prevPages) => {
+			changePages((prevPages) => {
 				return prevPages.map((item) => {
 					return item.id === currentPageID
 						? { ...item, icon: emojiObject.emoji }
@@ -76,50 +51,21 @@ function App() {
 			});
 		}
 		if (type === "text") {
-			setPages((prevPages) => {
+			changePages((prevPages) => {
 				return prevPages.map((item) => {
 					// console.log(item);
 					return item.id === id ? { ...item, title: value } : item;
 				});
 			});
 		}
-		// FIXME 把修改資料給put回去
-		// axios({
-		// 	method: "put",
-		// 	url: `${baseUrl}/pages/${currentPageID}`,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-		// 	},
-		// });
-	};
-
-	const addPage1 = () => {
-		// FIXME 負責加page的
-		// axios({
-		// 	method: "post",
-		// 	url: `${baseUrl}/pages`,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-		// 	},
-		// })
-		// 	.then((result) => {
-		// 		let data = JSON.stringify(result.data);
-		// 		let jsonData = JSON.parse(data);
-		// 		setPages((prevPages) => {
-		// 			return [...prevPages, jsonData];
-		// 		});
-		// 	})
-		// 	.catch((err) => {
-		// 		console.error(err);
-		// 	});
-	};
-
-	// click and set page_id
-
-	const handlePageID = (pageID) => {
-		setcurrentPageID(pageID);
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${currentPageID}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		});
 	};
 
 	return (
@@ -132,10 +78,6 @@ function App() {
 							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
 							onEmojiClick={onEmojiClick}
-							pages={pages}
-							addPage1={addPage1}
-							handlePageID={handlePageID}
-							currentPageID={currentPageID}
 						/>
 					</div>
 				)}
@@ -146,12 +88,10 @@ function App() {
 						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
-						pages={pages}
 						onEmojiClick={onEmojiClick}
-						currentPageID={currentPageID}
 					/>
 					{/* < PageHeader /> */}
-					<Editor currentPageID={currentPageID} />
+					<Editor />
 					{/* <Calendar /> */}
 				</div>
 			</div>
