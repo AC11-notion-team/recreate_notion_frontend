@@ -17,8 +17,6 @@ export default function Header({
 	onEmojiClick,
 	currentPageID,
 }) {
-	console.log(currentPageID);
-	// const currentPageID ="937648ca-4cc7-411d-ac40-5021b75be1e4";
 	const pageItem = pages.filter((item) => {
 		return item.id === currentPageID;
 	});

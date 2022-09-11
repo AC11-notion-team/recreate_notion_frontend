@@ -71,38 +71,43 @@ const EDITTOR_HOLDER_ID = "editorjs";
 function Editor({ currentPageID }) {
 	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
 	// const [pageId, setPageId] = useState(currentPageID)
-	console.log(currentPageID);
 	const ejInstance = useRef();
 	const [editorData, setEditorData] = useState("");
 
 	useEffect(() => {
-		const config = {
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageID}.json`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization:
-					"Bearer " + localStorage.getItem("zettel_user_token") || null,
-			},
-		};
-
-		axios(config)
-			.then((res) => {
-				const initialData = {
-					time: Date.now(),
-					blocks: res.data.blocks,
+		(async () => {
+			try {
+				const config = {
+					method: "get",
+					url: `${baseUrl}/pages/${currentPageID}.json`,
+					headers: {
+						"Content-Type": "application/json",
+						Authorization:
+							"Bearer " + localStorage.getItem("zettel_user_token") || null,
+					},
 				};
-				setEditorData(initialData);
-				if (!ejInstance.current) {
-					initEditor(initialData);
+				if (currentPageID) {
+					axios(config)
+						.then((res) => {
+							const initialData = {
+								time: Date.now(),
+								blocks: res.data.blocks,
+							};
+							setEditorData(initialData);
+							if (!ejInstance.current) {
+								initEditor(initialData);
+							}
+							return () => {
+								ejInstance.current?.destroy();
+								ejInstance.current = null;
+							};
+						})
+						.catch((err) => console.error(err));
 				}
-			})
-			.catch((err) => console.error(err));
-
-		return () => {
-			ejInstance.current?.destroy();
-			ejInstance.current = null;
-		};
+			} catch (error) {
+				console.log(error);
+			}
+		})();
 	}, [currentPageID]);
 
 	const initEditor = (initialData) => {

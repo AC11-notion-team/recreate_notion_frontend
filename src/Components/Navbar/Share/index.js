@@ -20,29 +20,31 @@ export default function Share({ currentPageID }) {
 	const [isInvite, setIsInvite] = useState(true);
 	const inviteUrl = domainUrl + "/page" + `/${currentPageID}`;
 	useEffect(() => {
-		axios({
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageID}`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		}).then((res) => {
-			console.log(res);
-		});
+		// FIXME 一開始讀取是否share
+		// axios({
+		// 	method: "get",
+		// 	url: `${baseUrl}/pages/${currentPageID}`,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+		// 	},
+		// }).then((res) => {
+		// 	console.log(res);
+		// });
 	}, []);
 	useEffect(() => {
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/${currentPageID}/share`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-			params: {
-				id: `${currentPageID}`,
-			},
-		});
+		// FIXME 只要更新isinvite就回去put
+		// axios({
+		// 	method: "put",
+		// 	url: `${baseUrl}/pages/${currentPageID}/share`,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+		// 	},
+		// 	params: {
+		// 		id: `${currentPageID}`,
+		// 	},
+		// });
 	}, [isInvite]);
 
 	const [isEditable, setIsEditable] = useState(false);

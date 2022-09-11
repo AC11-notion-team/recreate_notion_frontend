@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, {
+	useState,
+	useEffect,
+	useLayoutEffect,
+	useCallback,
+} from "react";
 import "./App.css";
 import Editor from "./Components/Editor";
 import Header from "./Components/Navbar/Header";
@@ -9,9 +14,20 @@ import axios from "axios";
 
 function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
+	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-	const toggleSide = () => setIsSide((prevSide) => !prevSide);
 	const [currentPageID, setcurrentPageID] = useState("");
+	//我的最愛
+	const [isFavorite, setIsFavorite] = useState(false);
+	//管理當前使用者所有page
+	const [pages, setPages] = useState([]);
+	// 控制sidebar 出現跟消失
+	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+
+	//我的最愛
+	const toggleFavorite = () =>
+		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
 			Split(["#split-0", "#split-1"], {
@@ -25,42 +41,27 @@ function App() {
 		}
 	}, [isSide]);
 
-	const [isFavorite, setIsFavorite] = useState(false);
-	const toggleFavorite = () =>
-		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
-
-	const [titleGroup, setTitleGroup] = useState({
-		icon: null,
-		title: "Untitled",
-	});
-
-	const [pages, setPages] = useState([]);
 	useEffect(() => {
-		axios({
-			method: "get",
-			url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		})
-			.then((result) => {
-				return JSON.stringify(result.data.pages);
-			})
-			.then((datas) => {
-				let data = JSON.parse(datas);
-				setcurrentPageID(data[0]["id"]);
-
-				return data;
-			})
-			.then((data) => {
-				setPages(data);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		(async () => {
+			try {
+				const response = await axios({
+					method: "get",
+					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
+					headers: {
+						"Content-Type": "application/json",
+						Authorization:
+							"Bearer " + localStorage.getItem("zettel_user_token"),
+					},
+				});
+				let currentPage = await response.data.pages[0]["id"];
+				await setcurrentPageID(currentPage);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
 	}, []);
 
+	// Title & EmojiClick 那一組
 	const onEmojiClick = (event, emojiObject, currentPageID) => {
 		const { type, id, value, className } = event.target;
 		console.log(emojiObject);
@@ -82,35 +83,37 @@ function App() {
 				});
 			});
 		}
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/${currentPageID}`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		});
+		// FIXME 把修改資料給put回去
+		// axios({
+		// 	method: "put",
+		// 	url: `${baseUrl}/pages/${currentPageID}`,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+		// 	},
+		// });
 	};
 
 	const addPage1 = () => {
-		axios({
-			method: "post",
-			url: `${baseUrl}/pages`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		})
-			.then((result) => {
-				let data = JSON.stringify(result.data);
-				let jsonData = JSON.parse(data);
-				setPages((prevPages) => {
-					return [...prevPages, jsonData];
-				});
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		// FIXME 負責加page的
+		// axios({
+		// 	method: "post",
+		// 	url: `${baseUrl}/pages`,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+		// 	},
+		// })
+		// 	.then((result) => {
+		// 		let data = JSON.stringify(result.data);
+		// 		let jsonData = JSON.parse(data);
+		// 		setPages((prevPages) => {
+		// 			return [...prevPages, jsonData];
+		// 		});
+		// 	})
+		// 	.catch((err) => {
+		// 		console.error(err);
+		// 	});
 	};
 
 	// click and set page_id
