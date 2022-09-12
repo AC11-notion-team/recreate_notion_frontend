@@ -19,6 +19,7 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
+import { useCurrentPageId } from "../../CurrentPageId";
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -28,132 +29,98 @@ const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVers
 const baseUrl = process.env.REACT_APP_BASEURL;
 
 
-const DEFAULT_INITIAL_DATA = () => {
-    return {
-      "time": new Date().getTime(),
-      "blocks": [
-        {
-          "type": "header",
-          "data": {
-            "text": "This is my awesome editor!",
-            "level": 1
-          }
-        },
-        {
-          "type": "image",
-          "data": {
-            "file": {
-              "url": "https://img.kocpc.com.tw/2018/12/1545287991-2b91dabdba15918b6cf95949a67f41c8.jpg",
-            },
-            "caption" : "Roadster // tesla.com",
-            "withBorder" : false,
-            "withBackground" : false,
-            "stretched" : false
-          }
-        },
-        {
-          "type": "link",
-          "data": {
-            "link": "https://www.google.com/search?q=react&sxsrf=ALiCzsauetnFkf9gsiDrSEo5gIaLcllhbg:1661410008491&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi-mYfLsuH5AhWGat4KHWInDg0Q_AUoAnoECAIQBA&biw=1920&bih=1001&dpr=2#imgrc=viJ6CsTiT3pOsM",
-            "meta": {
-              "title" : "CodeX Team",
-            },
-          }
-        },
-      ]
-    }
-}
+const EDITTOR_HOLDER_ID = "editorjs";
+function Editor() {
+	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
+	// const [pageId, setPageId] = useState(currentPageID)
+	const ejInstance = useRef();
+	const [editorData, setEditorData] = useState("");
+	const currentPageId = useCurrentPageId();
 
-const EDITTOR_HOLDER_ID = 'editorjs';
+	useEffect(() => {
+		const config = {
+			method: "get",
+			url: `${baseUrl}/pages/${currentPageId}.json`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization:
+					"Bearer " + localStorage.getItem("zettel_user_token") || null,
+			},
+		};
+		if (currentPageId) {
+			axios(config)
+				.then((res) => {
+					const initialData = {
+						time: Date.now(),
+						blocks: res.data.blocks,
+					};
+					setEditorData(initialData);
+					if (!ejInstance.current) {
+						initEditor(initialData);
+					}
+					return () => {
+						ejInstance.current?.destroy();
+						ejInstance.current = null;
+					};
+				})
+				.catch((err) => console.error(err));
+		}
+	}, [currentPageId]);
 
-function Editor({currentPageID}) {
-  
-  console.log(currentPageID)
-  const ejInstance = useRef();
-  const [editorData, setEditorData] = useState("");
-    
-
-  useEffect(()=>{
-    const config = {
-      method: "get",
-      url: `${baseUrl}/pages/${currentPageID}.json`,
-      headers:{
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-      },
-    }
-    
-    axios(config)
-    .then(res => {
-      const initialData = {
-        "time": Date.now(),
-        "blocks": res.data.blocks
-      }
-      setEditorData(initialData)
-      if (!ejInstance.current) {
-          initEditor(initialData);
-      }
-    })
-    .catch(err => console.error(err))
-
-    return () => {
-        ejInstance.current?.destroy();
-        ejInstance.current = null;
-    }
-  }, [currentPageID])
-
-  const initEditor = (initialData) => {
-    const editor = new EditorJS({
-      holder: EDITTOR_HOLDER_ID,
-      logLevel: "ERROR",
-      data: initialData,
-      inlineToolbar: true,
-      placeholder:'Let`s write an awesome story!',
-      onReady: () => {
-        ejInstance.current = editor;
-        new DragDrop(editor);
-      },
-      onChange: async (api, event) => {
-        let content = await editor.save();
-        // Put your logic here to save this data to your DB
-        if (event.type == "block-removed" && !event.detail.target.isEmpty){
-          console.log(event)
-          const config = {
-            method: "delete",
-            url: `${baseUrl}/pages/delete_data`,
-            headers:{
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-            },
-            data:{
-              "page_id": {currentPageID},
-              "block_id": event.detail.target.id,
-            }
-          }
-          axios(config)
-          .then(res => res)
-          .catch(err => console.error(err))
-        }
-        if (event.type !== "block-removed"){
-          const config = {
-            method: "post",
-            url: `${baseUrl}/pages/${currentPageID}/save_data`,
-            headers:{
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
-            },
-            data:{
-              "title":"sssssss",
-              "page_id": "8abe36ff-a465-4660-b980-9c7261a1dfdb",
-              "icon": "aaa1111111111a",
-              "cover": "wwwwwwwww",
-              "api": content,
-            }
-          }
-          axios(config)
-          .then(res => res)
-          .catch(err => console.error(err))
-        }
+	const initEditor = (initialData) => {
+		const editor = new EditorJS({
+			holder: EDITTOR_HOLDER_ID,
+			logLevel: "ERROR",
+			data: initialData,
+			inlineToolbar: true,
+			placeholder: "Let`s write an awesome story!",
+			onReady: () => {
+				ejInstance.current = editor;
+				new DragDrop(editor);
+			},
+			onChange: async (api, event) => {
+				let content = await editor.save();
+				// Put your logic here to save this data to your DB
+				if (event.type == "block-removed" && !event.detail.target.isEmpty) {
+					console.log(event);
+					const config = {
+						method: "delete",
+						url: `${baseUrl}/pages/delete_data`,
+						headers: {
+							"Content-Type": "application/json",
+							Authorization:
+								"Bearer " + localStorage.getItem("zettel_user_token") || null,
+						},
+						data: {
+							page_id: { currentPageId },
+							block_id: event.detail.target.id,
+						},
+					};
+					axios(config)
+						.then((res) => res)
+						.catch((err) => console.error(err));
+				}
+				if (event.type !== "block-removed") {
+					const config = {
+						method: "post",
+						url: `${baseUrl}/pages/${currentPageId}/save_data`,
+						headers: {
+							"Content-Type": "application/json",
+							Authorization:
+								"Bearer " + localStorage.getItem("zettel_user_token") || null,
+						},
+						data: {
+							title: "sssssss",
+							page_id: {currentPageId},
+							icon: "",
+							cover: "wwwwwwwww",
+							api: content,
+						},
+					};
+					axios(config)
+						.then((res) => res)
+						.catch((err) => console.error(err));
+				}
 
         setEditorData(content);
       },
