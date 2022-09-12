@@ -2,11 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const GoogleLogin = () => {
-	let Navigate = useNavigate();
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -38,7 +37,6 @@ const GoogleLogin = () => {
 			showConfirmButton: false,
 			timer: 1500,
 		});
-		Navigate("/");
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
 		window.google.accounts.id.initialize({
@@ -65,6 +63,7 @@ const GoogleLogin = () => {
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
+			{user && <Navigate to="/" replace={true} />}
 		</div>
 	);
 };
