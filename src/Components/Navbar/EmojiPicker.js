@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import Picker from "emoji-picker-react";
+import { useCurrentPageId } from "../../CurrentPageId";
 
-export default function Emoji({ emojiPageID, pageIcon, onEmojiClick }) {
+export default function Emoji({ pageIcon, onEmojiClick }) {
 	const [isEmoji, setIsEmoji] = useState(false);
 	const toggleEmoji = () => setIsEmoji((prevIsEmoji) => !prevIsEmoji);
+	const currentPageId = useCurrentPageId();
+
+	console.log(`here is Emogi ${currentPageId}`);
 
 	return (
 		<div>
@@ -15,8 +19,8 @@ export default function Emoji({ emojiPageID, pageIcon, onEmojiClick }) {
 			{isEmoji && (
 				<div className="absolute ">
 					<Picker
-						onEmojiClick={(event, emojiObject, emojiPageID) =>
-							onEmojiClick(event, emojiObject, emojiPageID)
+						onEmojiClick={(event, emojiObject, currentPageId) =>
+							onEmojiClick(event, emojiObject, currentPageId)
 						}
 					/>
 				</div>

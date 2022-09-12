@@ -11,12 +11,42 @@ import User from "./User";
 import QuickFind from "./QuickFind";
 import newPage from "../image/plus.png";
 import addPage from "../image/plus.png";
+import axios from "axios";
+import { usePages, usePagesUpdate } from "../../Pages";
+import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
 
+export default function Sidebar({
+	isFavorite,
+	toggleFavorite,
+	toggle,
+	onEmojiClick,
+}) {
+	// useContext state= pages
+	const pages = usePages();
+	const changePages = usePagesUpdate();
+	const baseUrl = process.env.REACT_APP_BASEURL;
 
-export default function Sidebar({ isFavorite, toggleFavorite, toggle, pages,onEmojiClick ,addPage1,currentPageID,handlePageID}) {
-	
-
-	
+	const addPage1 = () => {
+		//  負責加page的
+		axios({
+			method: "post",
+			url: `${baseUrl}/pages`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		})
+			.then((result) => {
+				let data = JSON.stringify(result.data);
+				let jsonData = JSON.parse(data);
+				changePages((prevPages) => {
+					return [...prevPages, jsonData];
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
 	return (
 		<div className="absolute inset-0 h-screen side-minW bg-gray-50 z-30">
 			<User toggle={toggle} />
@@ -47,13 +77,13 @@ export default function Sidebar({ isFavorite, toggleFavorite, toggle, pages,onEm
 						<button
 							className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
 							data-aa="bb"
-							onClick={()=>addPage1()}
+							onClick={() => addPage1()}
 						>
 							<img src={addPage} alt="sidePageMoreButton" />
 						</button>
 					</div>
 
-					<Private pages={pages} handlePageID={handlePageID} currentPageID={currentPageID} onEmojiClick={onEmojiClick}/>
+					<Private onEmojiClick={onEmojiClick} />
 				</div>
 				<div className="px-1 py-2">
 					<Templates />
