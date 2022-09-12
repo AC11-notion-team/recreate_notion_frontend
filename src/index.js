@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.jsx";
+import RequireAuth from "./Components/RequireAuth"
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { CurrentPageIdProvider } from "./CurrentPageId";
 import { PagesProvider } from "./Pages";
@@ -16,7 +17,10 @@ root.render(
 			<CurrentPageIdProvider>
 				<BrowserRouter>
 					<Routes>
-						<Route path="/" element={<App />} />
+						<Route element={< RequireAuth />}>
+							<Route path="/" element={<App />} />
+							<Route path="/:page_id" element={<App />} />
+						</Route>
 						<Route path="homepage" element={<HomePage />} />
 						<Route path="login-page" element={<LoginPage />} />
 					</Routes>
