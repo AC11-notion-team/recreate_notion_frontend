@@ -31,13 +31,13 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
-	// const [pageId, setPageId] = useState(currentPageID)
+	
 	const ejInstance = useRef();
 	const [editorData, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
-
+  console.log(currentPageId)
 	useEffect(() => {
+    console.log("useEffect")
 		const config = {
 			method: "get",
 			url: `${baseUrl}/pages/${currentPageId}.json`,
@@ -58,13 +58,13 @@ function Editor() {
 					if (!ejInstance.current) {
 						initEditor(initialData);
 					}
-					return () => {
-						ejInstance.current?.destroy();
-						ejInstance.current = null;
-					};
 				})
 				.catch((err) => console.error(err));
-		}
+      }
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
 	}, [currentPageId]);
 
 	const initEditor = (initialData) => {
