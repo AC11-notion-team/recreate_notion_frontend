@@ -7,47 +7,62 @@ import ShareToParticularPerson from "./component/ShareToParticularPerson";
 import LearnMore from "./component/LearnMore";
 import axios from "axios";
 import { Switch } from "@headlessui/react";
+import { useCurrentPageId } from "../../../CurrentPageId";
 
 export default function Share({ currentPageID }) {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(false);
+	const [isEditable, setIsEditable] = useState(false);
+	const currentPageId = useCurrentPageId();
 	const handleToggle = (e) => {
 		if (e.target.className.includes("IsShare") === true) {
 			setIsShare((prevShare) => !prevShare);
 		}
 	};
 	const [isInvite, setIsInvite] = useState(true);
-	const inviteUrl = domainUrl + "/page" + `/${currentPageID}`;
-	useEffect(() => {
-		// FIXME 一開始讀取是否share
-		// axios({
-		// 	method: "get",
-		// 	url: `${baseUrl}/pages/${currentPageID}`,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-		// 	},
-		// }).then((res) => {
-		// 	console.log(res);
-		// });
-	}, []);
-	useEffect(() => {
-		// FIXME 只要更新isinvite就回去put
-		// axios({
-		// 	method: "put",
-		// 	url: `${baseUrl}/pages/${currentPageID}/share`,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-		// 	},
-		// 	params: {
-		// 		id: `${currentPageID}`,
-		// 	},
-		// });
-	}, [isInvite]);
 
-	const [isEditable, setIsEditable] = useState(false);
+	const inviteUrl = domainUrl + "/page" + `/${currentPageId}`;
+	useEffect(() => {
+		console.log(123);
+		if (currentPageId) {
+			axios({
+				method: "get",
+				url: `${baseUrl}/pages/${currentPageId}.json`,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				},
+			}).then((res) => {
+				setIsInvite(res.data.share);
+				setIsEditable(res.data.editable);
+			});
+		}
+	}, [isShare]);
+	useEffect(() => {
+		if (currentPageId) {
+			axios({
+				method: "put",
+				url: `${baseUrl}/pages/${currentPageId}/share`,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				},
+			});
+		}
+	}, [isInvite]);
+	useEffect(() => {
+		if (currentPageId) {
+			axios({
+				method: "put",
+				url: `${baseUrl}/pages/${currentPageId}/editable`,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				},
+			});
+		}
+	}, [isEditable]);
 	const handleEditable = () => {
 		setIsEditable((prevIsEditable) => !prevIsEditable);
 	};
