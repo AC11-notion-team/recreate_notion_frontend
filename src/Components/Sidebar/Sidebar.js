@@ -15,8 +15,6 @@ import addPage from "../image/plus.png";
 
 export default function Sidebar({ isFavorite, toggleFavorite, toggle, pages,onEmojiClick ,addPage1,currentPageID,handlePageID}) {
 	
-
-	
 	return (
 		<div className="absolute inset-0 h-screen side-minW bg-gray-50 z-30">
 			<User toggle={toggle} />
