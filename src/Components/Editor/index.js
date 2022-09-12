@@ -18,6 +18,7 @@ import Table from "@editorjs/table";
 import TextVariantTune from "@editorjs/text-variant-tune";
 import aws from "aws-sdk";
 import axios from "axios";
+import { useCurrentPageId } from "../../CurrentPageId";
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -68,42 +69,42 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const EDITTOR_HOLDER_ID = "editorjs";
-function Editor({ currentPageID }) {
+function Editor() {
 	// const currentPageID = "8abe36ff-a465-4660-b980-9c7261a1dfdb";
 	// const [pageId, setPageId] = useState(currentPageID)
-	console.log(currentPageID);
 	const ejInstance = useRef();
 	const [editorData, setEditorData] = useState("");
+	const currentPageId = useCurrentPageId();
 
 	useEffect(() => {
 		const config = {
 			method: "get",
-			url: `${baseUrl}/pages/${currentPageID}.json`,
+			url: `${baseUrl}/pages/${currentPageId}.json`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization:
 					"Bearer " + localStorage.getItem("zettel_user_token") || null,
 			},
 		};
-
-		axios(config)
-			.then((res) => {
-				const initialData = {
-					time: Date.now(),
-					blocks: res.data.blocks,
-				};
-				setEditorData(initialData);
-				if (!ejInstance.current) {
-					initEditor(initialData);
-				}
-			})
-			.catch((err) => console.error(err));
-
-		return () => {
-			ejInstance.current?.destroy();
-			ejInstance.current = null;
-		};
-	}, [currentPageID]);
+		if (currentPageId) {
+			axios(config)
+				.then((res) => {
+					const initialData = {
+						time: Date.now(),
+						blocks: res.data.blocks,
+					};
+					setEditorData(initialData);
+					if (!ejInstance.current) {
+						initEditor(initialData);
+					}
+					return () => {
+						ejInstance.current?.destroy();
+						ejInstance.current = null;
+					};
+				})
+				.catch((err) => console.error(err));
+		}
+	}, [currentPageId]);
 
 	const initEditor = (initialData) => {
 		const editor = new EditorJS({
@@ -130,7 +131,7 @@ function Editor({ currentPageID }) {
 								"Bearer " + localStorage.getItem("zettel_user_token") || null,
 						},
 						data: {
-							page_id: { currentPageID },
+							page_id: { currentPageId },
 							block_id: event.detail.target.id,
 						},
 					};
@@ -141,7 +142,7 @@ function Editor({ currentPageID }) {
 				if (event.type !== "block-removed") {
 					const config = {
 						method: "post",
-						url: `${baseUrl}/pages/${currentPageID}/save_data`,
+						url: `${baseUrl}/pages/${currentPageId}/save_data`,
 						headers: {
 							"Content-Type": "application/json",
 							Authorization:
@@ -150,7 +151,7 @@ function Editor({ currentPageID }) {
 						data: {
 							title: "sssssss",
 							page_id: "8abe36ff-a465-4660-b980-9c7261a1dfdb",
-							icon: "aaa1111111111a",
+							icon: "",
 							cover: "wwwwwwwww",
 							api: content,
 						},

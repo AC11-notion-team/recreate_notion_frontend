@@ -72,7 +72,6 @@ export default function LoginPage() {
       }).then((res)=>{
         setstatus("unvertify")
         console.log(status);
-      }).then(()=>{
         console.log(status);
       })
     }catch(error){
@@ -149,6 +148,7 @@ export default function LoginPage() {
     if (status=="init"){
       testEmailExist(data)
     }else if (status=="register"){
+      setstatus("unvertify")
       goToRigister(data)
     }else if (status=="unvertify"){
       goToVertify(data)
