@@ -39,5 +39,5 @@ export default function Private({ onEmojiClick }) {
 			/>
 		);
 	});
-	return <div>{page}</div>;
+	return <div className="py-1 px-1">{page}</div>;
 }

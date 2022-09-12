@@ -47,7 +47,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 					</button>
 				</div>
 				<div className="flex items-center mx-2">
-					{displayDropdown && <PageMore closeDropdown={closeDropdown} />}
+					{displayDropdown && <PageMore pageTitle={pageTitle} pageIcon={pageIcon} onEmojiClick={onEmojiClick} closeDropdown={closeDropdown} />}
 
 					<button
 						className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"

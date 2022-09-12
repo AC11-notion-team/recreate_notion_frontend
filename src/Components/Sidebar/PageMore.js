@@ -7,10 +7,10 @@ import right from "../image/forward.png";
 import question from "../image/question.png";
 import ActionButton from "../Navbar/ActionButton";
 import duplicate from "../image/duplicate.png";
-import rename from "../image/empty-star.png";
+import Rename from "./Rename"
 import { useDetectClickOutside } from "react-detect-click-outside";
 
-export default function PageMore({ closeDropdown }) {
+export default function PageMore({ closeDropdown,onEmojiClick,pageTitle, pageIcon}) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
@@ -58,12 +58,8 @@ export default function PageMore({ closeDropdown }) {
 							content="Copy link"
 							className="py-0.5"
 						/>
-						<ActionButton
-							src={rename}
-							alt="rename"
-							content="Rename"
-							className="py-0.5"
-						/>
+						<Rename pageTitle={pageTitle} pageIcon={pageIcon} onEmojiClick={onEmojiClick} handlePageMore={handleToggle}/>
+					
 					</div>
 					<hr />
 					<div className="p-2">
@@ -73,7 +69,7 @@ export default function PageMore({ closeDropdown }) {
 					<div className="p-2">
 						<div className="my-2">
 							<p className="text-xs px-1 text-gray-500">
-								Last edited by 莊茹瑄
+								Last edited by user
 							</p>
 							<p className="text-xs px-1 text-gray-500">Today at 9:40 PM</p>
 						</div>
