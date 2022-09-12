@@ -7,7 +7,7 @@ import DragDrop from 'editorjs-drag-drop';
 import Embed from '@editorjs/embed';
 import Footnotes from '@editorjs/footnotes';
 import Header from '@editorjs/header'; 
-  import ImageTool from '@editorjs/image'
+import ImageTool from '@editorjs/image'
 import InlineCode from '@editorjs/inline-code'
 import LinkTool from '@editorjs/link';
 import LinkPage from './LinkPage/link-page.js'
@@ -35,7 +35,6 @@ function Editor() {
 	const ejInstance = useRef();
 	const [editorData, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
-  console.log(currentPageId)
 	useEffect(() => {
     console.log("useEffect")
 		const config = {
@@ -60,7 +59,7 @@ function Editor() {
 					}
 				})
 				.catch((err) => console.error(err));
-      }
+    }
     return () => {
       ejInstance.current?.destroy();
       ejInstance.current = null;
@@ -81,6 +80,8 @@ function Editor() {
 			onChange: async (api, event) => {
 				let content = await editor.save();
 				// Put your logic here to save this data to your DB
+        console.log(api)
+        console.log(event)
 				if (event.type == "block-removed" && !event.detail.target.isEmpty) {
 					console.log(event);
 					const config = {
