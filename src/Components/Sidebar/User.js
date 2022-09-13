@@ -1,18 +1,40 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import user from "../image/user.png"
 import userData from "../image/userData.png"
 import menuLeft from "../image/menu-left.png"
 import more from "../image/more.png"
 import drag from "../image/drag.png"
 import check from "../image/check.png"
+import axios from "axios";
 
 export default function User ({toggle}){
+    const baseUrl = process.env.REACT_APP_BASEURL;
     const [isUser,setIsUser] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("User") === true){
             setIsUser(prevUser => !prevUser)
         }
     };
+    useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios({
+					method: "get",
+					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
+					headers: {
+						"Content-Type": "application/json",
+						Authorization:
+							"Bearer " + localStorage.getItem("zettel_user_token"),
+					},
+				});
+            console.log(response);
+			//  changePages(response.data.pages);
+			//  changeCurrentPageId(response.data.pages[0].id)
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
     return(
         <div>
             <div className="User flex items-center justify-between point group  px-4 p-2">

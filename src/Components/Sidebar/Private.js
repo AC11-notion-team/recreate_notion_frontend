@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-// import PageList from "./PageList";
 import Page from "./Page";
 import axios from "axios";
 import { usePages, usePagesUpdate } from "../../Pages";
+import {useCurrentPageUpdateId } from "../../CurrentPageId";
 
 export default function Private({ onEmojiClick }) {
 	const pages = usePages();
 	const changePages = usePagesUpdate();
+	const changeCurrentPageId = useCurrentPageUpdateId()
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	console.log(pages);
+
 	useEffect(() => {
-		console.log(123);
 		(async () => {
 			try {
 				const response = await axios({
@@ -22,13 +22,14 @@ export default function Private({ onEmojiClick }) {
 							"Bearer " + localStorage.getItem("zettel_user_token"),
 					},
 				});
-				await changePages(response.data.pages);
+			 changePages(response.data.pages);
+			 changeCurrentPageId(response.data.pages[0].id)
 			} catch (error) {
 				console.log(error);
 			}
 		})();
 	}, []);
-
+	
 	const page = pages.map((item) => {
 		return (
 			<Page

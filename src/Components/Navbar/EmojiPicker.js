@@ -15,7 +15,7 @@ export default function Emoji({ pageIcon, onEmojiClick }) {
 		<div>
 			<div>
 				<span alt="title" onClick={toggleEmoji}>
-					{pageIcon ? pageIcon : "🙃"}
+					{pageIcon ? pageIcon : "🗒️"}
 				</span>
 			</div>
 			{isEmoji && (

@@ -36,7 +36,6 @@ function Editor() {
 	const [editorData, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
 	useEffect(() => {
-    console.log("useEffect")
 		const config = {
 			method: "get",
 			url: `${baseUrl}/pages/${currentPageId}.json`,
@@ -80,10 +79,7 @@ function Editor() {
 			onChange: async (api, event) => {
 				let content = await editor.save();
 				// Put your logic here to save this data to your DB
-        console.log(api)
-        console.log(event)
 				if (event.type == "block-removed" && !event.detail.target.isEmpty) {
-					console.log(event);
 					const config = {
 						method: "delete",
 						url: `${baseUrl}/pages/delete_data`,
@@ -169,7 +165,6 @@ function Editor() {
                 // your own uploading logic here  
                 const ranBytes = Math.floor(Math.random()*10000000000000)
                 const imageName = ranBytes.toString()
-                console.log(bucketName)
                 const params = {
                   Bucket: bucketName,
                   Key: imageName,

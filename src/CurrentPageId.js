@@ -14,7 +14,6 @@ export function useCurrentPageUpdateId() {
 export function CurrentPageIdProvider({ children }) {
 	const [currentPageId, setCurrentPageId] = useState("");
 	function changeCurrentPageId(pageId) {
-		console.log(pageId)
 		setCurrentPageId(pageId);
 	}
 	return (
