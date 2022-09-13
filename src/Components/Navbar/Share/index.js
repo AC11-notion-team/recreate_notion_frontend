@@ -24,7 +24,6 @@ export default function Share({ currentPageID }) {
 
 	const inviteUrl = domainUrl + "/page" + `/${currentPageId}`;
 	useEffect(() => {
-		console.log(123);
 		if (currentPageId) {
 			axios({
 				method: "get",
