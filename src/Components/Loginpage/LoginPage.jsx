@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 
 export default function LoginPage() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit } = useForm();
   let navigate = useNavigate();
 
   // 第一個state 記載 是否已經發給後端判斷email存不存在
@@ -22,6 +22,7 @@ export default function LoginPage() {
   }
   useEffect(()=>{
     setsubmitBtn(btn[status]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[status])
 
   async function testEmailExist(data){
@@ -91,7 +92,7 @@ export default function LoginPage() {
           confirm_token: data.confirm_token
         }
       }).then((res)=>{
-        if(res.data.status=="login"){
+        if(res.data.status==="login"){
           window.location.reload(false);
         }else{
           Swal.fire({
@@ -119,7 +120,7 @@ export default function LoginPage() {
         }
       }).then((res)=>{
         console.log(res);
-        if(res.data.status=="success"){
+        if(res.data.status==="success"){
           localStorage.setItem("zettel_user_token", res.data.auth_token);
 				  localStorage.setItem("zettel_user_id", res.data.user_id);
           Swal.fire({
@@ -145,16 +146,16 @@ export default function LoginPage() {
   }
 
   const onSubmit = (data)=>{
-    if (status=="init"){
+    if (status==="init"){
       testEmailExist(data)
-    }else if (status=="register"){
+    }else if (status==="register"){
       setstatus("unvertify")
       goToRigister(data)
-    }else if (status=="unvertify"){
+    }else if (status==="unvertify"){
       goToVertify(data)
-    }else if(status=="login"){
+    }else if(status==="login"){
       goToLogin(data)
-    }else if(status=="third"){
+    }else if(status==="third"){
       setstatus("init")
     }
   }
@@ -177,7 +178,7 @@ export default function LoginPage() {
             <div className=" border-b-2  border-grey-100  "/>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              { ((status=="init")||(status=="login")||(status=="register"))&&
+              { ((status==="init")||(status==="login")||(status==="register"))&&
                 <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
@@ -216,7 +217,7 @@ export default function LoginPage() {
               }
               
               {
-                ((status==="register")||(status=="login")) && 
+                ((status==="register")||(status==="login")) && 
                 <div>
                 <label htmlFor="password" className="sr-only">
                   Password
@@ -234,7 +235,7 @@ export default function LoginPage() {
               </div> 
               }
               {
-                 status =="unvertify" &&
+                 status ==="unvertify" &&
                 <div>
                 <label htmlFor="confirm_token" className="sr-only">
                 confirm_token
@@ -254,7 +255,7 @@ export default function LoginPage() {
                
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -272,7 +273,7 @@ export default function LoginPage() {
                   Forgot your password?
                 </a>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <button

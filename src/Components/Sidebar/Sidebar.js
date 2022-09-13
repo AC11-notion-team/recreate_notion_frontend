@@ -12,8 +12,7 @@ import QuickFind from "./QuickFind";
 import newPage from "../image/plus.png";
 import addPage from "../image/plus.png";
 import axios from "axios";
-import { usePages, usePagesUpdate } from "../../Pages";
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
+import { usePagesUpdate } from "../../Pages";
 
 export default function Sidebar({
 	isFavorite,
@@ -22,7 +21,6 @@ export default function Sidebar({
 	onEmojiClick,
 }) {
 	// useContext state= pages
-	const pages = usePages();
 	const changePages = usePagesUpdate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
