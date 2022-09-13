@@ -5,13 +5,20 @@ import menuLeft from "../image/menu-left.png"
 import more from "../image/more.png"
 import drag from "../image/drag.png"
 import check from "../image/check.png"
+import { useNavigate } from "react-router-dom";
 
 export default function User ({toggle}){
+    let navigate = useNavigate()
     const [isUser,setIsUser] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("User") === true){
             setIsUser(prevUser => !prevUser)
         }
+    }
+    const logout =()=>{
+        localStorage.removeItem('zettel_user_token')
+        localStorage.removeItem('zettel_user_id')
+        navigate("homepage")
     };
     return(
         <div>
@@ -53,7 +60,7 @@ export default function User ({toggle}){
                         <div className="py-1">
                             <p className="text-xs text-gray-600 py-1 px-3 point my-1">Create work account</p>
                             <p className="text-xs text-gray-600 py-1 px-3 point my-1">Add another account</p>
-                            <p className="text-xs text-gray-600 py-1 px-3 point my-1">Log out all</p>
+                            <p className="text-xs text-gray-600 py-1 px-3 point my-1" onClick={logout}>Log out all</p>
                         </div>
                         <hr />
                         <div>
