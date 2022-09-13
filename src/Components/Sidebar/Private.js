@@ -11,7 +11,9 @@ export default function Private({ onEmojiClick }) {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
 	useEffect(() => {
+		
 		(async () => {
+			console.log("private render")
 			try {
 				const response = await axios({
 					method: "get",
@@ -28,17 +30,14 @@ export default function Private({ onEmojiClick }) {
 				console.log(error);
 			}
 		})();
-	}, [baseUrl, changeCurrentPageId, changePages]);
+	}, []);
 	
-	const page = pages.map((item) => {
-		return (
-			<Page
-				onEmojiClick={onEmojiClick}
-				pageTitle={item.title}
-				pageIcon={item.icon}
-				pageID={item.id}
-			/>
-		);
-	});
-	return <div className="py-1 px-1">{page}</div>;
+
+	return <div className="py-1 px-1">{pages.map(item=><Page 	
+		key={item.id} 
+		onEmojiClick={onEmojiClick}
+		pageTitle={item.title}
+		pageIcon={item.icon}
+		pageID={item.id}
+		/>)}</div>;
 }
