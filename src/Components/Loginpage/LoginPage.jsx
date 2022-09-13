@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 
 
 export default function LoginPage() {
+  const baseUrl = process.env.REACT_APP_BASEURL;
   const { register, handleSubmit } = useForm();
   let navigate = useNavigate();
 
@@ -29,8 +30,7 @@ export default function LoginPage() {
     try{
       await axios({
         method:"get",
-        baseURL:"http://localhost:3001",
-        url:"/api/v1/users/email_present.json",
+        url:`${baseUrl}/users/email_present.json`,
         params:{
           email:data.email
         }
@@ -38,7 +38,7 @@ export default function LoginPage() {
         console.log("hfugjukkufiug");
         console.log(res.data.message);
         console.log("hfugjukkufiug");
-        if(res.data.status == "third"){
+        if(res.data.status === "third"){
           setstatus("init")
           Swal.fire({
             icon: 'error',
@@ -63,8 +63,7 @@ export default function LoginPage() {
     try{
       await axios({
         method:"post",
-        baseURL:"http://localhost:3001",
-        url:"/api/v1/users",
+        url:`${baseUrl}/users`,
         params:{
           email:data.email,
           username: data.username,
@@ -83,8 +82,7 @@ export default function LoginPage() {
     try{
       await axios({
         method:"get",
-        baseURL:"http://localhost:3001",
-        url:"/api/v1/users/email_confirmed",
+        url:`${baseUrl}/users/email_confirmed`,
         params:{
           email:data.email,
           username: data.username,
@@ -112,8 +110,7 @@ export default function LoginPage() {
     try{
       await axios({
         method:"post",
-        baseURL:"http://localhost:3001",
-        url:"/api/v1/users/login",
+        url:`${baseUrl}/users/login`,
         params:{
           email:data.email,
           password: data.password,

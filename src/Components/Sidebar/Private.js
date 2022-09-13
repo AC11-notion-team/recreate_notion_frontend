@@ -28,7 +28,7 @@ export default function Private({ onEmojiClick }) {
 				console.log(error);
 			}
 		})();
-	}, [baseUrl, changeCurrentPageId, changePages]);
+	}, []);
 	
 	const page = pages.map((item) => {
 		return (
