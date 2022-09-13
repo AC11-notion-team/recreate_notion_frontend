@@ -57,7 +57,6 @@ const GoogleLogin = () => {
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
-				height: "36px",
 				width: "100%",
 				height: "60px",
 			}}

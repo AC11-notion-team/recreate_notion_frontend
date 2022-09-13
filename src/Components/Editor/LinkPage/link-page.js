@@ -276,6 +276,7 @@ export default class LinkPage {
         const [ENTER, A] = [13, 65];
         const cmdPressed = event.ctrlKey || event.metaKey;
 
+        // eslint-disable-next-line default-case
         switch (event.keyCode) {
           case ENTER:
             event.preventDefault();
