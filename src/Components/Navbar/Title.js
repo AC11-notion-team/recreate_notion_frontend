@@ -16,7 +16,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	return (
 		<div>
 			<ActionButton
-				titleIcon={pageIcon ? pageIcon : "🙃"}
+				titleIcon={pageIcon ? pageIcon : "🗒️"}
 				content={pageTitle}
 				className="IsTitle py-0.5 -mr-0.5"
 				handleClick={handleToggle}

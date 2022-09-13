@@ -26,14 +26,6 @@
   box-shadow: rgb(15 15 15 / 10%) 2px 2px 5px;
 }
 
-.share-transition {
-  transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
-}
-
-.share-transition2 {
-  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
-  transform: translateX(0px) translateY(0px);
-}
 .side-minW {
   min-width: 200px;
 }

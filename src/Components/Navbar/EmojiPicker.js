@@ -6,22 +6,22 @@ export default function Emoji({ pageIcon, onEmojiClick }) {
 	const [isEmoji, setIsEmoji] = useState(false);
 	const toggleEmoji = () => setIsEmoji((prevIsEmoji) => !prevIsEmoji);
 	const currentPageId = useCurrentPageId();
+	const callback = (e,emojiObject) => {
+		onEmojiClick(e,currentPageId, emojiObject)
+	}
 
-	console.log(`here is Emogi ${currentPageId}`);
 
 	return (
 		<div>
 			<div>
 				<span alt="title" onClick={toggleEmoji}>
-					{pageIcon ? pageIcon : "🙃"}
+					{pageIcon ? pageIcon : "🗒️"}
 				</span>
 			</div>
 			{isEmoji && (
 				<div className="absolute ">
 					<Picker
-						onEmojiClick={(event, emojiObject, currentPageId) =>
-							onEmojiClick(event, emojiObject, currentPageId)
-						}
+						onEmojiClick={callback}
 					/>
 				</div>
 			)}

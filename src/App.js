@@ -36,11 +36,9 @@ function App() {
 		}
 	}, [isSide]);
 
+
 	const onEmojiClick = (event, currentPageID, emojiObject) => {
 		const { type, id, value, className } = event.target;
-		console.log(123);
-		console.log(emojiObject);
-		console.log(currentPageID);
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
@@ -48,6 +46,17 @@ function App() {
 						? { ...item, icon: emojiObject.emoji }
 						: item;
 				});
+			});
+			axios({
+				method: "put",
+				url: `${baseUrl}/pages/${currentPageID}`,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				},
+				data:{
+					"icon":  `${emojiObject.emoji}`
+				}	
 			});
 		}
 		if (type === "text") {
@@ -57,15 +66,18 @@ function App() {
 					return item.id === id ? { ...item, title: value } : item;
 				});
 			});
-		}
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/${currentPageID}`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
-			},
-		});
+			axios({
+				method: "put",
+				url: `${baseUrl}/pages/${currentPageID}`,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				},
+				data:{
+					"title": `${value}`,
+				}	
+			});
+		}	
 	};
 
 	return (

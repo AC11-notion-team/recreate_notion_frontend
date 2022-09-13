@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
 const PagesContext = React.createContext();
 const PagesUpdateContext = React.createContext();

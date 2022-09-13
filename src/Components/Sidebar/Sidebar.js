@@ -72,7 +72,7 @@ export default function Sidebar({
 					<Share />
 				</div>
 				<div className="mb-4">
-					<div className="flex items-center justify-between point group px-1.5 py-1">
+					<div className="flex items-center justify-between point group py-1 px-4">
 						<p className="text-xs font-semibold text-gray-500 point">PRIVATE</p>
 						<button
 							className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
