@@ -33,7 +33,7 @@ const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
 	
 	const ejInstance = useRef();
-	const [, setEditorData] = useState("");
+	const [_, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
 	useEffect(() => {
 		const config = {
