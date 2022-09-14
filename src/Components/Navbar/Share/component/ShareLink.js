@@ -2,14 +2,14 @@ import React from "react";
 import pencil from "../../../image/pencil.png";
 import { Switch } from "@headlessui/react";
 
-const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
+const ShareLink = ({ inviteUrl, editable, handleEditable }) => {
 	const copyToClipBoard = () => {
 		navigator.clipboard.writeText(inviteUrl);
 	};
 	return (
 		<div className="point">
 			<div className="">
-				<div className="flex mb-0 mt-1 mx-3     relative">
+				<div className="relative flex mx-3 mt-1 mb-0">
 					<input
 						type="text"
 						id="disabled-input"
@@ -27,11 +27,11 @@ const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
 						Copy
 					</button>
 				</div>
-				<div className="flex justify-between content-center items-center pb-2 pt-0 pl-5 px-3 pl-2     ">
+				<div className="flex items-center content-center justify-between px-3 pt-0 pb-2 pl-2 pl-5 ">
 					<div className="flex items-center">
 						<div className="pr-3">
 							<img
-								className=" block flex content-center justify-center  w-5 h-5"
+								className="flex content-center justify-center block w-5 h-5 "
 								src={pencil}
 								alt="editable"
 							/>
@@ -41,16 +41,16 @@ const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
 
 					<div className="flex content-center">
 						<Switch
-							checked={isEditable}
+							checked={editable[1]}
 							onChange={handleEditable}
 							className={`${
-								isEditable ? "bg-blue-600" : "bg-gray-200"
+								editable[1] ? "bg-blue-600" : "bg-gray-200"
 							} relative inline-flex h-6 w-11 items-center rounded-full`}
 						>
 							<span className="sr-only">Enable notifications</span>
 							<span
 								className={`${
-									isEditable ? "translate-x-6" : "translate-x-1"
+									editable[1] ? "translate-x-6" : "translate-x-1"
 								} inline-block h-4 w-4 transform rounded-full bg-white transition`}
 							/>
 						</Switch>
