@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 
 
-const TabContent0 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow1.png" alt="" /></div>;
-const TabContent1 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow2.png" alt="" /></div>;
-const TabContent2 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow3.png" alt="" /></div>;
-const TabContent3 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow4.png" alt="" /></div>;
-const TabContent4 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow5.png" alt="" /></div>;
-const TabContent5 = () => <div className="w-8/12  drop-shadow-2xl rounded"><img src="/slideshow6.png" alt="" /></div>;
-
+const SlideContent = (image_path) => (
+     <div className="w-8/12 rounded drop-shadow-2xl">
+       <img src={image_path} alt="" />
+     </div>
+    );
 
 
 const BUTTONS = ["Company home", "Roadmap", "Design docs", "Engineering wiki", "Meeting notes", "Website publishing"];
 
 const renderPage = { 
-'Company home': <TabContent0 />,
-'Roadmap': <TabContent1 />,
-'Design docs': <TabContent2 />,
-'Engineering wiki': <TabContent3 />,
-'Meeting notes': <TabContent4 />,
-'Website publishing': <TabContent5 />,
+'Company home': SlideContent("/slideshow1.png"),
+'Roadmap': SlideContent("/slideshow2.png"),
+'Design docs': SlideContent("/slideshow3.png"),
+'Engineering wiki': SlideContent("/slideshow4.png"),
+'Meeting notes': SlideContent("/slideshow5.png"),
+'Website publishing': SlideContent("/slideshow6.png"),
 
 };
 

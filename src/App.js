@@ -53,10 +53,10 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 				data:{
-					"icon":  `${emojiObject.emoji}`
+					"icon": emojiObject.emoji
 				}	
 			});
 		}
@@ -72,10 +72,10 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 				data:{
-					"title": `${value}`,
+					"title": value,
 				}	
 			});
 		}	
@@ -105,7 +105,6 @@ function App() {
 					/>
 					{/* < PageHeader /> */}
 					<Editor />
-					{/* <Calendar /> */}
 				</div>
 			</div>
 		</div>
