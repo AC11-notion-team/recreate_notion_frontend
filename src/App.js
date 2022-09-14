@@ -39,6 +39,7 @@ function App() {
 
 	const onEmojiClick = (event, currentPageID, emojiObject) => {
 		const { type, id, value, className } = event.target;
+		console.log("emojiClick")
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
@@ -52,10 +53,10 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 				data:{
-					"icon":  `${emojiObject.emoji}`
+					"icon": emojiObject.emoji
 				}	
 			});
 		}
@@ -71,10 +72,10 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 				data:{
-					"title": `${value}`,
+					"title": value,
 				}	
 			});
 		}	
@@ -104,7 +105,6 @@ function App() {
 					/>
 					{/* < PageHeader /> */}
 					<Editor />
-					{/* <Calendar /> */}
 				</div>
 			</div>
 		</div>

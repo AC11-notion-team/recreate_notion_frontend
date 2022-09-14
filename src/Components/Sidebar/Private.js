@@ -11,6 +11,7 @@ export default function Private({ onEmojiClick }) {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
 	useEffect(() => {
+		
 		(async () => {
 			try {
 				const response = await axios({
@@ -18,8 +19,7 @@ export default function Private({ onEmojiClick }) {
 					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 					headers: {
 						"Content-Type": "application/json",
-						Authorization:
-							"Bearer " + localStorage.getItem("zettel_user_token"),
+						Authorization:`Bearer ${localStorage.getItem("zettel_user_token")}`,
 					},
 				});
 			 changePages(response.data.pages);
@@ -30,15 +30,12 @@ export default function Private({ onEmojiClick }) {
 		})();
 	}, []);
 	
-	const page = pages.map((item) => {
-		return (
-			<Page
-				onEmojiClick={onEmojiClick}
-				pageTitle={item.title}
-				pageIcon={item.icon}
-				pageID={item.id}
-			/>
-		);
-	});
-	return <div className="py-1 px-1">{page}</div>;
+
+	return <div className="py-1 px-1">{pages.map(item=><Page 	
+		key={item.id} 
+		onEmojiClick={onEmojiClick}
+		pageTitle={item.title}
+		pageIcon={item.icon}
+		pageID={item.id}
+		/>)}</div>;
 }

@@ -13,6 +13,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore}
 		}
         
 	};
+    const cb = (event) => onEmojiClick(event, currentPageId)
     return(
         <div>
             <ActionButton
@@ -33,7 +34,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore}
                         </div>
                         <input
                             type="text"
-                            onChange={(event) => onEmojiClick(event, currentPageId)}
+                            onChange={cb}
                             className="share-like-input h-7 w-full rounded title"
                             id={currentPageId}
                             value={pageTitle}
