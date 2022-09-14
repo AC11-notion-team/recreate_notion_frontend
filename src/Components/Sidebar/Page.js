@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import pageButtonRight from "../image/pageButtonRight.png";
 import addPage from "../image/plus.png";
 import PageMore from "./PageMore";
@@ -8,17 +8,16 @@ import { useCurrentPageUpdateId } from "../../CurrentPageId";
 const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
 	const [displayDropdown, setDisplayDropdown] = useState(true);
-	const closeDropdown = () => {
+	const closeDropdown = useCallback(() => {
 		setDisplayDropdown(false);
-	};
-	useEffect(() => {
-		if (displayDropdown === false) {
-			setDisplayDropdown(true);
-		}
-	}, [displayDropdown]);
+	},[]);
+	const showDropdown = useCallback(() => {
+		setDisplayDropdown(true);
+	},[]);
+	
 
 	return (
-		<div className="py-1 px-1 ">
+		<div className="py-1 px-1 " onMouseEnter={showDropdown}>
 			<div className="flex items-center justify-between point group px-1.5 py-1">
 				<div className="flex items-center w-full">
 					<button className="mr-1 flex items-center w-5 h-5">

@@ -18,7 +18,7 @@ export default function PageMore({ closeDropdown,onEmojiClick,pageTitle, pageIco
 
 	const ref = useDetectClickOutside({
 		onTriggered: closeDropdown,
-		allowAnyKey: true,
+		allowAnyKey: false,
 	});
 
 	return (
