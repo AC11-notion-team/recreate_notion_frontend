@@ -18,10 +18,10 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 	}, [displayDropdown]);
 
 	return (
-		<div className="py-1 px-1 ">
+		<div className="px-1 py-1 ">
 			<div className="flex items-center justify-between point group px-1.5 py-1">
 				<div className="flex items-center w-full">
-					<button className="mr-1 flex items-center w-5 h-5">
+					<button className="flex items-center w-5 h-5 mr-1">
 						<img
 							className="w-5 h-5 py-1.5 mr-1"
 							src={pageButtonRight}
@@ -39,7 +39,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 						}}
 					>
 						<p
-							className="text-sm font-semibold text-gray-600 ml-2 whitespace-nowrap overflow-x-hidden"
+							className="ml-2 overflow-x-hidden text-sm font-semibold text-gray-600 whitespace-nowrap"
 							value={pageTitle}
 						>
 							{pageTitle}
@@ -47,10 +47,12 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 					</button>
 				</div>
 				<div className="flex items-center mx-2">
-					{displayDropdown && <PageMore closeDropdown={closeDropdown} />}
+					{displayDropdown && (
+						<PageMore closeDropdown={closeDropdown} pageID={pageID} />
+					)}
 
 					<button
-						className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
+						className="w-5 h-5 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded"
 						data-aa="bb"
 					>
 						<img src={addPage} alt="sidePageMoreButton" />

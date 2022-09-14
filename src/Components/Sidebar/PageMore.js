@@ -9,9 +9,16 @@ import ActionButton from "../Navbar/ActionButton";
 import duplicate from "../image/duplicate.png";
 import rename from "../image/empty-star.png";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import axios from "axios";
+import { usePages, usePagesUpdate } from "../../Pages";
 
-export default function PageMore({ closeDropdown }) {
+export default function PageMore({ closeDropdown, pageID }) {
 	const [isPageMore, setIsPageMore] = useState(false);
+	const baseUrl = process.env.REACT_APP_BASEURL;
+
+	const changePages = usePagesUpdate();
+	const pages = usePages();
+
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
@@ -20,25 +27,42 @@ export default function PageMore({ closeDropdown }) {
 		onTriggered: closeDropdown,
 		allowAnyKey: true,
 	});
+	const removePage = () => {
+		axios({
+			method: "delete",
+			url: `${baseUrl}/pages/${pageID}/delete_page`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		}).then((res) => {
+			changePages((prevPages) => {
+				return prevPages.filter((item) => {
+					return item.id !== pageID;
+				});
+			});
+		});
+	};
 
 	return (
 		<div ref={ref}>
 			<div onClick={handleToggle}>
 				<button
-					className="opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded w-5 h-5 p-1"
+					className="w-5 h-5 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded"
 					data-aa="aa"
 				>
 					<img src={more} alt="sidePageMoreButton mr-2" />
 				</button>
 			</div>
 			{isPageMore && (
-				<div className="fixed bg-white  box-shadow  border z-10 rounded w-60 ">
+				<div className="fixed z-10 bg-white border rounded box-shadow w-60 ">
 					<div className="p-1.5">
 						<ActionButton
 							src={trash}
 							alt="delete"
 							content="Delete"
 							className="py-0.5"
+							handleClick={removePage}
 						/>
 						<ActionButton
 							src={star}
@@ -72,10 +96,10 @@ export default function PageMore({ closeDropdown }) {
 					<hr />
 					<div className="p-2">
 						<div className="my-2">
-							<p className="text-xs px-1 text-gray-500">
+							<p className="px-1 text-xs text-gray-500">
 								Last edited by 莊茹瑄
 							</p>
-							<p className="text-xs px-1 text-gray-500">Today at 9:40 PM</p>
+							<p className="px-1 text-xs text-gray-500">Today at 9:40 PM</p>
 						</div>
 					</div>
 					<hr />
