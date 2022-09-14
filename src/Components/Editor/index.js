@@ -20,6 +20,7 @@ import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
+import { usePagesUpdate } from "../../Pages";
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -34,8 +35,10 @@ const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
 	const currentPageId = useCurrentPageId();
   const changeCurrentPage = useCurrentPageUpdateId();
+  const changePages = usePagesUpdate()
 	const ejInstance = useRef();
   const showCurrentId = () => {console.log(currentPageId)}
+  
   useEffect(() => {
 		const config = {
 			method: "get",
@@ -123,10 +126,11 @@ function Editor() {
             .catch((err) => console.error(err));
         }
         if (event.type === "block-changed" && event.detail.target.name === "linkpage"){
-          const block = content.blocks.filter(block => block.id === event.detail.target.id)
-          const newPage = block[0].data.link.split("localhost:3000/")[1]
-
+          const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
+          const newPage = block.link.split("localhost:3000/")[1]
+          console.log(block)
           if (newPage){
+            changePages(prevPages => [...prevPages, block.meta])
             changeCurrentPage(newPage)
           }
         }

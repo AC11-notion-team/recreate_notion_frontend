@@ -179,6 +179,7 @@ export default class PageLink {
     const url = `${domainUrl}${inputdata.id}`
     this.data = {
       link: url,
+      meta: inputdata,
     };
     
     this.showPage({
@@ -222,7 +223,6 @@ export default class PageLink {
     }
 
     this.nodes.linkPage.classList.add(this.CSS.linkContentRendered);
-    // this.nodes.linkContent.setAttribute('href', this.data.link);
     this.nodes.linkPage.setAttribute('href', url);
     // this.nodes.linkContent.setAttribute('onclick', this.data.callback);
     this.nodes.linkPage.appendChild(this.nodes.linkText);

@@ -25,8 +25,8 @@ export default function Private({ onEmojiClick }) {
 							"Bearer " + localStorage.getItem("zettel_user_token"),
 					},
 				});
-			 changePages(response.data.pages);
-			 changeCurrentPageId(params["page_id"] || response.data.pages[0].id)
+				changePages(response.data.pages);
+				changeCurrentPageId(params["page_id"] || response.data.pages[0].id)
 			} catch (error) {
 				console.log(error);
 			}
@@ -34,11 +34,17 @@ export default function Private({ onEmojiClick }) {
 	}, []);
 	
 
-	return <div className="py-1 px-1">{pages.map(item=><Page 	
-		key={item.id} 
-		onEmojiClick={onEmojiClick}
-		pageTitle={item.title}
-		pageIcon={item.icon}
-		pageID={item.id}
-		/>)}</div>;
+	return (
+		<div className="py-1 px-1">
+			{ pages.map(item =>
+				<Page 	
+					key={item.id} 
+					onEmojiClick={onEmojiClick}
+					pageTitle={item.title}
+					pageIcon={item.icon}
+					pageID={item.id}
+				/> )
+			}
+		</div>
+	);
 }
