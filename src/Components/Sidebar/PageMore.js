@@ -7,17 +7,22 @@ import right from "../image/forward.png";
 import question from "../image/question.png";
 import ActionButton from "../Navbar/ActionButton";
 import duplicate from "../image/duplicate.png";
-import rename from "../image/empty-star.png";
+import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
 import { usePages, usePagesUpdate } from "../../Pages";
 
-export default function PageMore({ closeDropdown, pageID }) {
+export default function PageMore({
+	closeDropdown,
+	onEmojiClick,
+	pageTitle,
+	pageIcon,
+	pageID,
+}) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
 	const changePages = usePagesUpdate();
-	const pages = usePages();
 
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
@@ -25,7 +30,7 @@ export default function PageMore({ closeDropdown, pageID }) {
 
 	const ref = useDetectClickOutside({
 		onTriggered: closeDropdown,
-		allowAnyKey: true,
+		allowAnyKey: false,
 	});
 	const removePage = () => {
 		axios({
@@ -82,11 +87,11 @@ export default function PageMore({ closeDropdown, pageID }) {
 							content="Copy link"
 							className="py-0.5"
 						/>
-						<ActionButton
-							src={rename}
-							alt="rename"
-							content="Rename"
-							className="py-0.5"
+						<Rename
+							pageTitle={pageTitle}
+							pageIcon={pageIcon}
+							onEmojiClick={onEmojiClick}
+							handlePageMore={handleToggle}
 						/>
 					</div>
 					<hr />
@@ -96,9 +101,7 @@ export default function PageMore({ closeDropdown, pageID }) {
 					<hr />
 					<div className="p-2">
 						<div className="my-2">
-							<p className="px-1 text-xs text-gray-500">
-								Last edited by 莊茹瑄
-							</p>
+							<p className="px-1 text-xs text-gray-500">Last edited by user</p>
 							<p className="px-1 text-xs text-gray-500">Today at 9:40 PM</p>
 						</div>
 					</div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import globe from "../../image/globe.png";
-
 import MenuButton from "../Share/../MenuButton";
 import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
@@ -22,9 +21,8 @@ export default function Share({ currentPageID }) {
 	};
 	const [isInvite, setIsInvite] = useState(true);
 
-	const inviteUrl = domainUrl + "/page" + `/${currentPageId}`;
+	const inviteUrl = `${domainUrl}/page/${currentPageId}`;
 	useEffect(() => {
-		console.log(123);
 		if (currentPageId) {
 			axios({
 				method: "get",
@@ -38,7 +36,7 @@ export default function Share({ currentPageID }) {
 				setIsEditable(res.data.editable);
 			});
 		}
-	}, [isShare]);
+	}, [baseUrl, currentPageId, isShare]);
 	useEffect(() => {
 		if (currentPageId) {
 			axios({
@@ -50,7 +48,7 @@ export default function Share({ currentPageID }) {
 				},
 			});
 		}
-	}, [isInvite]);
+	}, [baseUrl, currentPageId, isInvite]);
 	useEffect(() => {
 		if (currentPageId) {
 			axios({
@@ -62,7 +60,7 @@ export default function Share({ currentPageID }) {
 				},
 			});
 		}
-	}, [isEditable]);
+	}, [baseUrl, currentPageId, isEditable]);
 	const handleEditable = () => {
 		setIsEditable((prevIsEditable) => !prevIsEditable);
 	};

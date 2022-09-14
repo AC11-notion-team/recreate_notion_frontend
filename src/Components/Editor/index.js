@@ -33,10 +33,9 @@ const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
 	
 	const ejInstance = useRef();
-	const [editorData, setEditorData] = useState("");
+	const [_, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
 	useEffect(() => {
-    console.log("useEffect")
 		const config = {
 			method: "get",
 			url: `${baseUrl}/pages/${currentPageId}.json`,
@@ -60,68 +59,68 @@ function Editor() {
 				})
 				.catch((err) => console.error(err));
     }
+    
     return () => {
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
 	}, [currentPageId]);
 
-	const initEditor = (initialData) => {
-		const editor = new EditorJS({
-			holder: EDITTOR_HOLDER_ID,
-			logLevel: "ERROR",
-			data: initialData,
-			inlineToolbar: true,
-			placeholder: "Let`s write an awesome story!",
-			onReady: () => {
-				ejInstance.current = editor;
-				new DragDrop(editor);
-			},
-			onChange: async (api, event) => {
-				let content = await editor.save();
-				// Put your logic here to save this data to your DB
-        console.log(api)
+  const initEditor = (initialData) => {
+    const editor = new EditorJS({
+      holder: EDITTOR_HOLDER_ID,
+      logLevel: "ERROR",
+      data: initialData,
+      inlineToolbar: true,
+      placeholder: "Let`s write an awesome story!",
+      onReady: () => {
+        ejInstance.current = editor;
+        new DragDrop(editor);
+      },
+      onChange: async (api, event) => {
+        let content = await editor.save();
         console.log(event)
-				if (event.type == "block-removed" && !event.detail.target.isEmpty) {
-					console.log(event);
-					const config = {
-						method: "delete",
-						url: `${baseUrl}/pages/delete_data`,
-						headers: {
-							"Content-Type": "application/json",
-							Authorization:
-								"Bearer " + localStorage.getItem("zettel_user_token") || null,
-						},
-						data: {
-							page_id: { currentPageId },
-							block_id: event.detail.target.id,
-						},
-					};
-					axios(config)
-						.then((res) => res)
-						.catch((err) => console.error(err));
-				}
-				if (event.type !== "block-removed") {
-					const config = {
-						method: "post",
-						url: `${baseUrl}/pages/${currentPageId}/save_data`,
-						headers: {
-							"Content-Type": "application/json",
-							Authorization:
-								"Bearer " + localStorage.getItem("zettel_user_token") || null,
-						},
-						data: {
-							title: "sssssss",
-							page_id: {currentPageId},
-							icon: "",
-							cover: "wwwwwwwww",
-							api: content,
-						},
-					};
-					axios(config)
-						.then((res) => res)
-						.catch((err) => console.error(err));
-				}
+        console.log(content)
+        // Put your logic here to save this data to your DB
+        if (event.type === "block-removed" && !event.detail.target.isEmpty) {
+          const config = {
+            method: "delete",
+            url: `${baseUrl}/pages/delete_data`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization:
+                "Bearer " + localStorage.getItem("zettel_user_token") || null,
+            },
+            data: {
+              page_id: { currentPageId },
+              block_id: event.detail.target.id,
+            },
+          };
+          axios(config)
+            .then((res) => res)
+            .catch((err) => console.error(err));
+        }
+        if (event.type !== "block-removed") {
+          const config = {
+            method: "post",
+            url: `${baseUrl}/pages/${currentPageId}/save_data`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization:
+                "Bearer " + localStorage.getItem("zettel_user_token") || null,
+            },
+            data: {
+              title: "sssssss",
+              page_id: {currentPageId},
+              icon: "",
+              cover: "wwwwwwwww",
+              api: content,
+            },
+          };
+          axios(config)
+            .then((res) => res)
+            .catch((err) => console.error(err));
+        }
 
         setEditorData(content);
       },
@@ -169,7 +168,6 @@ function Editor() {
                 // your own uploading logic here  
                 const ranBytes = Math.floor(Math.random()*10000000000000)
                 const imageName = ranBytes.toString()
-                console.log(bucketName)
                 const params = {
                   Bucket: bucketName,
                   Key: imageName,

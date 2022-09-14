@@ -18,6 +18,7 @@ import css from './link-page.css';
 // import ToolboxIcon from './svg/toolbox.svg';
 // import ajax from '@codexteam/ajax';
 import ajax from 'axios'
+
 // eslint-disable-next-line
 // import polyfill from 'url-polyfill';
 
@@ -30,7 +31,15 @@ import ajax from 'axios'
  * Tool may have any data provided by backend, currently are supported by design:
  * title, description, image, url
  */
-export default class LinkPage {
+export default class PageLink {
+  /**
+   * Notify core that read-only mode supported
+   *
+   * @typedef {object} changePages
+   * @typedef {string} baseUrl
+   */
+  
+
   /**
    * Notify core that read-only mode supported
    *
@@ -89,6 +98,7 @@ export default class LinkPage {
       input: null,
       inputHolder: null,
       linkContent: null,
+      linkPage: null,
       linkImage: null,
       linkTitle: null,
       linkDescription: null,
@@ -115,7 +125,9 @@ export default class LinkPage {
     this.nodes.container = this.make('div', this.CSS.container);
     this.nodes.linkPage = this.preparePage()
     this.nodes.inputHolder = this.makeInputHolder();
-    this.nodes.linkContent = this.prepareLinkPreview();
+    // this.nodes.linkContent = this.prepareLinkPreview();
+    
+    
 
     /**
      * If Tool already has data, render link preview, otherwise insert input
@@ -126,16 +138,79 @@ export default class LinkPage {
     // } else {
     //   this.nodes.container.appendChild(this.nodes.inputHolder);
     // }
-    this.nodes.container.appendChild(this.nodes.linkContent);
+    // if (Object.keys(this.data.meta).length) {
+    //   this.nodes.container.appendChild(this.nodes.linkContent);
+    //   this.showLinkPreview(this.data.meta);
+    // } else {
+    //   this.nodes.container.appendChild(this.nodes.linkPage);
+    // }
+    this.nodes.container.appendChild(this.nodes.linkPage);
     // this.showPage(this.data.meta);
-    this.showPage({image: "https://i.imgur.com/jj4xbXL.png", title: "title", description: "description"})
+    // this.showPage({image: "https://i.imgur.com/jj4xbXL.png", title: "title", description: "description"})
     this.nodes.wrapper.appendChild(this.nodes.container);
 
     return this.nodes.wrapper;
   }
 
+  startAddPage(){
+    this.addPage()
+  }
+  async addPage(){
+    
+    const baseUrl = process.env.REACT_APP_BASEURL;
+    
+    try{
+      const res = await ajax({
+        method: "post",
+        url: `${baseUrl}/pages`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+        },
+      })
+      const data = JSON.stringify(res.data)
+      const jsonData = JSON.parse(data);
+      
+      
+      this.onAddPage(jsonData)
+    } catch(error){
+      console.error(error)
+    }
+      // .then((result) => {
+      //  let data = JSON.stringify(result.data);
+      //  let jsonData = JSON.parse(data);
+      //  console.log(jsonData)
+      //   return jsonData
+      // })
+      // .catch((err) => {
+      //  console.error(err);
+      // });
+  }
+
+  onAddPage(inputdata){
+    const domainUrl = process.env.REACT_APP_DOMAINURL;
+    console.log(inputdata)
+    const url = `${domainUrl}${inputdata.id}`
+    this.data = {
+      link: url,
+      meta: {
+        image: "",
+        title: "untitled",
+        description: ""
+
+      },
+    };
+    this.showPage({
+      image: "",
+      title: "untitled",
+      description: "",
+      url
+    })
+  }
+
   preparePage(){
     console.log("prepare to generate pageblock")
+    this.startAddPage()
     const holder = this.make('a', this.CSS.linkPage, {
         target: '_blank',
         rel: 'nofollow noindex noreferrer',
@@ -149,9 +224,9 @@ export default class LinkPage {
     return holder;
   }
 
-  showPage({ image, title, description }){
+  showPage({ image, title, description, url }){
     this.nodes.container.appendChild(this.nodes.linkPage);
-    console.log(image, title, description)
+    
     if (image && image.url) {
       this.nodes.linkImage.style.backgroundImage = 'url(' + image.url + ')';
       this.nodes.linkPage.appendChild(this.nodes.linkImage);
@@ -169,16 +244,17 @@ export default class LinkPage {
 
     this.nodes.linkPage.classList.add(this.CSS.linkContentRendered);
     // this.nodes.linkContent.setAttribute('href', this.data.link);
-    this.nodes.linkPage.setAttribute('href', "https://i.imgur.com/jj4xbXL.png");
+    console.log(url);
+    this.nodes.linkPage.setAttribute('href', url);
     // this.nodes.linkContent.setAttribute('onclick', this.data.callback);
     this.nodes.linkPage.appendChild(this.nodes.linkText);
 
-    try {
-    //   this.nodes.linkText.textContent = (new URL(this.data.link)).hostname;
-      this.nodes.linkText.textContent = (new URL("https://i.imgur.com/jj4xbXL.png")).hostname;
-    } catch (e) {
-      this.nodes.linkText.textContent = this.data.link;
-    }
+    // try {
+    // //   this.nodes.linkText.textContent = (new URL(this.data.link)).hostname;
+    //   this.nodes.linkText.textContent = (new URL("https://i.imgur.com/jj4xbXL.png")).hostname;
+    // } catch (e) {
+    //   this.nodes.linkText.textContent = this.data.link;
+    // }
   }
   /**
    * Return Block data
@@ -188,6 +264,7 @@ export default class LinkPage {
    * @returns {LinkToolData}
    */
   save() {
+    console.log(this.data)
     return this.data;
   }
 
@@ -200,6 +277,7 @@ export default class LinkPage {
    * @returns {boolean} false if saved data is incorrect, otherwise true
    */
   validate() {
+    console.log(this.data.link)
     return this.data.link.trim() !== '';
   }
 
@@ -388,7 +466,6 @@ export default class LinkPage {
 
     this.nodes.linkContent.classList.add(this.CSS.linkContentRendered);
     this.nodes.linkContent.setAttribute('href', this.data.link);
-    // this.nodes.linkContent.setAttribute('onclick', this.data.callback);
     this.nodes.linkContent.appendChild(this.nodes.linkText);
 
     try {

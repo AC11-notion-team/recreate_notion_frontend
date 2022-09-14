@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Share from "./Share";
 import More from "./More";
 import Title from "./Title";
