@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import globe from "../../image/globe.png";
-import MenuButton from "../Share/../MenuButton";
+import MenuButton from "../MenuButton";
 import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
 import LearnMore from "./component/LearnMore";
@@ -28,7 +28,7 @@ export default function Share({ currentPageID }) {
 				url: `${baseUrl}/pages/${currentPageId}.json`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 			}).then((res) => {
 				const editList = {
@@ -55,7 +55,7 @@ export default function Share({ currentPageID }) {
 				url: `${baseUrl}/pages/${currentPageId}/editable`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 				params: {
 					state: state,

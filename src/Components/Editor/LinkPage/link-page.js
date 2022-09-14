@@ -165,7 +165,7 @@ export default class PageLink {
         url: `${baseUrl}/pages`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+          Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
         },
       })
       const data = JSON.stringify(res.data)

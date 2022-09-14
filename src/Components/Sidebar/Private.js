@@ -13,15 +13,13 @@ export default function Private({ onEmojiClick }) {
 	useEffect(() => {
 		
 		(async () => {
-			console.log("private render")
 			try {
 				const response = await axios({
 					method: "get",
 					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 					headers: {
 						"Content-Type": "application/json",
-						Authorization:
-							"Bearer " + localStorage.getItem("zettel_user_token"),
+						Authorization:`Bearer ${localStorage.getItem("zettel_user_token")}`,
 					},
 				});
 			 changePages(response.data.pages);
