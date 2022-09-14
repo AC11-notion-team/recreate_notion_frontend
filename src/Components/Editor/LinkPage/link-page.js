@@ -79,9 +79,10 @@ export default class PageLink {
    * @param {object} api - Editor.js API
    * @param {boolean} readOnly - read-only mode flag
    */
-  constructor({ data, config, api, readOnly }) {
+  constructor({ data, config, api, readOnly, block }) {
     this.api = api;
     this.readOnly = readOnly;
+    this.blockAPI = block;
 
     /**
      * Tool's initial config
@@ -124,10 +125,6 @@ export default class PageLink {
     this.nodes.wrapper = this.make('div', this.CSS.baseClass);
     this.nodes.container = this.make('div', this.CSS.container);
     this.nodes.linkPage = this.preparePage()
-    this.nodes.inputHolder = this.makeInputHolder();
-    // this.nodes.linkContent = this.prepareLinkPreview();
-    
-    
 
     /**
      * If Tool already has data, render link preview, otherwise insert input
@@ -138,15 +135,13 @@ export default class PageLink {
     // } else {
     //   this.nodes.container.appendChild(this.nodes.inputHolder);
     // }
-    // if (Object.keys(this.data.meta).length) {
-    //   this.nodes.container.appendChild(this.nodes.linkContent);
-    //   this.showLinkPreview(this.data.meta);
-    // } else {
-    //   this.nodes.container.appendChild(this.nodes.linkPage);
-    // }
-    this.nodes.container.appendChild(this.nodes.linkPage);
-    // this.showPage(this.data.meta);
-    // this.showPage({image: "https://i.imgur.com/jj4xbXL.png", title: "title", description: "description"})
+    if (Object.keys(this.data.link).length) {
+      this.nodes.container.appendChild(this.nodes.linkPage);
+      this.showPage(this.data.link);
+    } else {
+      this.startAddPage();
+    }
+    
     this.nodes.wrapper.appendChild(this.nodes.container);
 
     return this.nodes.wrapper;
@@ -155,6 +150,7 @@ export default class PageLink {
   startAddPage(){
     this.addPage()
   }
+  
   async addPage(){
     
     const baseUrl = process.env.REACT_APP_BASEURL;
@@ -165,7 +161,7 @@ export default class PageLink {
         url: `${baseUrl}/pages`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+          Authorization: `Bearer ${ localStorage.getItem("zettel_user_token") || null }`,
         },
       })
       const data = JSON.stringify(res.data)
@@ -176,41 +172,24 @@ export default class PageLink {
     } catch(error){
       console.error(error)
     }
-      // .then((result) => {
-      //  let data = JSON.stringify(result.data);
-      //  let jsonData = JSON.parse(data);
-      //  console.log(jsonData)
-      //   return jsonData
-      // })
-      // .catch((err) => {
-      //  console.error(err);
-      // });
   }
 
   onAddPage(inputdata){
     const domainUrl = process.env.REACT_APP_DOMAINURL;
-    console.log(inputdata)
     const url = `${domainUrl}${inputdata.id}`
     this.data = {
       link: url,
-      meta: {
-        image: "",
-        title: "untitled",
-        description: ""
-
-      },
     };
+    
     this.showPage({
-      image: "",
-      title: "untitled",
-      description: "",
+      image: inputdata.icon,
+      title: inputdata.title,
       url
     })
+    this.blockAPI.dispatchChange()
   }
 
   preparePage(){
-    console.log("prepare to generate pageblock")
-    this.startAddPage()
     const holder = this.make('a', this.CSS.linkPage, {
         target: '_blank',
         rel: 'nofollow noindex noreferrer',
@@ -244,7 +223,6 @@ export default class PageLink {
 
     this.nodes.linkPage.classList.add(this.CSS.linkContentRendered);
     // this.nodes.linkContent.setAttribute('href', this.data.link);
-    console.log(url);
     this.nodes.linkPage.setAttribute('href', url);
     // this.nodes.linkContent.setAttribute('onclick', this.data.callback);
     this.nodes.linkPage.appendChild(this.nodes.linkText);
@@ -264,7 +242,6 @@ export default class PageLink {
    * @returns {LinkToolData}
    */
   save() {
-    console.log(this.data)
     return this.data;
   }
 
@@ -277,7 +254,6 @@ export default class PageLink {
    * @returns {boolean} false if saved data is incorrect, otherwise true
    */
   validate() {
-    console.log(this.data.link)
     return this.data.link.trim() !== '';
   }
 
@@ -331,52 +307,6 @@ export default class PageLink {
   }
 
   /**
-   * Prepare input holder
-   *
-   * @returns {HTMLElement}
-   */
-  makeInputHolder() {
-    const inputHolder = this.make('div', this.CSS.inputHolder);
-
-    this.nodes.progress = this.make('label', this.CSS.progress);
-    this.nodes.input = this.make('div', [this.CSS.input, this.CSS.inputEl], {
-      contentEditable: !this.readOnly,
-    });
-
-    this.nodes.input.dataset.placeholder = this.api.i18n.t('Link');
-
-    if (!this.readOnly) {
-      this.nodes.input.addEventListener('paste', (event) => {
-        this.startFetching(event);
-      });
-
-      this.nodes.input.addEventListener('keydown', (event) => {
-        const [ENTER, A] = [13, 65];
-        const cmdPressed = event.ctrlKey || event.metaKey;
-
-        switch (event.keyCode) {
-          case ENTER:
-            event.preventDefault();
-            event.stopPropagation();
-
-            this.startFetching(event);
-            break;
-          case A:
-            if (cmdPressed) {
-              this.selectLinkUrl(event);
-            }
-            break;
-        }
-      });
-    }
-
-    inputHolder.appendChild(this.nodes.progress);
-    inputHolder.appendChild(this.nodes.input);
-
-    return inputHolder;
-  }
-
-  /**
    * Activates link data fetching by url
    *
    * @param {PasteEvent} event
@@ -422,58 +352,6 @@ export default class PageLink {
     selection.addRange(range);
   }
 
-  /**
-   * Prepare link preview holder
-   *
-   * @returns {HTMLElement}
-   */
-  prepareLinkPreview() {
-    const holder = this.make('a', this.CSS.linkContent, {
-      target: '_blank',
-      rel: 'nofollow noindex noreferrer',
-    });
-
-    this.nodes.linkImage = this.make('div', this.CSS.linkImage);
-    this.nodes.linkTitle = this.make('div', this.CSS.linkTitle);
-    this.nodes.linkDescription = this.make('p', this.CSS.linkDescription);
-    this.nodes.linkText = this.make('span', this.CSS.linkText);
-
-    return holder;
-  }
-
-  /**
-   * Compose link preview from fetched data
-   *
-   * @param {metaData} meta - link meta data
-   */
-  showLinkPreview({ image, title, description }) {
-    this.nodes.container.appendChild(this.nodes.linkContent);
-
-    if (image && image.url) {
-      this.nodes.linkImage.style.backgroundImage = 'url(' + image.url + ')';
-      this.nodes.linkContent.appendChild(this.nodes.linkImage);
-    }
-
-    if (title) {
-      this.nodes.linkTitle.textContent = title;
-      this.nodes.linkContent.appendChild(this.nodes.linkTitle);
-    }
-
-    if (description) {
-      this.nodes.linkDescription.textContent = description;
-      this.nodes.linkContent.appendChild(this.nodes.linkDescription);
-    }
-
-    this.nodes.linkContent.classList.add(this.CSS.linkContentRendered);
-    this.nodes.linkContent.setAttribute('href', this.data.link);
-    this.nodes.linkContent.appendChild(this.nodes.linkText);
-
-    try {
-      this.nodes.linkText.textContent = (new URL(this.data.link)).hostname;
-    } catch (e) {
-      this.nodes.linkText.textContent = this.data.link;
-    }
-  }
 
   /**
    * Show loading progressbar
@@ -510,7 +388,7 @@ export default class PageLink {
   async fetchLinkData(url) {
     this.showProgress();
     this.data = { link: url };
-
+    this.save()
     try {
       const { body } = await (ajax.get({
         url: this.config.endpoint,
