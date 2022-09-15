@@ -18,7 +18,7 @@ import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
-import ToggleBlock from 'editorjs-toggle-block';
+// import ToggleBlock from 'editorjs-toggle-block';
 import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
@@ -39,6 +39,7 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
+  let isAddPageLink = false;
   
   useEffect(() => {
 		const config = {
@@ -60,6 +61,7 @@ function Editor() {
 					if (!ejInstance.current) {
 						initEditor(initialData);
 					}
+          
 				})
 				.catch((err) => console.error(err));
     }
@@ -96,7 +98,7 @@ function Editor() {
               `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
             data: {
-              page_id: { currentPageId },
+              page_id: currentPageId ,
               block_id: event.detail.target.id,
             },
           };
@@ -115,10 +117,6 @@ function Editor() {
               `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
             data: {
-              title: "sssssss",
-              page_id: {currentPageId},
-              icon: "",
-              cover: "wwwwwwwww",
               api: content,
             },
           };
@@ -126,11 +124,14 @@ function Editor() {
             .then((res) => res)
             .catch((err) => console.error(err));
         }
-        if (event.type === "block-changed" && event.detail.target.name === "linkpage"){
+        if (event.type === "block-added" && event.detail.target.name === "linkpage"){
+          isAddPageLink = true
+        }
+        if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
           const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
           const newPage = block.link.split("localhost:3000/")[1]
-          console.log(block)
           if (newPage){
+            isAddPageLink = false
             changePages(prevPages => [...prevPages, block.meta])
             changeCurrentPage(newPage)
           }
@@ -252,10 +253,10 @@ function Editor() {
 
         textVariant: TextVariantTune,
 
-        toggle: {
-          class: ToggleBlock,
-          inlineToolbar: true,
-        },
+        // toggle: {
+        //   class: ToggleBlock,
+        //   inlineToolbar: true,
+        // },
 
       }, 
     });
