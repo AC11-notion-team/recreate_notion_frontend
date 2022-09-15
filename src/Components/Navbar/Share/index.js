@@ -12,16 +12,15 @@ export default function Share({ currentPageID }) {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(false);
-	const [isEditable, setIsEditable] = useState(false);
 	const currentPageId = useCurrentPageId();
 	const handleToggle = (e) => {
 		if (e.target.className.includes("IsShare") === true) {
 			setIsShare((prevShare) => !prevShare);
 		}
 	};
-	const [isInvite, setIsInvite] = useState(true);
+	const [editable, setEditable] = useState([false, false]);
 
-	const inviteUrl = `${domainUrl}/page/${currentPageId}`;
+	const inviteUrl = `${domainUrl}/${currentPageId}`;
 	useEffect(() => {
 		if (currentPageId) {
 			axios({
@@ -32,24 +31,24 @@ export default function Share({ currentPageID }) {
 					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
 			}).then((res) => {
-				setIsInvite(res.data.share);
-				setIsEditable(res.data.editable);
+				const editList = {
+					null: [false, false],
+					true: [true, true],
+					false: [true, false],
+				};
+				setEditable(editList[res.data.editable]);
 			});
 		}
-	}, [baseUrl, currentPageId, isShare]);
+	}, [currentPageId]);
 	useEffect(() => {
-		if (currentPageId) {
-			axios({
-				method: "put",
-				url: `${baseUrl}/pages/${currentPageId}/share`,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
-				},
-			});
+		let state = "";
+		if (!editable[0]) {
+			state = null;
+		} else if (editable[1]) {
+			state = true;
+		} else {
+			state = false;
 		}
-	}, [baseUrl, currentPageId, isInvite]);
-	useEffect(() => {
 		if (currentPageId) {
 			axios({
 				method: "put",
@@ -58,11 +57,24 @@ export default function Share({ currentPageID }) {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
+				params: {
+					state: state,
+				},
+			}).catch((err) => {
+				console.log(err);
 			});
 		}
-	}, [baseUrl, currentPageId, isEditable]);
+	}, [editable]);
+
 	const handleEditable = () => {
-		setIsEditable((prevIsEditable) => !prevIsEditable);
+		let invite = editable[0];
+		let edi = editable[1];
+		setEditable([invite, !edi]);
+	};
+	const handleShare = () => {
+		let invite = editable[0];
+		let edi = editable[1];
+		setEditable([!invite, edi]);
 	};
 
 	return (
@@ -76,45 +88,45 @@ export default function Share({ currentPageID }) {
 			{isShare && (
 				<div
 					onClick={handleToggle}
-					className="IsShare fixed  w-screen top-0 bottom-0 left-0 z-20"
+					className="fixed top-0 bottom-0 left-0 z-20 w-screen IsShare"
 				>
-					<div className="absolute border-2 bg-white box-shadow right-4 top-12 rounded w-4/12 min-w-min">
+					<div className="absolute w-4/12 bg-white border-2 rounded box-shadow right-4 top-12 min-w-min">
 						<ShareToParticularPerson />
 						<hr />
 						<div className="point">
-							<div className="flex justify-between items-center py-3 px-2">
+							<div className="flex items-center justify-between px-2 py-3">
 								<div className="flex items-center">
 									<div className="px-3">
 										<img src={globe} alt="showToWeb" className="w-7 h-7" />
 									</div>
 									<div>
 										<p className="text-sm">Share to web</p>
-										<p className="text-xs text-gray-500 overflow-x-hidden">
+										<p className="overflow-x-hidden text-xs text-gray-500">
 											Publish and share link with anyone
 										</p>
 									</div>
 								</div>
 
 								<Switch
-									checked={isInvite}
-									onChange={setIsInvite}
+									checked={editable[0]}
+									onChange={handleShare}
 									className={`${
-										isInvite ? "bg-blue-600" : "bg-gray-200"
+										editable[0] ? "bg-blue-600" : "bg-gray-200"
 									} relative inline-flex h-6 w-11 items-center rounded-full`}
 								>
 									<span className="sr-only">Enable notifications</span>
 									<span
 										className={`${
-											isInvite ? "translate-x-6" : "translate-x-1"
+											editable[0] ? "translate-x-6" : "translate-x-1"
 										} inline-block h-4 w-4 transform rounded-full bg-white transition`}
 									/>
 								</Switch>
 							</div>
 						</div>
-						{isInvite && (
+						{editable[0] && (
 							<ShareLink
 								inviteUrl={inviteUrl}
-								isEditable={isEditable}
+								editable={editable}
 								handleEditable={handleEditable}
 							/>
 						)}
