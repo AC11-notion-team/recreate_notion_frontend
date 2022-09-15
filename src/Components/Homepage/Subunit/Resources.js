@@ -63,8 +63,8 @@ export default function Resources (props) {
         <div className="max-w-7xl mx-auto  flex ">   
              <div className=" w-full justify-between md:flex">
                 <div className="flex mr-5">
-                    <img className="h-12 w-12 mr-3 " src="/zittel1.png" alt="" />
-                    <p className="text-lg font-bold mt-2 ">Zittel</p>
+                    <img className="h-12 w-12 mr-3 " src="/zettel.png" alt="" />
+                    <p className="text-lg font-bold mt-2 ">Zettel</p>
                 </div>
                 <div>
                     <h2 className="text-2xl font-semibold ">Product</h2>

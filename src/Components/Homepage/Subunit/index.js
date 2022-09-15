@@ -1,12 +1,10 @@
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router-dom";
-import Navlist from "./Navlist.jsx";
 
 const  Nav = props => (
     <nav className="  md:flex  items-center max-w-7xl mx-auto  py-5 sticky top-0 left-0 right-0 bg-[#fffefc] z-20">
         <div className="flex item-center flex-wrap items-center max-auto">
-            <div className="flex items-center  h-12 w-10 "><img src="/zittel1.png" alt="" /></div>
+            <div className="flex items-center  h-12 w-10 "><img src="/zettel.png" alt="" /></div>
             <span className="text-xl font-bold ml-2">Zettel</span>
         </div>
         <div className="hidden md:block p-1 text-xl">

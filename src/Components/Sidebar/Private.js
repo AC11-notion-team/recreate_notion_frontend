@@ -21,8 +21,7 @@ export default function Private({ onEmojiClick }) {
 					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
 					headers: {
 						"Content-Type": "application/json",
-						Authorization:
-							"Bearer " + localStorage.getItem("zettel_user_token"),
+						Authorization:`Bearer ${localStorage.getItem("zettel_user_token")}`,
 					},
 				});
 				changePages(response.data.pages);

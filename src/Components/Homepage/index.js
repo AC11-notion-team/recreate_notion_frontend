@@ -1,9 +1,9 @@
 import React from "react";
 import EditableBlock from "./Subunit/";
-import Features from "./Subunit/Features.jsx";
-import Slideshow from "./Subunit/Slideshow.jsx";
-import StartNotion from "./Subunit/StartNotion.jsx";
-import Resources from "./Subunit/Resources.jsx";
+import Features from "./Subunit/Features.js";
+import Slideshow from "./Subunit/Slideshow.js";
+import StartNotion from "./Subunit/StartNotion.js";
+import Resources from "./Subunit/Resources.js";
 
 function Homepage() {
 	return (

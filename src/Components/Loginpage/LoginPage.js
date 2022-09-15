@@ -27,119 +27,105 @@ export default function LoginPage() {
   },[status])
 
   async function testEmailExist(data){
-    try{
-      await axios({
-        method:"get",
-        url:`${baseUrl}/users/email_present.json`,
-        params:{
-          email:data.email
-        }
-      }).then((res)=>{
-        console.log("hfugjukkufiug");
-        console.log(res.data.message);
-        console.log("hfugjukkufiug");
-        if(res.data.status === "third"){
-          setstatus("init")
-          Swal.fire({
-            icon: 'error',
-            title: 'oops...',
-            text: '已於google登入註冊，請使用google登入',
-            footer: '<a href="">Why do I have this issue?</a>'
-          })
-        }else{
-          setstatus(res.data.status)
-        }
-      })
-    }catch(error){
+    await axios({
+      method:"get",
+      url:`${baseUrl}/users/email_present.json`,
+      params:{
+        email:data.email
+      }
+    }).then((res)=>{
+      if(res.data.status === "third"){
+        setstatus("init")
+        Swal.fire({
+          icon: 'error',
+          title: 'oops...',
+          text: '已於google登入註冊，請使用google登入',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
+      }else{
+        setstatus(res.data.status)
+      }
+    }).catch((error)=>{
       Swal.fire({
         icon: 'error',
         title: 'oops...',
         text: 'server wrong',
         footer: '<a href="">Why do I have this issue?</a>'
       })
-    }
+    })
   }
   async function goToRigister(data){
-    try{
-      await axios({
-        method:"post",
-        url:`${baseUrl}/users`,
-        params:{
-          email:data.email,
-          username: data.username,
-          password: data.password
-        }
-      }).then((res)=>{
-        setstatus("unvertify")
-        console.log(status);
-        console.log(status);
-      })
-    }catch(error){
+    await axios({
+      method:"post",
+      url:`${baseUrl}/users`,
+      params:{
+        email:data.email,
+        username: data.username,
+        password: data.password
+      }
+    }).then((res)=>{
+      setstatus("unvertify")
+    }).catch((error)=>{
       console.log(error);
-    }
+    })
   }
   async function goToVertify(data){
-    try{
-      await axios({
-        method:"get",
-        url:`${baseUrl}/users/email_confirmed`,
-        params:{
-          email:data.email,
-          username: data.username,
-          password: data.password,
-          confirm_token: data.confirm_token
-        }
-      }).then((res)=>{
-        if(res.data.status==="login"){
-          window.location.reload(false);
-        }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'oops...',
-            text: 'passcode wrong',
-            footer: '<a href="">Why do I have this issue?</a>'
-          })
-        }
-        setstatus(res.data.status)
-      })
-    }catch(error){
-      console.log(error);
-    }
-  }
-  async function goToLogin(data){
-    try{
-      await axios({
-        method:"post",
-        url:`${baseUrl}/users/login`,
-        params:{
-          email:data.email,
-          password: data.password,
-        }
-      }).then((res)=>{
-        console.log(res);
-        if(res.data.status==="success"){
-          localStorage.setItem("zettel_user_token", res.data.auth_token);
-				  localStorage.setItem("zettel_user_id", res.data.user_id);
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Your work has been success login',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          return navigate("/");
-        }
+    await axios({
+      method:"get",
+      url:`${baseUrl}/users/email_confirmed`,
+      params:{
+        email:data.email,
+        username: data.username,
+        password: data.password,
+        confirm_token: data.confirm_token
+      }
+    }).then((res)=>{
+      if(res.data.status==="login"){
+        window.location.reload(false);
+      }else{
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: '密碼錯了',
+          title: 'oops...',
+          text: 'passcode wrong',
           footer: '<a href="">Why do I have this issue?</a>'
         })
-        setstatus(res.data.status)
-      })
-    }catch(error){
+      }
+      setstatus(res.data.status)
+    }).catch((error)=>{
       console.log(error);
-    }
+    })
+  }
+  async function goToLogin(data){
+    await axios({
+      method:"post",
+      url:`${baseUrl}/users/login`,
+      params:{
+        email:data.email,
+        password: data.password,
+      }
+    }).then((res)=>{
+      if(res.data.status==="success"){
+        localStorage.setItem("zettel_user_token", res.data.auth_token);
+        localStorage.setItem("zettel_user_id", res.data.user_id);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been success login',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        return navigate("/");
+      }
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '密碼錯了',
+        footer: '<a href="">Why do I have this issue?</a>'
+      })
+      setstatus(res.data.status)
+    }).catch((error)=>{
+      console.log(error);
+    })
   }
 
   const onSubmit = (data)=>{
@@ -159,7 +145,7 @@ export default function LoginPage() {
   
   return (
     <>
-      <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 "><img src="/zittel1.png" alt="" />
+      <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 "><img src="/zettel.png" alt="" />
         <span className="text-xl font-medium ml-2">Zettel</span>
       </div>
       <div className="w-full mt-4 border-b-2  border-grey-100 "/>
