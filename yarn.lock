@@ -1081,6 +1081,15 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@calumk/editorjs-codeflask@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@calumk/editorjs-codeflask/-/editorjs-codeflask-1.0.9.tgz#3dbbcd19eabd7dbf505a5d5a44a9dcd84ed6f751"
+  integrity sha512-AC3QfGx248hP5utjq0+8Pjt/wiT8p/S5Dg/upJSWFNc0QrG0y/4PaLscDMcYb3RUhfNJNAdULww8kqQEMLHM6A==
+  dependencies:
+    codeflask "^1.4.1"
+    nice-select2 "^2.0.0"
+    prismjs-components-importer "^0.1.0"
+
 "@codexteam/shortcuts@^1.1.1":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@codexteam/shortcuts/-/shortcuts-1.2.0.tgz"
@@ -2278,6 +2287,11 @@
   resolved "https://registry.npmjs.org/@types/prettier/-/prettier-2.7.0.tgz"
   integrity sha512-RI1L7N4JnW5gQw2spvL7Sllfuf1SaHdrZpCHiBlCXjIlufi1SMNnbu2teze3/QE67Fg2tBlH7W+mi4hVNk4p0A==
 
+"@types/prismjs@^1.9.1":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.26.0.tgz#a1c3809b0ad61c62cac6d4e0c56d610c910b7654"
+  integrity sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==
+
 "@types/prop-types@*":
   version "15.7.5"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz"
@@ -3416,6 +3430,14 @@ coa@^2.0.2:
     chalk "^2.4.1"
     q "^1.1.2"
 
+codeflask@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/codeflask/-/codeflask-1.4.1.tgz#c5229854e3f648377922a75f1145f7316030d3db"
+  integrity sha512-4vb2IbE/iwvP0Uubhd2ixVeysm3KNC2pl7SoDaisxq1juhZzvap3qbaX7B2CtpQVvv5V9sjcQK8hO0eTcY0V9Q==
+  dependencies:
+    "@types/prismjs" "^1.9.1"
+    prismjs "^1.14.0"
+
 codex-notifier@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/codex-notifier/-/codex-notifier-1.1.2.tgz"
@@ -4114,6 +4136,13 @@ editorjs-drag-drop@^1.1.5:
   version "1.1.6"
   resolved "https://registry.npmjs.org/editorjs-drag-drop/-/editorjs-drag-drop-1.1.6.tgz"
   integrity sha512-lL6luxKFhaWHuG9fIge5g2RkN9lXvwQ7TMeOXMFz7AZeX3rQQ00eVSTwxfvizev7Nn/GOBTY/8yutBQN3Jl2UA==
+
+editorjs-toggle-block@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/editorjs-toggle-block/-/editorjs-toggle-block-0.3.0.tgz#e6d8bffdd9357c619924de8d031a13a33803911f"
+  integrity sha512-Qk/pr8gJzpAp6CMtHewaS+92UpzoxMEufdh/ABbqwROf+DuCDLncLZPB8HQKO0ygzoT6fRkdUClVV/kSJbnHIg==
+  dependencies:
+    uuid "^9.0.0"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -6955,6 +6984,11 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+nice-select2@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/nice-select2/-/nice-select2-2.0.0.tgz#0ed3016a2825f5fa6020dad69b84877c4a8278a4"
+  integrity sha512-VeBynMpjIe0DkGBC5by575YH+m1c7UaMOsByiGUhMBQ3JJa4+loimaHXwFXixk3ItPH7f9JonZ4rf5vsx6IWQw==
+
 no-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npmjs.org/no-case/-/no-case-3.0.4.tgz"
@@ -7928,6 +7962,16 @@ pretty-format@^29.0.2:
     "@jest/schemas" "^29.0.0"
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
+
+prismjs-components-importer@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/prismjs-components-importer/-/prismjs-components-importer-0.1.0.tgz#e6c58493b5f4b5eca46585234e7cc15b6b174e18"
+  integrity sha512-r+XHZW6IdECmNfzVT3H1fE/YQoEKtciMBJ9eSjz8jbp9RqlX3uTKvvn8knBJGmGDl4kbeBJjog5h0BhXAAUwsg==
+
+prismjs@^1.14.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
+  integrity sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -9434,6 +9478,11 @@ uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"

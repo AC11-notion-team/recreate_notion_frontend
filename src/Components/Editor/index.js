@@ -5,6 +5,7 @@ import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter'
 import DragDrop from 'editorjs-drag-drop';
 import Embed from '@editorjs/embed';
+import EditorjsCodeflask from '@calumk/editorjs-codeflask';
 import Footnotes from '@editorjs/footnotes';
 import Header from '@editorjs/header'; 
 import ImageTool from '@editorjs/image'
@@ -17,6 +18,7 @@ import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
+import ToggleBlock from 'editorjs-toggle-block';
 import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
@@ -37,7 +39,6 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
-  const showCurrentId = () => {console.log(currentPageId)}
   
   useEffect(() => {
 		const config = {
@@ -144,10 +145,7 @@ function Editor() {
           inlineToolbar:true,
         },
 
-        code:{
-          class: Code,
-          inlineToolbar:true,
-        },
+        code: EditorjsCodeflask,
 
         embed: Embed,
 
@@ -253,6 +251,11 @@ function Editor() {
         },
 
         textVariant: TextVariantTune,
+
+        toggle: {
+          class: ToggleBlock,
+          inlineToolbar: true,
+        },
 
       }, 
     });
