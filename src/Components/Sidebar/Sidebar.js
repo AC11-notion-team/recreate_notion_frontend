@@ -31,7 +31,7 @@ export default function Sidebar({
 			url: `${baseUrl}/pages`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 			},
 		})
 			.then((result) => {

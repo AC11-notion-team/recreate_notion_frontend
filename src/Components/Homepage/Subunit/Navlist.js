@@ -1,13 +1,13 @@
 import React from "react";
 
-export default function Navlist (props) {
+export default function Navlist ({href,text}) {
     return (
     <li>
         <a 
-        href={props.href}
+        href={href}
         className=""
         >
-        {props.text}   
+        {text}   
         </a>
     </li> 
         

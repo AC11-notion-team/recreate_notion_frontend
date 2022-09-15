@@ -51,3 +51,35 @@
 .content {
   height: calc(100vh - 45px);
 }
+.cdx-checklist__item-checkbox {
+  border: 1px solid #808080 !important;
+}
+.tc-table {
+  border-top: 1px solid #808080 !important;
+}
+.tc-row {
+  border-bottom: 1px solid #808080 !important;
+}
+.tc-cell {
+  border-right: 1px solid #808080 !important;
+}
+.cdx-input {
+  border-left: 3px solid #000000;
+  border-top: 0px solid #ffffff;
+  border-right: 0px solid #ffffff;
+  border-bottom: 0px solid #ffffff;
+  border-radius: 0px;
+  min-height: 20px !important;
+}
+.cdx-quote__caption {
+  display: none !important;
+}
+.ce-delimiter:before {
+  content: "_________________________________________________________________________________________" !important;
+  letter-spacing: 0px !important;
+  font-size: 5px !important;
+  color: #808080 !important;
+}
+.ce-header {
+  font-weight: 500;
+}

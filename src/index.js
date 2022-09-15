@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
-import LoginPage from "./Components/Loginpage/LoginPage.jsx";
+import LoginPage from "./Components/Loginpage/LoginPage.js";
 import RequireAuth from "./Components/RequireAuth"
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { CurrentPageIdProvider } from "./CurrentPageId";
