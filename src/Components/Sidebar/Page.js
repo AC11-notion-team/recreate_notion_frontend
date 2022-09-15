@@ -7,7 +7,7 @@ import { useCurrentPageUpdateId } from "../../CurrentPageId";
 
 const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
-	const [displayDropdown, setDisplayDropdown] = useState(true);
+	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const closeDropdown = useCallback(() => {
 		setDisplayDropdown(false);
 	}, []);
