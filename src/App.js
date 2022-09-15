@@ -39,7 +39,6 @@ function App() {
 
 	const onEmojiClick = (event, currentPageID, emojiObject) => {
 		const { type, id, value, className } = event.target;
-		console.log("emojiClick")
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
@@ -63,7 +62,6 @@ function App() {
 		if (type === "text") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					// console.log(item);
 					return item.id === id ? { ...item, title: value } : item;
 				});
 			});

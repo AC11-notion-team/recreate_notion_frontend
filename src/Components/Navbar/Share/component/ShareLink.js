@@ -2,14 +2,14 @@ import React from "react";
 import pencil from "../../../image/pencil.png";
 import { Switch } from "@headlessui/react";
 
-const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
+const ShareLink = ({ inviteUrl, editable, handleEditable }) => {
 	const copyToClipBoard = () => {
 		navigator.clipboard.writeText(inviteUrl);
 	};
 	return (
 		<div className="point">
 			<div className="">
-				<div className="flex mb-0 mt-1 mx-3     relative">
+				<div className="relative flex mx-3 mt-1 mb-0">
 					<input
 						type="text"
 						id="disabled-input"
@@ -41,16 +41,16 @@ const ShareLink = ({ inviteUrl, isEditable, handleEditable }) => {
 
 					<div className="flex content-center">
 						<Switch
-							checked={isEditable}
+							checked={editable[1]}
 							onChange={handleEditable}
 							className={`${
-								isEditable ? "button-bg" : "bg-gray-200"
+								editable[1] ? "button-bg" : "bg-gray-200"
 							} relative inline-flex h-6 w-11 items-center rounded-full`}
 						>
 							<span className="sr-only">Enable notifications</span>
 							<span
 								className={`${
-									isEditable ? "translate-x-6" : "translate-x-1"
+									editable[1] ? "translate-x-6" : "translate-x-1"
 								} inline-block h-4 w-4 transform rounded-full bg-white transition`}
 							/>
 						</Switch>

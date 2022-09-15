@@ -19,7 +19,8 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import { useCurrentPageId } from "../../CurrentPageId";
+import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
+import { usePagesUpdate } from "../../Pages";
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -29,20 +30,23 @@ const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVers
 const baseUrl = process.env.REACT_APP_BASEURL;
 
 
+
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-	
-	const ejInstance = useRef();
-	const [_, setEditorData] = useState("");
 	const currentPageId = useCurrentPageId();
-	useEffect(() => {
+  const changeCurrentPage = useCurrentPageUpdateId();
+  const changePages = usePagesUpdate()
+	const ejInstance = useRef();
+  const showCurrentId = () => {console.log(currentPageId)}
+  
+  useEffect(() => {
 		const config = {
 			method: "get",
 			url: `${baseUrl}/pages/${currentPageId}.json`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization:
-					"Bearer " + localStorage.getItem("zettel_user_token") || null,
+					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
 			},
 		};
 		if (currentPageId) {
@@ -52,7 +56,6 @@ function Editor() {
 						time: Date.now(),
 						blocks: res.data.blocks,
 					};
-					setEditorData(initialData);
 					if (!ejInstance.current) {
 						initEditor(initialData);
 					}
@@ -89,7 +92,7 @@ function Editor() {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
             data: {
               page_id: { currentPageId },
@@ -99,6 +102,7 @@ function Editor() {
           axios(config)
             .then((res) => res)
             .catch((err) => console.error(err));
+          return
         }
         if (event.type !== "block-removed") {
           const config = {
@@ -107,7 +111,7 @@ function Editor() {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
             data: {
               title: "sssssss",
@@ -121,9 +125,17 @@ function Editor() {
             .then((res) => res)
             .catch((err) => console.error(err));
         }
-
-        setEditorData(content);
+        if (event.type === "block-changed" && event.detail.target.name === "linkpage"){
+          const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
+          const newPage = block.link.split("localhost:3000/")[1]
+          console.log(block)
+          if (newPage){
+            changePages(prevPages => [...prevPages, block.meta])
+            changeCurrentPage(newPage)
+          }
+        }
       },
+
       autofocus: false,
       tools: { 
 
@@ -158,7 +170,7 @@ function Editor() {
               byUrl: `${baseUrl}/uploadImageByUrl`,
             },
             additionalRequestHeaders:{
-              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              Authorization: `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
             uploader: {
               /**
@@ -202,7 +214,7 @@ function Editor() {
           config: {
             endpoint: `${baseUrl}/fetch`,
             headers:{
-              Authorization: "Bearer " + localStorage.getItem("zettel_user_token") || null,
+              Authorization: `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
             },
           },
         },
@@ -248,10 +260,9 @@ function Editor() {
   
   return (
     <div className="relative content overflow-auto ">
-      <React.Fragment>
-          <div  id={EDITTOR_HOLDER_ID}> </div>
-          {/* <button onClick= {()=> console.log(editorData)}> data</button> */}
-      </React.Fragment>
+        
+        <div  id={EDITTOR_HOLDER_ID}> </div>
+        <div onClick={()=> console.log(currentPageId)}>click here</div>
     </div>
   );
 }
