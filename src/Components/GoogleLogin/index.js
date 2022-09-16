@@ -17,7 +17,6 @@ const GoogleLogin = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		setuser(payload);
 
 		axios
 			.post(`${baseUrl}/users/third_party_login`, {
