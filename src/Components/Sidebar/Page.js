@@ -59,7 +59,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 						className="w-5 h-5 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded"
 						data-aa="bb"
 					>
-						<img src={addPage} alt="sidePageMoreButton" />
+						<img src={addPage} alt="sidePageMoreButton" className="w-full h-full" />
 					</button>
 				</div>
 			</div>

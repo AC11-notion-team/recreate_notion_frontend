@@ -18,11 +18,13 @@ const GoogleLogin = () => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
 		setuser(payload);
+		
 
 		axios
 			.post(`${baseUrl}/auth/third_party_login`, {
 				name: payload.name,
 				email: payload.email,
+				image: payload.picture
 			})
 			.then((res) => {
 				console.log(res.data);

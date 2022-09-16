@@ -56,7 +56,7 @@ export default function PageMore({
 					className="w-5 h-5 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded"
 					data-aa="aa"
 				>
-					<img src={more} alt="sidePageMoreButton mr-2" />
+					<img src={more} alt="sidePageMoreButton" className="w-full h-full" />
 				</button>
 			</div>
 			{isPageMore && (
