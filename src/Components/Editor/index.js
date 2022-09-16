@@ -18,7 +18,6 @@ import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
-// import ToggleBlock from 'editorjs-toggle-block';
 import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
@@ -58,6 +57,7 @@ function Editor() {
 						time: Date.now(),
 						blocks: res.data.blocks,
 					};
+          console.log(res.data)
 					if (!ejInstance.current) {
 						initEditor(initialData);
 					}
@@ -85,8 +85,6 @@ function Editor() {
       },
       onChange: async (api, event) => {
         let content = await editor.save();
-        console.log(event)
-        console.log(content)
         // Put your logic here to save this data to your DB
         if (event.type === "block-removed" && !event.detail.target.isEmpty) {
           const config = {

@@ -99,12 +99,9 @@ export default class PageLink {
     this.nodes.linkPage = this.preparePage()
 
     if (Object.keys(this.data.link).length) {
-      console.log("load")
       this.startFetchLinkData();
     } else {
-      console.log("add")
       this.addPage()
-      // this.startAddPage();
     }
     this.nodes.wrapper.appendChild(this.nodes.container);
 
@@ -188,7 +185,6 @@ export default class PageLink {
       console.error(error)
       this.fetchingFailed()
     }
-    
   }
 
   /**
@@ -274,20 +270,12 @@ export default class PageLink {
       /**
        * Tool's classes
        */
-      container: 'link-tool',
-      inputEl: 'link-tool__input',
-      linkPage: 'link-tool__content',
-      inputHolder: 'link-tool__input-holder',
-      inputError: 'link-tool__input-holder--error',
-      linkContent: 'link-tool__content',
-      linkContentRendered: 'link-tool__content--rendered',
-      linkImage: 'link-tool__image',
-      linkTitle: 'link-tool__title',
-      linkDescription: 'link-tool__description',
-      linkText: 'link-tool__anchor',
-      progress: 'link-tool__progress',
-      progressLoading: 'link-tool__progress--loading',
-      progressLoaded: 'link-tool__progress--loaded',
+      container: 'link-page',
+      linkPage: 'link-page__content',
+      linkContent: 'link-page__content',
+      linkContentRendered: 'link-page__content--rendered',
+      linkTitle: 'link-page__title',
+      linkText: 'link-page__anchor',
     };
   }
 
