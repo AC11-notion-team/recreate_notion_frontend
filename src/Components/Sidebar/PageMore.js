@@ -90,6 +90,7 @@ export default function PageMore({
 						<Rename
 							pageTitle={pageTitle}
 							pageIcon={pageIcon}
+							pageID={pageID}
 							onEmojiClick={onEmojiClick}
 							handlePageMore={handleToggle}
 						/>

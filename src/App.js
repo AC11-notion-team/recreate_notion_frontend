@@ -37,14 +37,20 @@ function App() {
 	}, [isSide]);
 
 
-	const onEmojiClick = (event, currentPageID, emojiObject) => {
-		const { type, id, value, className } = event.target;
+	const onEmojiClick = (event, currentPageID,pageID, emojiObject) => {
+		const { type,value, className } = event.target;
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					return item.id === currentPageID
-						? { ...item, icon: emojiObject.emoji }
-						: item;
+					if(pageID){
+						return (item.id === pageID ?
+							{ ...item, icon: emojiObject.emoji }
+						   : item)
+					}else{
+						return item.id === currentPageID? 
+						{ ...item, icon: emojiObject.emoji }
+						: item
+					}
 				});
 			});
 			axios({
@@ -62,7 +68,13 @@ function App() {
 		if (type === "text") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					return item.id === id ? { ...item, title: value } : item;
+					if(pageID){
+						return (item.id === pageID ?
+							{ ...item, title: value } : item)
+					}else{
+						return item.id === currentPageID? 
+						{ ...item, title: value } : item
+					}
 				});
 			});
 			axios({
