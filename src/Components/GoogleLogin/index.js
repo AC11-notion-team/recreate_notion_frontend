@@ -17,12 +17,12 @@ const GoogleLogin = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-	
 
 		axios
 			.post(`${baseUrl}/users/third_party_login`, {
 				name: payload.name,
 				email: payload.email,
+				image: payload.picture
 			})
 			.then((res) => {
 				console.log(res.data);

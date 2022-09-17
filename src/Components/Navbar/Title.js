@@ -12,6 +12,9 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 			setIsTitleButton((prevTitleButton) => !prevTitleButton);
 		}
 	};
+	const callback = (e,) => {
+		onEmojiClick(e,currentPageId)
+	}
 
 	return (
 		<div>
@@ -37,9 +40,8 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 							</div>
 							<input
 								type="text"
-								onChange={(event) => onEmojiClick(event, currentPageId)}
+								onChange={callback}
 								className="share-like-input h-7 w-full rounded title"
-								id={currentPageId}
 								value={pageTitle}
 							/>
 						</div>
