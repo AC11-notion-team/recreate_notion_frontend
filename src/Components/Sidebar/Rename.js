@@ -35,9 +35,10 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore}
                         <input
                             type="text"
                             onChange={cb}
-                            className="share-like-input h-7 w-full rounded title"
+                            className="share-like-input h-7 pl-2 w-full rounded title "
                             id={currentPageId}
                             value={pageTitle}
+                            placeholder="Untitled"  
                         />
                     </div>
                 </div>}
