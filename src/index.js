@@ -5,8 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.js";
-import RequireAuth from "./Components/RequireAuth"
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import RequireAuth from "./Components/RequireAuth";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CurrentPageIdProvider } from "./CurrentPageId";
 import { PagesProvider } from "./Pages";
 import { InviteProvider } from "./InviteUser";
@@ -19,7 +19,7 @@ root.render(
 				<InviteProvider>
 					<BrowserRouter>
 						<Routes>
-							<Route element={< RequireAuth />}>
+							<Route element={<RequireAuth />}>
 								<Route path="/" element={<App />} />
 								<Route path="/:page_id" element={<App />} />
 							</Route>
