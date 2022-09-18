@@ -10,7 +10,9 @@ import duplicate from "../image/duplicate.png";
 import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
-import { usePages, usePagesUpdate } from "../../Pages";
+import { usePagesUpdate } from "../../Pages";
+import { useCurrentPageUpdateId } from "../../CurrentPageId";
+
 
 export default function PageMore({
 	closeDropdown,
@@ -23,6 +25,7 @@ export default function PageMore({
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
 	const changePages = usePagesUpdate();
+	const changeCurrentPageId = useCurrentPageUpdateId();
 
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
@@ -32,6 +35,7 @@ export default function PageMore({
 		onTriggered: closeDropdown,
 		allowAnyKey: false,
 	});
+	let prevId =""
 	const removePage = () => {
 		axios({
 			method: "delete",
@@ -43,17 +47,23 @@ export default function PageMore({
 		}).then((res) => {
 			changePages((prevPages) => {
 				return prevPages.filter((item) => {
-					return item.id !== pageID;
+					if(item.id !== pageID){
+						prevId = item.id
+					}else{
+						changeCurrentPageId(prevId)
+					}
+					return item.id !== pageID
+					
 				});
 			});
-		});
+		})
 	};
 
 	return (
 		<div ref={ref}>
 			<div onClick={handleToggle}>
 				<button
-					className="w-5 h-5 p-1 opacity-0 group-hover:opacity-80 hover:bg-gray-300 hover:rounded"
+					className="w-5 h-5 p-1 hidden group-hover:inline-block hover:bg-gray-300 hover:rounded"
 					data-aa="aa"
 				>
 					<img src={more} alt="sidePageMoreButton" className="w-full h-full" />
@@ -96,7 +106,7 @@ export default function PageMore({
 						/>
 					</div>
 					<hr />
-					<div className="p-2">
+					{/* <div className="p-2">
 						<ActionButton src={right} alt="moveTo" content="Move to" />
 					</div>
 					<hr />
@@ -112,7 +122,7 @@ export default function PageMore({
 						alt="learnAbout"
 						illustrate="Learn about databases"
 						className="py-1 px-0.5"
-					/>
+					/> */}
 				</div>
 			)}
 		</div>

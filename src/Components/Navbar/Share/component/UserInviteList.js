@@ -22,10 +22,8 @@ export default function UserInviteList({username,email,picture}){
                         <p className="text-xs text-gray-600 whitespace-pre">{email}</p>
                     </div>
                 </div>
-                {user != "" ?<div>
-                    <img src={check} alt="check" className="w-5 h-5"/>
-                </div>:null}
             </div>
+            
         </div>
     )
 }

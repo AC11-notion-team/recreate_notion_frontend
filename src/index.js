@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { CurrentPageIdProvider } from "./CurrentPageId";
 import { PagesProvider } from "./Pages";
 import { InviteProvider } from "./InviteUser";
+import {EmojiStateProvider} from "./EmojiState"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,16 +18,18 @@ root.render(
 		<PagesProvider>
 			<CurrentPageIdProvider>
 				<InviteProvider>
-					<BrowserRouter>
-						<Routes>
-							<Route element={< RequireAuth />}>
-								<Route path="/" element={<App />} />
-								<Route path="/:page_id" element={<App />} />
-							</Route>
-							<Route path="homepage" element={<HomePage />} />
-							<Route path="login-page" element={<LoginPage />} />
-						</Routes>
-					</BrowserRouter>
+					<EmojiStateProvider>
+						<BrowserRouter>
+							<Routes>
+								<Route element={< RequireAuth />}>
+									<Route path="/" element={<App />} />
+									<Route path="/:page_id" element={<App />} />
+								</Route>
+								<Route path="homepage" element={<HomePage />} />
+								<Route path="login-page" element={<LoginPage />} />
+							</Routes>
+						</BrowserRouter>
+					</EmojiStateProvider>
 				</InviteProvider>
 			</CurrentPageIdProvider>
 		</PagesProvider>

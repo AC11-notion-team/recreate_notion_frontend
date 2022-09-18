@@ -49,7 +49,6 @@ export default function Header({
 			</div>
 			<div className="flex">
 				<Share />
-				<Updata />
 				<div className="flex items-center">
 					<MenuButton
 						className="IsFavorite"

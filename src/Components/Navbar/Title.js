@@ -3,12 +3,13 @@ import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
 import { useCurrentPageId } from "../../CurrentPageId";
 
+
 export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	const currentPageId = useCurrentPageId();
 
 	const [isTitleButton, setIsTitleButton] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsTitle") === true) {
+		if (e.target.closest("div").className.includes("IsTitle")) {
 			setIsTitleButton((prevTitleButton) => !prevTitleButton);
 		}
 	};
