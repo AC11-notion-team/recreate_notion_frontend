@@ -18,9 +18,9 @@ import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
-// import ToggleBlock from 'editorjs-toggle-block';
 import aws from 'aws-sdk';
 import axios from 'axios';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
 import { usePagesUpdate } from "../../Pages";
 
@@ -40,30 +40,78 @@ function Editor() {
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
   let isAddPageLink = false;
-  
-  useEffect(() => {
-		const config = {
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageId}.json`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization:
+  // This can also be an async getter function. See notes below on Async Urls.
+  const socketUrl = 'ws://localhost:3001/cable';
+
+  const {
+    sendMessage,
+    sendJsonMessage,
+    lastMessage,
+    lastJsonMessage,
+    readyState,
+    getWebSocket,
+  } = useWebSocket(socketUrl, {
+    onOpen: () => console.log('opened'),
+    //Will attempt to reconnect on all close events, such as server shutting down
+    queryParams: {
+      Authorization:
 					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
-			},
-		};
+    },
+    shouldReconnect: (closeEvent) => true,
+  });
+  console.log(lastJsonMessage)
+  console.log(lastMessage)
+  
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
+  sendJsonMessage({
+    "command": "subscribe",
+    "identifier": JSON.stringify({
+      channel :"PageChannel",
+      id: currentPageId
+    }),
+  })
+
+  sendJsonMessage({
+    "command": "message",
+    "identifier": JSON.stringify({
+      channel :"PageChannel",
+      id: currentPageId
+    }),
+    "data": JSON.stringify({
+      action: "logSomething",
+      text: "hello"
+    })
+  })
+
+  useEffect(() => {
+		// const config = {
+		// 	method: "get",
+		// 	url: `${baseUrl}/pages/${currentPageId}.json`,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization:
+		// 			`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+		// 	},
+		// };
 		if (currentPageId) {
-			axios(config)
-				.then((res) => {
-					const initialData = {
-						time: Date.now(),
-						blocks: res.data.blocks,
-					};
-					if (!ejInstance.current) {
-						initEditor(initialData);
-					}
+			// axios(config)
+			// 	.then((res) => {
+			// 		const initialData = {
+			// 			time: Date.now(),
+			// 			blocks: res.data.blocks,
+			// 		};
+			// 		if (!ejInstance.current) {
+			// 			initEditor(initialData);
+			// 		}
           
-				})
-				.catch((err) => console.error(err));
+			// 	})
+			// 	.catch((err) => console.error(err));
     }
     
     return () => {
