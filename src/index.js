@@ -12,28 +12,31 @@ import { PagesProvider } from "./Pages";
 import { InviteProvider } from "./InviteUser";
 import {EmojiStateProvider} from "./EmojiState"
 import {TrashPagesProvider}from "./TrashPages"
+import {FavoriteProvider} from "./Favorite"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
 		<PagesProvider>
 			<CurrentPageIdProvider>
-				<TrashPagesProvider>
-					<InviteProvider>
-						<EmojiStateProvider>
-							<BrowserRouter>
-								<Routes>
-									<Route element={< RequireAuth />}>
-										<Route path="/" element={<App />} />
-										<Route path="/:page_id" element={<App />} />
-									</Route>
-									<Route path="homepage" element={<HomePage />} />
-									<Route path="login-page" element={<LoginPage />} />
-								</Routes>
-							</BrowserRouter>
-						</EmojiStateProvider>
-					</InviteProvider>
-				</TrashPagesProvider>
+				<FavoriteProvider>
+					<TrashPagesProvider>
+						<InviteProvider>
+							<EmojiStateProvider>
+								<BrowserRouter>
+									<Routes>
+										<Route element={< RequireAuth />}>
+											<Route path="/" element={<App />} />
+											<Route path="/:page_id" element={<App />} />
+										</Route>
+										<Route path="homepage" element={<HomePage />} />
+										<Route path="login-page" element={<LoginPage />} />
+									</Routes>
+								</BrowserRouter>
+							</EmojiStateProvider>
+						</InviteProvider>
+					</TrashPagesProvider>
+				</FavoriteProvider>
 			</CurrentPageIdProvider>
 		</PagesProvider>
 	</>

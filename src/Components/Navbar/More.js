@@ -19,8 +19,11 @@ import fullStar from "../image/full-star.png"
 import { useCurrentPageId ,useCurrentPageUpdateId  } from "../../CurrentPageId";
 import { usePagesUpdate } from "../../Pages";
 import axios from "axios";
+import {useFavorite,useFavoriteUpdate} from "../../Favorite"
 
-export default function More({isFavorite,toggleFavorite}){
+export default function More(){
+    const favorite = useFavorite();
+	const changeFavorite = useFavoriteUpdate();
     const [isMore,setIsMore] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("IsMore") === true){
@@ -71,7 +74,7 @@ export default function More({isFavorite,toggleFavorite}){
                     </div>
                     <hr />
                     <div className="p-1.5">
-                        <ActionButton src={isFavorite ? fullStar:emptyStar} alt="favorite" content={isFavorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={toggleFavorite} />
+                        <ActionButton src={favorite ? fullStar:emptyStar} alt="favorite" content={favorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={changeFavorite} />
                         <ActionButton src={link} alt="copyLink" content="Copy link" className="py-0.5"/>
                         <ActionButton src={notion} alt="openInMacApp" content="Open in Mac app" className="py-0.5"/>
                     </div>

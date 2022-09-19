@@ -1,6 +1,5 @@
 import React from "react";
-import setting from "../image/settings.png";
-import Star from "./Star";
+import FavoritePage from "./FavoritePage";
 import Private from "./Private";
 import Share from "./Share";
 import Templates from "./Templates";
@@ -11,12 +10,7 @@ import addPage from "../image/plus.png";
 import axios from "axios";
 import { usePagesUpdate } from "../../Pages";
 
-export default function Sidebar({
-	isFavorite,
-	toggleFavorite,
-	toggle,
-	onEmojiClick,
-}) {
+export default function Sidebar({toggle,onEmojiClick}) {
 	// useContext state= pages
 	const changePages = usePagesUpdate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -50,7 +44,7 @@ export default function Sidebar({
 			</div>
 			<div className="h-3/4 overflow-x-hidden overflow-y-auto">
 				<div className="mb-4">
-					<Star state={isFavorite} toggle={toggleFavorite} />
+					<FavoritePage onEmojiClick={onEmojiClick} />
 				</div>
 				<div className="mb-4">
 					<Share />

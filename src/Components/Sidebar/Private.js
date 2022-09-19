@@ -42,6 +42,7 @@ export default function Private({ onEmojiClick }) {
 					pageTitle={item.title}
 					pageIcon={item.icon}
 					pageID={item.id}
+					pageFavorite={item.id}
 				/>
 			))}
 		</div>
