@@ -17,19 +17,22 @@ const GoogleLogin = () => {
 	const onGoogleSignIn = (user) => {
 		let userCred = user.credential;
 		let payload = jwt_deocde(userCred);
-		setuser(payload);
 
 		axios
-			.post(`${baseUrl}/auth/third_party_login`, {
+			.post(`${baseUrl}/users/third_party_login`, {
 				name: payload.name,
 				email: payload.email,
+				image: payload.picture
 			})
 			.then((res) => {
 				console.log(res.data);
 				localStorage.setItem("zettel_user_token", res.data.auth_token);
 				localStorage.setItem("zettel_user_id", res.data.user_id);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+			.finally(()=>{
+				setuser(payload);
+			});
 		Swal.fire({
 			position: "top-end",
 			icon: "success",
@@ -57,6 +60,7 @@ const GoogleLogin = () => {
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
+				height: "36px",
 				width: "100%",
 				height: "60px",
 			}}

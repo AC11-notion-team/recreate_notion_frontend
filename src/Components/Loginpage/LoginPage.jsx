@@ -27,105 +27,113 @@ export default function LoginPage() {
   },[status])
 
   async function testEmailExist(data){
-    await axios({
-      method:"get",
-      url:`${baseUrl}/users/email_present.json`,
-      params:{
-        email:data.email
-      }
-    }).then((res)=>{
-      if(res.data.status === "third"){
-        setstatus("init")
-        Swal.fire({
-          icon: 'error',
-          title: 'oops...',
-          text: '已於google登入註冊，請使用google登入',
-          footer: '<a href="">Why do I have this issue?</a>'
-        })
-      }else{
-        setstatus(res.data.status)
-      }
-    }).catch((error)=>{
+    try{
+      await axios({
+        method:"get",
+        url:`${baseUrl}/users/email_present.json`,
+        params:{
+          email:data.email
+        }
+      }).then((res)=>{
+        if(res.data.status === "third"){
+          setstatus("init")
+          Swal.fire({
+            icon: 'error',
+            title: 'oops...',
+            text: '已於google登入註冊，請使用google登入',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
+        }else{
+          setstatus(res.data.status)
+        }
+      })
+    }catch(error){
       Swal.fire({
         icon: 'error',
         title: 'oops...',
         text: 'server wrong',
         footer: '<a href="">Why do I have this issue?</a>'
       })
-    })
+    }
   }
   async function goToRigister(data){
-    await axios({
-      method:"post",
-      url:`${baseUrl}/users`,
-      params:{
-        email:data.email,
-        username: data.username,
-        password: data.password
-      }
-    }).then((res)=>{
-      setstatus("unvertify")
-    }).catch((error)=>{
+    try{
+      await axios({
+        method:"post",
+        url:`${baseUrl}/users`,
+        params:{
+          email:data.email,
+          username: data.username,
+          password: data.password
+        }
+      }).then((res)=>{
+        setstatus("unvertify")
+      })
+    }catch(error){
       console.log(error);
-    })
+    }
   }
   async function goToVertify(data){
-    await axios({
-      method:"get",
-      url:`${baseUrl}/users/email_confirmed`,
-      params:{
-        email:data.email,
-        username: data.username,
-        password: data.password,
-        confirm_token: data.confirm_token
-      }
-    }).then((res)=>{
-      if(res.data.status==="login"){
-        window.location.reload(false);
-      }else{
-        Swal.fire({
-          icon: 'error',
-          title: 'oops...',
-          text: 'passcode wrong',
-          footer: '<a href="">Why do I have this issue?</a>'
-        })
-      }
-      setstatus(res.data.status)
-    }).catch((error)=>{
+    try{
+      await axios({
+        method:"get",
+        url:`${baseUrl}/users/email_confirmed`,
+        params:{
+          email:data.email,
+          username: data.username,
+          password: data.password,
+          confirm_token: data.confirm_token
+        }
+      }).then((res)=>{
+        if(res.data.status==="login"){
+          window.location.reload(false);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'oops...',
+            text: 'passcode wrong',
+            footer: '<a href="">Why do I have this issue?</a>'
+          })
+        }
+        setstatus(res.data.status)
+      })
+    }catch(error){
       console.log(error);
-    })
+    }
   }
   async function goToLogin(data){
-    await axios({
-      method:"post",
-      url:`${baseUrl}/users/login`,
-      params:{
-        email:data.email,
-        password: data.password,
-      }
-    }).then((res)=>{
-      if(res.data.status==="success"){
-        localStorage.setItem("zettel_user_token", res.data.auth_token);
-        localStorage.setItem("zettel_user_id", res.data.user_id);
+    try{
+      await axios({
+        method:"post",
+        url:`${baseUrl}/users/login`,
+        params:{
+          email:data.email,
+          password: data.password,
+        }
+      }).then((res)=>{
+        if(res.data.status==="success"){
+          localStorage.setItem("zettel_user_token", res.data.auth_token);
+				  localStorage.setItem("zettel_user_id", res.data.user_id);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been success login',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          return navigate("/");
+        }
         Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been success login',
-          showConfirmButton: false,
-          timer: 1500
+          icon: 'error',
+          title: 'Oops...',
+          text: '密碼錯了',
+          footer: '<a href="">Why do I have this issue?</a>'
         })
-        return navigate("/");
-      }
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: '密碼錯了',
-        footer: '<a href="">Why do I have this issue?</a>'
+        setstatus(res.data.status)
       })
-      setstatus(res.data.status)
-    }).catch((error)=>{
+    }catch(error){
       console.log(error);
-    })
+    }
   }
 
   const onSubmit = (data)=>{
@@ -145,23 +153,20 @@ export default function LoginPage() {
   
   return (
     <>
-      <a href='homepage'>
-        <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 ">
-          <img src="/zettel.png" alt="" />
-          <span className="text-xl font-medium ml-2">Zettel</span>
-        </div>
-      </a>
-      <div className="w-full mt-4 border-b-2  border-grey-100 "/>
-       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center w-10 h-12 mt-6 ml-6 justify-items-start "><img src="/zittel1.png" alt="" />
+        <span className="ml-2 text-xl font-medium">Zettel</span>
+      </div>
+      <div className="w-full mt-4 border-b-2 border-grey-100 "/>
+       <div className="flex items-center justify-center min-h-full px-4 py-12 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <h2 className=" text-center text-6xl font-bold tracking-tight text-gray-900">
+            <h2 className="text-6xl font-bold tracking-tight text-center text-gray-900 ">
               Log in
             </h2>
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmit(onSubmit)}>
             <GoogleLogin />
-            <div className=" border-b-2  border-grey-100  "/>
+            <div className="border-b-2 border-grey-100"/>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               { ((status==="init")||(status==="login")||(status==="register"))&&
@@ -177,7 +182,7 @@ export default function LoginPage() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Email address"
                 />
               </div>
@@ -196,7 +201,7 @@ export default function LoginPage() {
                   type="text"
                   // autoComplete="email"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="username"
                 />
               </div>
@@ -215,7 +220,7 @@ export default function LoginPage() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Password"
                 />
               </div> 
@@ -233,7 +238,7 @@ export default function LoginPage() {
                   type="text"
                   autoComplete="current-password"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="請輸入passcode"
                 />
               </div> 
@@ -247,9 +252,9 @@ export default function LoginPage() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label htmlFor="remember-me" className="block ml-2 text-sm text-gray-900">
                   Remember me
                 </label>
               </div>
@@ -264,7 +269,7 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="group relative flex w-full justify-center rounded-md border border-transparent bg-rose-50 py-2 px-4 text-lg font-medium text-rose-500 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:bg-rose-50 focus:ring-offset-2"
+                className="relative flex justify-center w-full px-4 py-2 text-lg font-medium border border-transparent rounded-md group bg-rose-50 text-rose-500 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:bg-rose-50 focus:ring-offset-2"
               >
                 {submitBtn}
               </button>

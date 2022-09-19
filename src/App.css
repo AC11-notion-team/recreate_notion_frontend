@@ -19,7 +19,7 @@
 }
 
 .share-Universal {
-  @apply px-4 h-8 rounded;
+  @apply h-8 px-4 rounded;
 }
 
 .box-shadow {
@@ -82,4 +82,7 @@
 }
 .ce-header {
   font-weight: 500;
+}
+.state {
+  @apply w-full;
 }

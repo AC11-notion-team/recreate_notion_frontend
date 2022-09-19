@@ -3,10 +3,12 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const  Nav = props => (
     <nav className="  md:flex  items-center max-w-7xl mx-auto  py-5 sticky top-0 left-0 right-0 bg-[#fffefc] z-20">
-        <div className="flex item-center flex-wrap items-center max-auto">
-            <div className="flex items-center  h-12 w-10 "><img src="/zettel.png" alt="" /></div>
-            <span className="text-xl font-bold ml-2">Zettel</span>
-        </div>
+        <a href="homepage">
+            <div className="flex item-center flex-wrap items-center max-auto">
+                <div className="flex items-center  h-12 w-10 "><img src="/zettel.png" alt="" /></div>
+                <span className="text-xl font-bold ml-2">Zettel</span>
+            </div>
+        </a>
         <div className="hidden md:block p-1 text-xl">
             <ul className="flex ">
             <NavItem href="/Product" text="Product">
@@ -23,9 +25,10 @@ const  Nav = props => (
         </div>
         <div className="flex-1 flex justify-end max-auto">
             <ul className="flex flex-wrap items-center  text-xlg ">
-                <NavItem href="/Contact sales" classname="border-r-1 relative after:absolute after:bg-gray-100 after:w-0.5 after:h-6 after:-right-2" text="Contact sales"/>
+                <NavItem href="https://github.com/AC11-notion-team" classname="border-r-1 relative after:absolute after:bg-gray-100 after:w-0.5 after:h-6 after:-right-2" text="Contact sales"/>
                 <NavItem href="/login-page" text="Log in" />
                 <Button type="submit" >Try Zettel free</Button>
+                
             </ul>
         </div>
     </nav>

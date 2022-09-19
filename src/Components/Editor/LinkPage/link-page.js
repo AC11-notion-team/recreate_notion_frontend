@@ -14,32 +14,10 @@
  */
 
 // eslint-disable-next-line
-import css from './link-page.css';
-// import ToolboxIcon from './svg/toolbox.svg';
-// import ajax from '@codexteam/ajax';
 import ajax from 'axios'
 
-// eslint-disable-next-line
-// import polyfill from 'url-polyfill';
-
-/**
- * @typedef {object} UploadResponseFormat
- * @description This format expected from backend on link data fetching
- * @property {number} success  - 1 for successful uploading, 0 for failure
- * @property {metaData} meta - Object with link data.
- *
- * Tool may have any data provided by backend, currently are supported by design:
- * title, description, image, url
- */
 export default class PageLink {
-  /**
-   * Notify core that read-only mode supported
-   *
-   * @typedef {object} changePages
-   * @typedef {string} baseUrl
-   */
   
-
   /**
    * Notify core that read-only mode supported
    *
@@ -77,18 +55,17 @@ export default class PageLink {
    * @param {LinkToolData} data - previously saved data
    * @param {config} config - user config for Tool
    * @param {object} api - Editor.js API
-   * @param {boolean} readOnly - read-only mode flag
+   * @param {object} block - block API
    */
-  constructor({ data, config, api, readOnly, block }) {
+  constructor({ data, config, api, block }) {
     this.api = api;
-    this.readOnly = readOnly;
+    this.readOnly = true;
     this.blockAPI = block;
 
     /**
      * Tool's initial config
      */
     this.config = {
-      endpoint: config.endpoint || '',
       headers: config.headers || {},
     };
 
@@ -96,14 +73,9 @@ export default class PageLink {
       wrapper: null,
       container: null,
       progress: null,
-      input: null,
-      inputHolder: null,
-      linkContent: null,
       linkPage: null,
-      linkImage: null,
+      linkIcon: null,
       linkTitle: null,
-      linkDescription: null,
-      linkText: null,
     };
 
     this._data = {
@@ -126,22 +98,14 @@ export default class PageLink {
     this.nodes.container = this.make('div', this.CSS.container);
     this.nodes.linkPage = this.preparePage()
 
-    /**
-     * If Tool already has data, render link preview, otherwise insert input
-     */
-    // if (Object.keys(this.data.meta).length) {
-    //   this.nodes.container.appendChild(this.nodes.linkContent);
-    //   this.showLinkPreview(this.data.meta);
-    // } else {
-    //   this.nodes.container.appendChild(this.nodes.inputHolder);
-    // }
     if (Object.keys(this.data.link).length) {
-      this.nodes.container.appendChild(this.nodes.linkPage);
-      this.showPage(this.data.link);
+      console.log("load")
+      this.startFetchLinkData();
     } else {
-      this.startAddPage();
+      console.log("add")
+      this.addPage()
+      // this.startAddPage();
     }
-    
     this.nodes.wrapper.appendChild(this.nodes.container);
 
     return this.nodes.wrapper;
@@ -152,7 +116,6 @@ export default class PageLink {
   }
   
   async addPage(){
-    
     const baseUrl = process.env.REACT_APP_BASEURL;
     
     try{
@@ -164,10 +127,8 @@ export default class PageLink {
           Authorization: `Bearer ${ localStorage.getItem("zettel_user_token") || null }`,
         },
       })
-      const data = JSON.stringify(res.data)
-      const jsonData = JSON.parse(data);
-      
-      
+      const data = await JSON.stringify(res.data)
+      const jsonData = await JSON.parse(data);
       this.onAddPage(jsonData)
     } catch(error){
       console.error(error)
@@ -183,7 +144,7 @@ export default class PageLink {
     };
     
     this.showPage({
-      image: inputdata.icon,
+      icon: inputdata.icon,
       title: inputdata.title,
       url
     })
@@ -196,20 +157,57 @@ export default class PageLink {
         rel: 'nofollow noindex noreferrer',
     });
 
-    this.nodes.linkImage = this.make('div', this.CSS.linkImage);
     this.nodes.linkTitle = this.make('div', this.CSS.linkTitle);
-    this.nodes.linkDescription = this.make('p', this.CSS.linkDescription);
-    this.nodes.linkText = this.make('span', this.CSS.linkText);
+    this.nodes.linkIcon = this.make('span', this.CSS.linkText);
 
     return holder;
   }
+  startFetchLinkData(){
+    this.fetchLinkData()
+  }
 
-  showPage({ image, title, description, url }){
+  /**
+   * Sends to backend pasted url and receives link data
+   *
+   * @param {string} url - link source url
+   */
+  async fetchLinkData() {
+    const baseUrl = process.env.REACT_APP_BASEURL;
+    const url = `${baseUrl}/pages/${this.data.meta.id}/show_page_info.json`
+    try {
+      const {data} = await ajax({
+        method: "get",
+        url: url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${ localStorage.getItem("zettel_user_token") || null }`,
+        }
+      });
+      this.onFetchDone(data)
+    } catch (error) {
+      console.error(error)
+      this.fetchingFailed()
+    }
+    
+  }
+
+  /**
+   * Link data fetching callback
+   *
+   * @param {UploadResponseFormat} response
+   */
+  onFetchDone({id, title, icon}) {
+    if (id){
+      this.showPage({url: this.data.link, title: title, icon: icon});
+    }
+  }
+
+  showPage({ title, url, icon }){
     this.nodes.container.appendChild(this.nodes.linkPage);
     
-    if (image && image.url) {
-      this.nodes.linkImage.style.backgroundImage = 'url(' + image.url + ')';
-      this.nodes.linkPage.appendChild(this.nodes.linkImage);
+    if (icon){
+      this.nodes.linkIcon.textContent = icon
+      this.nodes.linkPage.appendChild(this.nodes.linkIcon);
     }
 
     if (title) {
@@ -217,22 +215,9 @@ export default class PageLink {
       this.nodes.linkPage.appendChild(this.nodes.linkTitle);
     }
 
-    if (description) {
-      this.nodes.linkDescription.textContent = description;
-      this.nodes.linkPage.appendChild(this.nodes.linkDescription);
-    }
-
     this.nodes.linkPage.classList.add(this.CSS.linkContentRendered);
     this.nodes.linkPage.setAttribute('href', url);
-    // this.nodes.linkContent.setAttribute('onclick', this.data.callback);
-    this.nodes.linkPage.appendChild(this.nodes.linkText);
 
-    // try {
-    // //   this.nodes.linkText.textContent = (new URL(this.data.link)).hostname;
-    //   this.nodes.linkText.textContent = (new URL("https://i.imgur.com/jj4xbXL.png")).hostname;
-    // } catch (e) {
-    //   this.nodes.linkText.textContent = this.data.link;
-    // }
   }
   /**
    * Return Block data
@@ -307,150 +292,12 @@ export default class PageLink {
   }
 
   /**
-   * Activates link data fetching by url
-   *
-   * @param {PasteEvent} event
-   */
-  startFetching(event) {
-    let url = this.nodes.input.textContent;
-
-    if (event.type === 'paste') {
-      url = (event.clipboardData || window.clipboardData).getData('text');
-    }
-
-    this.removeErrorStyle();
-    this.fetchLinkData(url);
-  }
-
-  /**
-   * If previous link data fetching failed, remove error styles
-   */
-  removeErrorStyle() {
-    this.nodes.inputHolder.classList.remove(this.CSS.inputError);
-    this.nodes.inputHolder.insertBefore(this.nodes.progress, this.nodes.input);
-  }
-
-  /**
-   * Select LinkTool input content by CMD+A
-   *
-   * @param {KeyboardEvent} event
-   */
-  selectLinkUrl(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const selection = window.getSelection();
-    const range = new Range();
-
-    const currentNode = selection.anchorNode.parentNode;
-    const currentItem = currentNode.closest(`.${this.CSS.inputHolder}`);
-    const inputElement = currentItem.querySelector(`.${this.CSS.inputEl}`);
-
-    range.selectNodeContents(inputElement);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-
-  /**
-   * Show loading progressbar
-   */
-  showProgress() {
-    this.nodes.progress.classList.add(this.CSS.progressLoading);
-  }
-
-  /**
-   * Hide loading progressbar
-   */
-  hideProgress() {
-    return new Promise((resolve) => {
-      this.nodes.progress.classList.remove(this.CSS.progressLoading);
-      this.nodes.progress.classList.add(this.CSS.progressLoaded);
-
-      setTimeout(resolve, 500);
-    });
-  }
-
-  /**
-   * If data fetching failed, set input error style
-   */
-  applyErrorStyle() {
-    this.nodes.inputHolder.classList.add(this.CSS.inputError);
-    this.nodes.progress.remove();
-  }
-
-  /**
-   * Sends to backend pasted url and receives link data
-   *
-   * @param {string} url - link source url
-   */
-  async fetchLinkData(url) {
-    this.showProgress();
-    this.data = { link: url };
-    this.save()
-    try {
-      const { body } = await (ajax.get({
-        url: this.config.endpoint,
-        headers: this.config.headers,
-        data: {
-          url,
-        },
-      }));
-
-      this.onFetch(body);
-    } catch (error) {
-      this.fetchingFailed(this.api.i18n.t('Couldn\'t fetch the link data'));
-    }
-  }
-
-  /**
-   * Link data fetching callback
-   *
-   * @param {UploadResponseFormat} response
-   */
-  onFetch(response) {
-    if (!response || !response.success) {
-      this.fetchingFailed(this.api.i18n.t('Couldn\'t get this link data, try the other one'));
-
-      return;
-    }
-
-    const metaData = response.meta;
-
-    const link = response.link || this.data.link;
-
-    this.data = {
-      meta: metaData,
-      link,
-    };
-
-    if (!metaData) {
-      this.fetchingFailed(this.api.i18n.t('Wrong response format from the server'));
-
-      return;
-    }
-
-    this.hideProgress().then(() => {
-      this.nodes.inputHolder.remove();
-      this.showLinkPreview(metaData);
-    });
-  }
-
-  /**
    * Handle link fetching errors
-   *
    * @private
-   *
-   * @param {string} errorMessage
    */
-  fetchingFailed(errorMessage) {
-    this.api.notifier.show({
-      message: errorMessage,
-      style: 'error',
-    });
-
-    this.applyErrorStyle();
+  fetchingFailed() {
+    const index = this.api.blocks.getCurrentBlockIndex();
+    this.api.blocks.delete(index)
   }
 
   /**
