@@ -8,7 +8,7 @@ import axios from "axios";
 import { Switch } from "@headlessui/react";
 import { useCurrentPageId } from "../../../CurrentPageId";
 
-export default function Share({ currentPageID }) {
+export default function Share() {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(false);
@@ -111,7 +111,7 @@ export default function Share({ currentPageID }) {
 									checked={editable[0]}
 									onChange={handleShare}
 									className={`${
-										editable[0] ? "bg-blue-600" : "bg-gray-200"
+										editable[0] ? "button-bg" : "bg-gray-200"
 									} relative inline-flex h-6 w-11 items-center rounded-full`}
 								>
 									<span className="sr-only">Enable notifications</span>

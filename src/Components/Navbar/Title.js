@@ -3,15 +3,19 @@ import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
 import { useCurrentPageId } from "../../CurrentPageId";
 
+
 export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	const currentPageId = useCurrentPageId();
 
 	const [isTitleButton, setIsTitleButton] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsTitle") === true) {
+		if (e.target.closest("div").className.includes("IsTitle")) {
 			setIsTitleButton((prevTitleButton) => !prevTitleButton);
 		}
 	};
+	const callback = (e,) => {
+		onEmojiClick(e,currentPageId)
+	}
 
 	return (
 		<div>
@@ -37,9 +41,8 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 							</div>
 							<input
 								type="text"
-								onChange={(event) => onEmojiClick(event, currentPageId)}
-								className="share-like-input h-7 pl-2 w-full rounded title"
-								id={currentPageId}
+								onChange={callback}
+								className="share-like-input h-7 w-full rounded title"
 								value={pageTitle}
 								placeholder="Untitled"
 							/>
