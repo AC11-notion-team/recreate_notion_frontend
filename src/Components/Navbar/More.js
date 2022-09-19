@@ -16,14 +16,48 @@ import MenuButton from "./MenuButton";
 import ActionButton from "./ActionButton"
 import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
+import { useCurrentPageId ,useCurrentPageUpdateId  } from "../../CurrentPageId";
+import { usePagesUpdate } from "../../Pages";
+import axios from "axios";
+import {useFavorite,useFavoriteUpdate} from "../../Favorite"
 
-export default function More({isFavorite,toggleFavorite}){
+export default function More(){
+    const favorite = useFavorite();
+	const changeFavorite = useFavoriteUpdate();
     const [isMore,setIsMore] = useState(false)
     const handleToggle = (e) => {
         if(e.target.className.includes("IsMore") === true){
             setIsMore(prevMore => !prevMore)
         }
     };
+    const currentPageId = useCurrentPageId();
+    const baseUrl = process.env.REACT_APP_BASEURL;
+
+	const changePages = usePagesUpdate();
+	const changeCurrentPageId = useCurrentPageUpdateId();
+    let prevId =""
+	const removePage = () => {
+		axios({
+			method: "delete",
+			url: `${baseUrl}/pages/${currentPageId}/delete_page`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+		}).then((res) => {
+			changePages((prevPages) => {
+				return prevPages.filter((item) => {
+					if(item.id !== currentPageId){
+						prevId = item.id
+					}else{
+						changeCurrentPageId(prevId)
+					}
+					return item.id !== currentPageId
+					
+				});
+			});
+		})
+	};
     
     return(
         <div className="flex items-center">
@@ -40,7 +74,7 @@ export default function More({isFavorite,toggleFavorite}){
                     </div>
                     <hr />
                     <div className="p-1.5">
-                        <ActionButton src={isFavorite ? fullStar:emptyStar} alt="favorite" content={isFavorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={toggleFavorite} />
+                        <ActionButton src={favorite ? fullStar:emptyStar} alt="favorite" content={favorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={changeFavorite} />
                         <ActionButton src={link} alt="copyLink" content="Copy link" className="py-0.5"/>
                         <ActionButton src={notion} alt="openInMacApp" content="Open in Mac app" className="py-0.5"/>
                     </div>
@@ -49,11 +83,11 @@ export default function More({isFavorite,toggleFavorite}){
                         <ActionButton src={left} alt="undo" content="Undo" className="py-0.5"/>
                         <ActionButton src={history} alt="pegeHistory" content="Page history" className="py-0.5"/>
                         <ActionButton src={deletePageImg} alt="showDeleted" content="Show deleted pages" className="py-0.5"/>
-                        <ActionButton src={trash} alt="delete" content="Delete" className="py-0.5"/>
+                        <ActionButton src={trash} alt="delete" content="Delete" className="py-0.5" handleClick={removePage}/>
                     </div>
                     <hr />
                     <div className="p-1.5">
-                        <ActionButton src={exportImg} alt="export" content="Export" className="py-0.5" illustrate="PDF, HTML, Markdown"/>
+                        <ActionButton src={exportImg} alt="export" content="Export" className="py-0.5"/>
                         <ActionButton src={bottom} alt="mergeWithCSV" content="Merge with CSV" className="py-0.5"/>
                     </div>
                     <hr />

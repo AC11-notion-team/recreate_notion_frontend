@@ -14,15 +14,9 @@ function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-	// const [currentPageID, setcurrentPageID] = useState("");
-	//我的最愛
-	const [isFavorite, setIsFavorite] = useState(false);
+
 	// 控制sidebar 出現跟消失
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
-
-	//我的最愛
-	const toggleFavorite = () =>
-		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
@@ -38,14 +32,20 @@ function App() {
 	}, [isSide]);
 
 
-	const onEmojiClick = (event, currentPageID, emojiObject) => {
-		const { type, id, value, className } = event.target;
+	const onEmojiClick = (event, currentPageID,pageID, emojiObject) => {
+		const { type,value, className } = event.target;
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					return item.id === currentPageID
-						? { ...item, icon: emojiObject.emoji }
-						: item;
+					if(pageID){
+						return (item.id === pageID ?
+							{ ...item, icon: emojiObject.emoji }
+						   : item)
+					}else{
+						return item.id === currentPageID? 
+						{ ...item, icon: emojiObject.emoji }
+						: item
+					}
 				});
 			});
 			axios({
@@ -63,7 +63,13 @@ function App() {
 		if (type === "text") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					return item.id === id ? { ...item, title: value } : item;
+					if(pageID){
+						return (item.id === pageID ?
+							{ ...item, title: value } : item)
+					}else{
+						return item.id === currentPageID? 
+						{ ...item, title: value } : item
+					}
 				});
 			});
 			axios({
@@ -82,22 +88,18 @@ function App() {
 
 	return (
 		<div>
-			<div className="split h-screen w-full flex">
+			<div className="split h-screen w-full flex overflow-hidden">
 				{isSide && (
 					<div id="split-0" className="relative side-minW flex-grow-0">
 						<Sidebar
-							isFavorite={isFavorite}
-							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
 							onEmojiClick={onEmojiClick}
 						/>
 					</div>
 				)}
 
-				<div id="split-1" className="flex-grow content overflow-hidden">
+				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
-						isFavorite={isFavorite}
-						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}
