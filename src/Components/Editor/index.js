@@ -265,7 +265,6 @@ function Editor() {
   return (
     <div >
         <div  id={EDITTOR_HOLDER_ID}> </div>
-        <div onClick={()=> console.log(currentPageId)}>click here</div>
     </div>
   );
 }

@@ -17,8 +17,8 @@ function PageHeader({onEmojiClick}) {
 	const pageIcon = pageItem[0]?.icon;
 
     return (
-        <div className="flex justify-around mt-8 mb-16">
-            <div className="flex items-center ">
+        <div className=" mt-8 mb-16 ">
+            <div className="flex items-center justify-center">
                 <div className="cursor-pointer ml-3">
                     <Emoji
                     currentPageID={currentPageId}
