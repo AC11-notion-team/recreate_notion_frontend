@@ -94,7 +94,7 @@ function App() {
 					</div>
 				)}
 
-				<div id="split-1" className="flex-grow overflow-hidden">
+				<div id="split-1" className="flex-grow content overflow-hidden">
 					<Header
 						isFavorite={isFavorite}
 						toggleFavorite={toggleFavorite}
@@ -102,8 +102,10 @@ function App() {
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}
 					/>
-					< PageHeader  onEmojiClick={onEmojiClick}/>
-					<Editor />
+					<div className="relative content overflow-auto ">
+						< PageHeader  onEmojiClick={onEmojiClick}/>
+						<Editor />
+					</div>
 				</div>
 			</div>
 		</div>
