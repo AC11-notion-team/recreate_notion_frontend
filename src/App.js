@@ -104,8 +104,10 @@ function App() {
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}
 					/>
-					< PageHeader  onEmojiClick={onEmojiClick}/>
-					<Editor />
+					<div className="relative content overflow-auto ">
+						< PageHeader  onEmojiClick={onEmojiClick}/>
+						<Editor />
+					</div>
 				</div>
 			</div>
 		</div>
