@@ -1,6 +1,5 @@
 import React, {useRef, useState, useEffect} from "react";
 import EditorJS from '@editorjs/editorjs';
-import Code from '@editorjs/code';
 import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter'
 import DragDrop from 'editorjs-drag-drop';
@@ -20,7 +19,7 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import ActionCable from 'actioncable'
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
 import { usePagesUpdate } from "../../Pages";
 
@@ -41,77 +40,33 @@ function Editor() {
 	const ejInstance = useRef();
   let isAddPageLink = false;
   // This can also be an async getter function. See notes below on Async Urls.
-  const socketUrl = 'ws://localhost:3001/cable';
-
-  const {
-    sendMessage,
-    sendJsonMessage,
-    lastMessage,
-    lastJsonMessage,
-    readyState,
-    getWebSocket,
-  } = useWebSocket(socketUrl, {
-    onOpen: () => console.log('opened'),
-    //Will attempt to reconnect on all close events, such as server shutting down
-    queryParams: {
-      Authorization:
-					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
-    },
-    shouldReconnect: (closeEvent) => true,
-  });
-  console.log(lastJsonMessage)
-  console.log(lastMessage)
-  
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: 'Connecting',
-    [ReadyState.OPEN]: 'Open',
-    [ReadyState.CLOSING]: 'Closing',
-    [ReadyState.CLOSED]: 'Closed',
-    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  }[readyState];
-  sendJsonMessage({
-    "command": "subscribe",
-    "identifier": JSON.stringify({
-      channel :"PageChannel",
-      id: currentPageId
-    }),
-  })
-
-  sendJsonMessage({
-    "command": "message",
-    "identifier": JSON.stringify({
-      channel :"PageChannel",
-      id: currentPageId
-    }),
-    "data": JSON.stringify({
-      action: "logSomething",
-      text: "hello"
-    })
-  })
+  const socketUrl = `ws://localhost:3001/cable?token=Bearer ${localStorage.getItem("zettel_user_token") || null}`;
+  const editorCable = ActionCable.createConsumer(socketUrl)
+  const editorChannel = editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, {connected: () => console.log("connected"), received: (data) => console.log(data.message)})
 
   useEffect(() => {
-		// const config = {
-		// 	method: "get",
-		// 	url: `${baseUrl}/pages/${currentPageId}.json`,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		Authorization:
-		// 			`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
-		// 	},
-		// };
+		const config = {
+			method: "get",
+			url: `${baseUrl}/pages/${currentPageId}.json`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization:
+					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+			},
+		};
 		if (currentPageId) {
-			// axios(config)
-			// 	.then((res) => {
-			// 		const initialData = {
-			// 			time: Date.now(),
-			// 			blocks: res.data.blocks,
-			// 		};
-			// 		if (!ejInstance.current) {
-			// 			initEditor(initialData);
-			// 		}
+			axios(config)
+				.then((res) => {
+					const initialData = {
+						time: Date.now(),
+						blocks: res.data.blocks,
+					};
+					if (!ejInstance.current) {
+						initEditor(initialData);
+					}
           
-			// 	})
-			// 	.catch((err) => console.error(err));
+				})
+				.catch((err) => console.error(err));
     }
     
     return () => {
@@ -301,20 +256,16 @@ function Editor() {
 
         textVariant: TextVariantTune,
 
-        // toggle: {
-        //   class: ToggleBlock,
-        //   inlineToolbar: true,
-        // },
-
       }, 
     });
+    return editor
   };
   
   return (
     <div className="relative content overflow-auto ">
         
         <div  id={EDITTOR_HOLDER_ID}> </div>
-        <div onClick={()=> console.log(currentPageId)}>click here</div>
+        <div onClick={() => console.log("clicked")}>click here</div>
     </div>
   );
 }
