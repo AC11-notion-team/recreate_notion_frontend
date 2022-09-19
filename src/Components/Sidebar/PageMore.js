@@ -3,8 +3,6 @@ import more from "../image/more.png";
 import trash from "../image/delete.png";
 import star from "../image/empty-star.png";
 import link from "../image/link.png";
-import right from "../image/forward.png";
-import question from "../image/question.png";
 import ActionButton from "../Navbar/ActionButton";
 import duplicate from "../image/duplicate.png";
 import Rename from "./Rename";
@@ -12,6 +10,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
 import { usePagesUpdate } from "../../Pages";
 import { useCurrentPageUpdateId } from "../../CurrentPageId";
+import {useTrashPagesUpdate} from "../../TrashPages"
 
 
 export default function PageMore({
@@ -19,14 +18,13 @@ export default function PageMore({
 	onEmojiClick,
 	pageTitle,
 	pageIcon,
-	pageID,
+	pageID
 }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
-
 	const changePages = usePagesUpdate();
 	const changeCurrentPageId = useCurrentPageUpdateId();
-
+	const changeTrashPages = useTrashPagesUpdate()
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
@@ -56,6 +54,9 @@ export default function PageMore({
 					
 				});
 			});
+			changeTrashPages(prevTrahsPages =>{
+				return [...prevTrahsPages,res.data]
+			})
 		})
 	};
 
@@ -76,26 +77,26 @@ export default function PageMore({
 							src={trash}
 							alt="delete"
 							content="Delete"
-							className="py-0.5"
 							handleClick={removePage}
+							className="py-1"
 						/>
 						<ActionButton
 							src={star}
 							alt="Favorite"
 							content="Add to Favorites"
-							className="py-0.5"
+							className="py-1"
 						/>
 						<ActionButton
 							src={duplicate}
 							alt="duplicate"
 							content="Duplicate"
-							className="py-0.5"
+							className="py-1"
 						/>
 						<ActionButton
 							src={link}
 							alt="link"
 							content="Copy link"
-							className="py-0.5"
+							className="py-1"
 						/>
 						<Rename
 							pageTitle={pageTitle}
@@ -105,24 +106,6 @@ export default function PageMore({
 							handlePageMore={handleToggle}
 						/>
 					</div>
-					<hr />
-					{/* <div className="p-2">
-						<ActionButton src={right} alt="moveTo" content="Move to" />
-					</div>
-					<hr />
-					<div className="p-2">
-						<div className="my-2">
-							<p className="px-1 text-xs text-gray-500">Last edited by user</p>
-							<p className="px-1 text-xs text-gray-500">Today at 9:40 PM</p>
-						</div>
-					</div>
-					<hr />
-					<ActionButton
-						src={question}
-						alt="learnAbout"
-						illustrate="Learn about databases"
-						className="py-1 px-0.5"
-					/> */}
 				</div>
 			)}
 		</div>

@@ -1,16 +1,20 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import UserInviteList from "./UserInviteList";
 import axios from "axios";
 import { useCurrentPageId } from "../../../../CurrentPageId";
-import {useInviteUsers,useInviteUpdate} from "../../../../InviteUser"
+import { usePages } from "../../../../Pages";
+import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const ShareToParticularPerson = () => {
 	const currentPageId = useCurrentPageId();
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const [searchUser,setSearchUser] =useState()
-	const [userInformation,setUserInformation] = useState([])
-	const searchUserToggle =(e)=>{
-		setSearchUser(e.target.value)
+	const [searchUser, setSearchUser] = useState();
+	const [userInformation, setUserInformation] = useState([]);
+	const pages = usePages();
+	const [invistList, setInvistList] = useState([]);
+
+	const searchUserToggle = (e) => {
+		setSearchUser(e.target.value);
 		if (currentPageId) {
 			axios({
 				method: "get",
@@ -19,64 +23,132 @@ const ShareToParticularPerson = () => {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
-				params:{
-					"search": e.target.value
-				}
-			}).then((res)=>{
-				setUserInformation(res.data.users)
-			}).catch((err) => {
-				console.log(err);
-			});
+				params: {
+					page_id: currentPageId,
+					search: e.target.value,
+				},
+			})
+				.then((res) => {
+					setUserInformation(res.data.users);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		}
-	}
-	const inviteUsers = useInviteUsers()
-	const changeInviteUser = useInviteUpdate()
+	};
+	useEffect(() => {
+		let aa =
+			pages?.filter((item) => {
+				return item.id === currentPageId;
+			})[0]?.shareuser || [];
+		setInvistList(aa);
+	}, [currentPageId]);
+	const checkbox = useCheckboxState({ state: [] });
 	const submitInvite = () => {
 		axios({
-			method: "post",
-			url: `${baseUrl}/share_page`,
+			method: "put",
+			url: `${baseUrl}/sharepages/invite_to_others`,
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 			},
-			params:{
-				"currentPageId": currentPageId,
-				"inviteUsers":inviteUsers
-			}
-		}).then((res)=>{
-			changeInviteUser([])
-		}).catch((err) => {
+			params: {
+				currentPageId: currentPageId,
+				inviteUsers: checkbox.state,
+			},
+		}).then((res) => {
+			setSearchUser("");
+			setInvistList((prev) => {
+				return [...prev, ...res.data];
+			});
+			setUserInformation([]);
+		})
+		.catch((err) => {
 			console.log(err);
 		});
-
-	}
+	};
+	const removeInvite = (email) => {
+		axios({
+			method: "delete",
+			url: `${baseUrl}/sharepages/remove_invite`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+			},
+			params: {
+				currentPageId: currentPageId,
+				email: email,
+			},
+		}).then((res) => {
+			setInvistList((prev) => {
+				return prev?.filter((item) => {
+					return item.email !== email;
+				});
+			});
+		});
+	};
 
 	return (
-		<div className="p-1 m-2 relative">
-			<div className="flex items-center justify-between flex-nowrap mb-3" >
+		<div className="relative p-1 m-2">
+			<div className="flex items-center justify-between mb-3 flex-nowrap">
 				<input
 					type="text"
-					className="flex-nowrap share-Universal text-left boredr-1 mr-2 share-like-input point min-w-min overflow-x-hidden w-full"
+					className="w-full mr-2 overflow-x-hidden text-left border-b-4 flex-nowrap share-Universal boredr-1 share-like-input point min-w-min"
 					placeholder="Add emails,people,integratons..."
 					onChange={searchUserToggle}
 					value={searchUser}
 				/>
-				<button className="share-Universal button-bg"  onClick={submitInvite }>
-					<p className="leading-5 text-white whitespace-nowra overflow-x-hidden">
+				<button className="share-Universal button-bg border-b-4 border-blue-400 hover:bg-blue-400 hover:border-blue-500" onClick={submitInvite}>
+					<p className="overflow-x-hidden leading-5 text-white whitespace-nowra">
 						Invite
 					</p>
 				</button>
 			</div>
-			{userInformation != "" ?<div >
-				{userInformation.map((item,i) => 
-					<UserInviteList 
-						username = {item.username}
-						email = {item.email}
-						picture = {item.picture}
-						key = {i}
-					/>
-				)}
-			</div>:null}
+			{userInformation !== "" ? (
+				<div>
+					{userInformation.map((item, i) => (
+						<div key={i}>
+							<div className="w-full ">
+								<Checkbox value={item.email} {...checkbox} className="flex w-full">
+									<UserInviteList
+										username={item.username}
+										email={item.email}
+										picture={item.picture}
+									/>
+								</Checkbox>
+							</div>
+						</div>
+					))}
+				</div>
+			) : null}
+
+			{invistList?.length >= 1 ? (
+				<>
+					<div>
+						{userInformation?.length >= 1 && <hr />}
+						<div>Invite:</div>
+						{invistList?.map((item, i) => (
+							<div className="relative flex content-center">
+								<UserInviteList
+									username={item.username}
+									email={item.email}
+									picture={item.picture}
+									key={i}
+								/>
+								<button
+									data-email={item.email}
+									onClick={(item) => {
+										removeInvite(item.target.dataset.email);
+									}}
+									className="absolute right-0 inline-block px-3 text-base font-bold text-center text-white button-bg border-b-4 border-blue-400 rounded top-3 py-1/2 hover:bg-blue-400 hover:border-blue-500 mr-2"
+								>
+									X
+								</button>
+							</div>
+						))}
+					</div>
+				</>
+			) : null}
 		</div>
 	);
 };

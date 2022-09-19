@@ -1,29 +1,34 @@
-import React,{useState} from "react";
-import userImg from "../../../image/user.png"
-import check from "../../../image/check.png"
-import {useInviteUsers,useInviteUpdate} from "../../../../InviteUser"
+import React from "react";
+import userImg from "../../../image/user.png";
+import { useInviteUpdate } from "../../../../InviteUser";
 
-export default function UserInviteList({username,email,picture}){
-    
-    const inviteUsers = useInviteUsers()
-    const changeInviteUser = useInviteUpdate()
-    const callback = () => {
-		changeInviteUser(username)
-	}
-    const user = inviteUsers.map(item => item)
-
-    return(
-        <div>
-            <div className="flex items-center justify-between point mb-2 p-2 flex-nowrap bg-white" onClick={callback}>
-                <div className="flex items-center">
-                    <img className="w-7 h-7 mr-2" src={picture? picture:userImg} alt="userImg" />
-                    <div className="min-w-max">
-                        <p className="mr-1 font-semibold text-sm whitespace-pre">{username}</p>
-                        <p className="text-xs text-gray-600 whitespace-pre">{email}</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    )
+export default function UserInviteList({ username, email, picture }) {
+	const changeInviteUser = useInviteUpdate();
+	const callback = () => {
+		changeInviteUser(username);
+	};
+	
+	return (
+		<div className="inline w-full">
+			<div className="flex items-center justify-between p-2 mb-2 bg-white  flex-nowrap point w-full"
+				onClick={callback}
+			>
+				<div className="flex items-center justify-between ">
+					<div className="flex">
+						<img
+							className="mr-2 w-7 h-7"
+							src={picture ? picture : userImg}
+							alt="userImg"
+						/>
+						<div className="min-w-max">
+							<p className="mr-1 text-sm font-semibold whitespace-pre">
+								{username}
+							</p>
+							<p className="text-xs text-gray-600 whitespace-pre">{email}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }

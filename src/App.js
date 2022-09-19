@@ -93,7 +93,7 @@ function App() {
 
 	return (
 		<div>
-			<div className="split h-screen w-full flex">
+			<div className="split h-screen w-full flex overflow-hidden">
 				{isSide && (
 					<div id="split-0" className="relative side-minW flex-grow-0">
 						<Sidebar
