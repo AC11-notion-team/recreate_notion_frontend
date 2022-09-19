@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from "react";
+import React, {useRef, useState, useEffect, useCallback, useMemo} from "react";
 import EditorJS from '@editorjs/editorjs';
 import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter'
@@ -42,67 +42,16 @@ function Editor() {
   let isAddPageLink = false;
   // This can also be an async getter function. See notes below on Async Urls.
   const socketUrl = `ws://localhost:3001/cable?token=Bearer ${localStorage.getItem("zettel_user_token") || null}`;
-  const editorCable = ActionCable.createConsumer(socketUrl)
-  const editorChannel = editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
-    {
-      connected: () => console.log("connected"), 
-      received: (data) => {
-        console.log(data)
-        setBlocks(data.blocks)
-      }
-    })
-
-  useEffect(() => {
-		const config = {
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageId}.json`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization:
-					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
-			},
-		};
-		if (currentPageId) {
-			axios(config)
-				.then((res) => {
-          console.log(res.data.blocks)
-					const initialData = {
-						time: Date.now(),
-						blocks: res.data.blocks,
-					};
-					if (!ejInstance.current) {
-						initEditor(initialData);
-					}
-				})
-				.catch((err) => console.error(err));
-    }
-    
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
-	}, [currentPageId]);
-
-  useEffect(() => {
-		if (blocks) {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-      if (!ejInstance.current) {
-        const initialData = {
-          time: Date.now(),
-          blocks: blocks,
-        };
-        initEditor(initialData);
-      }
-    }
-    
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
-	}, [blocks]);
-
-  const initEditor = (initialData) => {
+  const editorCable = useMemo(() => ActionCable.createConsumer(socketUrl), [])
+  // useCallback(() => editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
+  //   {
+  //     connected: () => console.log("connected"), 
+  //     received: (data) => {
+  //       console.log(data)
+  //       setBlocks(data.blocks)
+  //     }
+  //   }), [currentPageId])
+  const initEditor = useCallback((initialData) => {
     const editor = new EditorJS({
       holder: EDITTOR_HOLDER_ID,
       logLevel: "ERROR",
@@ -287,7 +236,68 @@ function Editor() {
     });
     // debugger;
     // return editor
-  };
+  },[currentPageId]);
+  useEffect(() => {
+		const config = {
+			method: "get",
+			url: `${baseUrl}/pages/${currentPageId}.json`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization:
+					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+			},
+		};
+		if (currentPageId) {
+			axios(config)
+				.then((res) => {
+          console.log(res.data.blocks)
+					const initialData = {
+						time: Date.now(),
+						blocks: res.data.blocks,
+					};
+					if (!ejInstance.current) {
+            console.log("currentPageId rerender")
+						initEditor(initialData);
+					}
+				})
+				.catch((err) => console.error(err));
+      editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
+      {
+        connected: () => console.log("connected"), 
+        received: (data) => {
+          console.log(data)
+          setBlocks(data.blocks)
+        }
+      })
+    }
+    
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
+	}, [currentPageId, initEditor]);
+
+  useEffect(() => {
+		if (blocks) {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+      if (!ejInstance.current) {
+        const initialData = {
+          time: Date.now(),
+          blocks: blocks,
+        };
+        console.log("blocks rerender")
+        initEditor(initialData);
+      }
+    }
+    
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
+	}, [blocks, initEditor]);
+
+  
   
   return (
     <div className="relative content overflow-auto ">
