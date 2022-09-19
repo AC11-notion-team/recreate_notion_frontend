@@ -13,15 +13,9 @@ function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-	// const [currentPageID, setcurrentPageID] = useState("");
-	//我的最愛
-	const [isFavorite, setIsFavorite] = useState(false);
+
 	// 控制sidebar 出現跟消失
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
-
-	//我的最愛
-	const toggleFavorite = () =>
-		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
@@ -93,12 +87,10 @@ function App() {
 
 	return (
 		<div>
-			<div className="split h-screen w-full flex">
+			<div className="split h-screen w-full flex overflow-hidden">
 				{isSide && (
 					<div id="split-0" className="relative side-minW flex-grow-0">
 						<Sidebar
-							isFavorite={isFavorite}
-							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
 							onEmojiClick={onEmojiClick}
 						/>
@@ -107,8 +99,6 @@ function App() {
 
 				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
-						isFavorite={isFavorite}
-						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}

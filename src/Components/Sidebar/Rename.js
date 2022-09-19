@@ -8,7 +8,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
     const currentPageId = useCurrentPageId();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsRename") === true) {
+		if (e.target.closest("div").className.includes("IsRename") === true) {
 			setIsRename((prevTitleButton) => !prevTitleButton);
 		}
         
