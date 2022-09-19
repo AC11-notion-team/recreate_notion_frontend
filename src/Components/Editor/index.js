@@ -34,6 +34,7 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
+  const [blocks, setBlocks] = useState("");
 	const currentPageId = useCurrentPageId();
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
@@ -42,7 +43,14 @@ function Editor() {
   // This can also be an async getter function. See notes below on Async Urls.
   const socketUrl = `ws://localhost:3001/cable?token=Bearer ${localStorage.getItem("zettel_user_token") || null}`;
   const editorCable = ActionCable.createConsumer(socketUrl)
-  const editorChannel = editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, {connected: () => console.log("connected"), received: (data) => console.log(data.message)})
+  const editorChannel = editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
+    {
+      connected: () => console.log("connected"), 
+      received: (data) => {
+        console.log(data)
+        setBlocks(data.blocks)
+      }
+    })
 
   useEffect(() => {
 		const config = {
@@ -57,6 +65,7 @@ function Editor() {
 		if (currentPageId) {
 			axios(config)
 				.then((res) => {
+          console.log(res.data.blocks)
 					const initialData = {
 						time: Date.now(),
 						blocks: res.data.blocks,
@@ -64,7 +73,6 @@ function Editor() {
 					if (!ejInstance.current) {
 						initEditor(initialData);
 					}
-          
 				})
 				.catch((err) => console.error(err));
     }
@@ -74,6 +82,25 @@ function Editor() {
       ejInstance.current = null;
     };
 	}, [currentPageId]);
+
+  useEffect(() => {
+		if (blocks) {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+      if (!ejInstance.current) {
+        const initialData = {
+          time: Date.now(),
+          blocks: blocks,
+        };
+        initEditor(initialData);
+      }
+    }
+    
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
+	}, [blocks]);
 
   const initEditor = (initialData) => {
     const editor = new EditorJS({
@@ -132,7 +159,7 @@ function Editor() {
         }
         if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
           const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
-          const newPage = block.link.split("localhost:3000/")[1]
+          const newPage = block.meta.id
           if (newPage){
             isAddPageLink = false
             changePages(prevPages => [...prevPages, block.meta])
@@ -258,14 +285,13 @@ function Editor() {
 
       }, 
     });
-    return editor
+    // debugger;
+    // return editor
   };
   
   return (
     <div className="relative content overflow-auto ">
-        
         <div  id={EDITTOR_HOLDER_ID}> </div>
-        <div onClick={() => console.log("clicked")}>click here</div>
     </div>
   );
 }
