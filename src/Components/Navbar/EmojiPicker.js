@@ -21,7 +21,7 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 				</span>
 			</div>
 			{isEmoji && (
-				<div className="absolute " >
+				<div className="absolute z-50">
 					<Picker
 						onEmojiClick={callback}
 					/>
