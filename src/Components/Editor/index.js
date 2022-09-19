@@ -259,7 +259,7 @@ function Editor() {
   };
   
   return (
-    <div className="relative content overflow-auto ">
+    <div >
         <div  id={EDITTOR_HOLDER_ID}> </div>
         <div onClick={()=> console.log(currentPageId)}>click here</div>
     </div>

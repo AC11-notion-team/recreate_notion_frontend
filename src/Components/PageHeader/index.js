@@ -17,8 +17,8 @@ function PageHeader({onEmojiClick}) {
 	const pageIcon = pageItem[0]?.icon;
 
     return (
-        <div className="max-w-650 m-auto">
-            <div className="flex">
+        <div className="flex justify-around mt-8 mb-16">
+            <div className="flex items-center ">
                 <div className="cursor-pointer ml-3">
                     <Emoji
                     currentPageID={currentPageId}
@@ -27,7 +27,7 @@ function PageHeader({onEmojiClick}) {
                     />
                 </div>
                 <input
-                    className= "text-lg  ml-1 pl-2 outline-none w-3/4" 
+                    className= "text-2xl  ml-1 pl-2 outline-none w-3/4" 
                     placeholder="Untitled"
                     onChange={(event) => onEmojiClick(event, currentPageId)}
                     id={currentPageId}
@@ -35,6 +35,7 @@ function PageHeader({onEmojiClick}) {
                 />  
             </div>
         </div>
+            
     );
 }
 
