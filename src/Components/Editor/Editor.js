@@ -257,26 +257,26 @@ function Editor() {
     };
 	}, [currentPageId, initEditor]);
 
-  useEffect(() => {
-		if (wsReceivedData) {
-      console.log(wsReceivedData)
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-      if (!ejInstance.current) {
-        const initialData = {
-          time: Date.now(),
-          blocks: wsReceivedData,
-        };
-        console.log("blocks rerender")
-        initEditor(initialData);
-      }
-    }
+  // useEffect(() => {
+	// 	if (wsReceivedData) {
+  //     console.log(wsReceivedData)
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //     if (!ejInstance.current) {
+  //       const initialData = {
+  //         time: Date.now(),
+  //         blocks: wsReceivedData,
+  //       };
+  //       console.log("blocks rerender")
+  //       initEditor(initialData);
+  //     }
+  //   }
     
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
-	}, [wsReceivedData, initEditor]);
+  //   return () => {
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //   };
+	// }, [wsReceivedData, initEditor]);
 
   
   

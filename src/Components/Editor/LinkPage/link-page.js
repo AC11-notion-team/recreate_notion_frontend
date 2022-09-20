@@ -198,10 +198,10 @@ export default class PageLink {
   showPage({ title, url, icon }){
     this.nodes.container.appendChild(this.nodes.linkPage);
     
-    if (icon){
-      this.nodes.linkIcon.textContent = icon
-      this.nodes.linkPage.appendChild(this.nodes.linkIcon);
-    }
+    // if (icon){
+    this.nodes.linkIcon.textContent = icon || "🗒️"
+    this.nodes.linkPage.appendChild(this.nodes.linkIcon);
+    // }
 
     if (title) {
       this.nodes.linkTitle.textContent = title;
