@@ -5,26 +5,38 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.js";
-import RequireAuth from "./Components/RequireAuth"
-import { BrowserRouter, Routes, Route} from "react-router-dom";
-import { CurrentPageIdProvider } from "./CurrentPageId";
-import { PagesProvider } from "./Pages";
+import RequireAuth from "./Components/RequireAuth";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CurrentPageIdProvider } from "./Hooks/CurrentPageId";
+import { PagesProvider } from "./Hooks/Pages";
+import { InviteProvider } from "./Hooks/InviteUser";
+import {EmojiStateProvider} from "./Hooks/EmojiState"
+import {TrashPagesProvider}from "./Hooks/TrashPages"
+import {FavoriteProvider} from "./Hooks/Favorite"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
 		<PagesProvider>
 			<CurrentPageIdProvider>
-				<BrowserRouter>
-					<Routes>
-						<Route element={< RequireAuth />}>
-							<Route path="/" element={<App />} />
-							<Route path="/:page_id" element={<App />} />
-						</Route>
-						<Route path="homepage" element={<HomePage />} />
-						<Route path="login-page" element={<LoginPage />} />
-					</Routes>
-				</BrowserRouter>
+				<FavoriteProvider>
+					<TrashPagesProvider>
+						<InviteProvider>
+							<EmojiStateProvider>
+								<BrowserRouter>
+									<Routes>
+										<Route element={< RequireAuth />}>
+											<Route path="/app" element={<App />} />
+											<Route path="/app/:page_id" element={<App />} />
+										</Route>
+										<Route path="/" element={<HomePage />} />
+										<Route path="login-page" element={<LoginPage />} />
+									</Routes>
+								</BrowserRouter>
+							</EmojiStateProvider>
+						</InviteProvider>
+					</TrashPagesProvider>
+				</FavoriteProvider>
 			</CurrentPageIdProvider>
 		</PagesProvider>
 	</>

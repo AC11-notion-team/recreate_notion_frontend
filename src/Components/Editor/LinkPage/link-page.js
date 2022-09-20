@@ -108,10 +108,6 @@ export default class PageLink {
     return this.nodes.wrapper;
   }
 
-  startAddPage(){
-    this.addPage()
-  }
-  
   async addPage(){
     const baseUrl = process.env.REACT_APP_BASEURL;
     
@@ -134,7 +130,7 @@ export default class PageLink {
 
   onAddPage(inputdata){
     const domainUrl = process.env.REACT_APP_DOMAINURL;
-    const url = `${domainUrl}${inputdata.id}`
+    const url = `${domainUrl}/${inputdata.id}`
     this.data = {
       link: url,
       meta: inputdata,
@@ -201,10 +197,10 @@ export default class PageLink {
   showPage({ title, url, icon }){
     this.nodes.container.appendChild(this.nodes.linkPage);
     
-    if (icon){
-      this.nodes.linkIcon.textContent = icon
-      this.nodes.linkPage.appendChild(this.nodes.linkIcon);
-    }
+    // if (icon){
+    this.nodes.linkIcon.textContent = icon || "🗒️"
+    this.nodes.linkPage.appendChild(this.nodes.linkIcon);
+    // }
 
     if (title) {
       this.nodes.linkTitle.textContent = title;

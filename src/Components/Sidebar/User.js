@@ -3,9 +3,8 @@ import user from "../image/user.png"
 import userData from "../image/userData.png"
 import menuLeft from "../image/menu-left.png"
 import more from "../image/more.png"
-import drag from "../image/drag.png"
-import check from "../image/check.png"
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function User ({toggle}){
     let navigate = useNavigate()
@@ -18,8 +17,9 @@ export default function User ({toggle}){
     const logout =()=>{
         localStorage.removeItem('zettel_user_token')
         localStorage.removeItem('zettel_user_id')
-        navigate("homepage")
+        navigate("/")
     };
+
     return(
         <div>
             <div className="User flex items-center justify-between point group  px-4 p-2">
@@ -35,7 +35,7 @@ export default function User ({toggle}){
                 </button>
             </div>
             {isUser && <div onClick={handleToggle}  className="User fixed  w-screen top-0 bottom-0 left-0 ">
-                <div className="absolute bg-white left-3 top-12 w-2/12  box-shadow  border z-10 rounded min-w-max">
+                <div className="absolute bg-white left-3 top-12 w-3/12  box-shadow  border z-10 rounded min-w-max">
                     <div className=" flex items-center justify-between p-2">
                         <p className="text-sm">fdjfjfd@gmail.com</p>
                         <button className="p-1">
@@ -43,17 +43,13 @@ export default function User ({toggle}){
                         </button>
                     </div>
                     <div className="flex items-center justify-between point mb-2 p-2 flex-nowrap ">
-                        <div className="flex items-center">
-                            <button className="mr-1">
-                                <img className="w-5 h-5 p-0.5" src={drag} alt="" />
-                            </button>
+                        <div className="flex items-center px-1">
                             <img className="w-7 h-7 mr-2" src={user} alt="userImg" />
                             <div className="min-w-max">
                                 <p className="mr-1 font-semibold text-sm whitespace-pre"> user's Notion</p>
                                 <p className="text-xs text-gray-600 whitespace-pre">Personal Pro Plan (free)</p>
                             </div>
                         </div>
-                        <img className="w-5 h-5 p-1" src={check} alt="check" />
                     </div>
                     <hr />
                     <div className="bg-gray-50">

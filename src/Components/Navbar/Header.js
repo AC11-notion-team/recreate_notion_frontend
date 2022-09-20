@@ -2,24 +2,19 @@ import React from "react";
 import Share from "./Share";
 import More from "./More";
 import Title from "./Title";
-import Updata from "./Updata";
 import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
-import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
+import { usePages } from "../../Hooks/Pages";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import {useFavorite,useFavoriteUpdate} from "../../Hooks/Favorite"
 
-export default function Header({
-	isFavorite,
-	isSide,
-	toggleFavorite,
-	toggleSide,
-	onEmojiClick,
-}) {
+export default function Header({isSide,toggleSide,onEmojiClick,}) {
 	const pages = usePages();
 	const currentPageId = useCurrentPageId();
-
+	const favorite = useFavorite();
+	const changeFavorite = useFavoriteUpdate();
 	const pageItem = pages.filter((item) => {
 		return item.id === currentPageId;
 	});
@@ -49,16 +44,15 @@ export default function Header({
 			</div>
 			<div className="flex">
 				<Share />
-				<Updata />
 				<div className="flex items-center">
 					<MenuButton
 						className="IsFavorite"
-						handleClick={toggleFavorite}
+						handleClick={changeFavorite}
 						alt="favoriteButton"
-						src={isFavorite ? fullStar : emptyStar}
+						src={favorite ? fullStar : emptyStar}
 					/>
 				</div>
-				<More isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
+				<More  />
 			</div>
 		</div>
 	);

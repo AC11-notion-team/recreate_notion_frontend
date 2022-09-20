@@ -107,14 +107,7 @@ export default function LoginPage() {
       if(res.data.status==="success"){
         localStorage.setItem("zettel_user_token", res.data.auth_token);
         localStorage.setItem("zettel_user_id", res.data.user_id);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been success login',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        return navigate("/");
+        return navigate("/app");
       }
       Swal.fire({
         icon: 'error',
@@ -145,9 +138,12 @@ export default function LoginPage() {
   
   return (
     <>
-      <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 "><img src="/zettel.png" alt="" />
-        <span className="text-xl font-medium ml-2">Zettel</span>
-      </div>
+      <a href='homepage'>
+        <div className="flex items-center justify-items-start mt-6 ml-6 h-12 w-10 ">
+          <img src="/zettel.png" alt="" />
+          <span className="text-xl font-medium ml-2">Zettel</span>
+        </div>
+      </a>
       <div className="w-full mt-4 border-b-2  border-grey-100 "/>
        <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
@@ -237,26 +233,6 @@ export default function LoginPage() {
               }
                
             </div>
-
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
-              </div>
-            </div> */}
 
             <div>
               <button

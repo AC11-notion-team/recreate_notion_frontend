@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import Picker from "emoji-picker-react";
-import { useCurrentPageId } from "../../CurrentPageId";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 
-export default function Emoji({ pageIcon, onEmojiClick }) {
+export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 	const [isEmoji, setIsEmoji] = useState(false);
 	const toggleEmoji = () => setIsEmoji((prevIsEmoji) => !prevIsEmoji);
 	const currentPageId = useCurrentPageId();
 	const callback = (e,emojiObject) => {
-		onEmojiClick(e,currentPageId, emojiObject)
+		onEmojiClick(e,currentPageId,pageID, emojiObject)
+		setIsEmoji(false)
 	}
-
 
 	return (
 		<div>
@@ -19,7 +19,7 @@ export default function Emoji({ pageIcon, onEmojiClick }) {
 				</span>
 			</div>
 			{isEmoji && (
-				<div className="absolute ">
+				<div className="absolute z-50">
 					<Picker
 						onEmojiClick={callback}
 					/>
