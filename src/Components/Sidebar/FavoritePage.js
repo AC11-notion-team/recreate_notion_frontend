@@ -1,27 +1,30 @@
-import React from "react";
-import {useFavorite,useFavoriteUpdate} from "../../Favorite"
+import React,{useState,useEffect} from "react";
 import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
 import Page from "./Page";
 
-export default function Star({onEmojiClick}) {
-	const favorite = useFavorite();
+export default function Star({toggleFavorite,onEmojiClick}) {
 	const pages = usePages();
-	const currentPageId = useCurrentPageId();
-	const changeFavorite = useFavoriteUpdate();
+	const [favoritePages,setFavoritePages] = useState([])
 
-	console.log(pages);
+	useEffect(()=>{
+		setFavoritePages(
+			 pages.filter(item =>
+				 item.favorite === true
+			)
+		)
+	},[pages])
+	
 
 	
 	return (
 		<div>
-			{favorite && (<div>
+			{favoritePages?.length>0 ?<div>
 					<div className="py-1 px-4">
 						<p className="text-xs font-semibold text-gray-500 point">
 							FAVORITES
 						</p>
 					</div>
-					{pages.map((item, i) => (
+					{favoritePages?.map((item, i) => (
 						<Page
 							key={i}
 							onEmojiClick={onEmojiClick}
@@ -29,10 +32,11 @@ export default function Star({onEmojiClick}) {
 							pageIcon={item.icon}
 							pageID={item.id}
 							pageFavorite={item.id}
+							toggleFavorite={toggleFavorite}
 						/>
 					))}
 
-				</div>)}
+				</div>:null}
 		</div>
 	);
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import more from "../image/more.png";
 import trash from "../image/delete.png";
-import star from "../image/empty-star.png";
+import emptyStar from "../image/empty-star.png";
+import fullStar from "../image/full-star.png";
 import link from "../image/link.png";
 import ActionButton from "../Navbar/ActionButton";
 import duplicate from "../image/duplicate.png";
@@ -18,7 +19,9 @@ export default function PageMore({
 	onEmojiClick,
 	pageTitle,
 	pageIcon,
-	pageID
+	pageID,
+	toggleFavorite,
+	pageFavorite
 }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -59,6 +62,9 @@ export default function PageMore({
 			})
 		})
 	};
+	const callback =()=>{
+		toggleFavorite(pageID)
+	}
 
 	return (
 		<div ref={ref}>
@@ -81,10 +87,11 @@ export default function PageMore({
 							className="py-1"
 						/>
 						<ActionButton
-							src={star}
+							src={pageFavorite ? fullStar : emptyStar}
 							alt="Favorite"
 							content="Add to Favorites"
 							className="py-1"
+							handleClick={callback}
 						/>
 						<ActionButton
 							src={duplicate}

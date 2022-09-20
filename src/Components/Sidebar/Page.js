@@ -4,7 +4,7 @@ import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 import { useCurrentPageUpdateId } from "../../CurrentPageId";
 
-const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
+const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFavorite}) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
 	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const closeDropdown = useCallback(() => {
@@ -37,7 +37,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 							className="ml-2 overflow-x-hidden text-sm font-semibold text-gray-600 whitespace-nowrap"
 							value={pageTitle}
 						>
-							{pageTitle}
+							 {pageTitle}
 						</p>
 					</button>
 				</div>
@@ -49,6 +49,8 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 							onEmojiClick={onEmojiClick}
 							closeDropdown={closeDropdown}
 							pageID={pageID}
+							pageFavorite={pageFavorite}
+							toggleFavorite={toggleFavorite}
 						/>
 					)}
 				</div>

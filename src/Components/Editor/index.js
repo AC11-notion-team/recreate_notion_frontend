@@ -85,8 +85,8 @@ function Editor() {
       },
       onChange: async (api, event) => {
         let content = await editor.save();
-        console.log(event)
-        console.log(content)
+        // console.log(event)
+        // console.log(content)
         // Put your logic here to save this data to your DB
         if (event.type === "block-removed" && !event.detail.target.isEmpty) {
           const config = {
@@ -129,7 +129,9 @@ function Editor() {
         }
         if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
           const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
-          const newPage = block.link.split("localhost:3000/")[1]
+          console.log(block)
+          const newPage = block.meta.id
+          
           if (newPage){
             isAddPageLink = false
             changePages(prevPages => [...prevPages, block.meta])

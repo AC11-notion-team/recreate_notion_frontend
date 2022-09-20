@@ -10,7 +10,11 @@ import addPage from "../image/plus.png";
 import axios from "axios";
 import { usePagesUpdate } from "../../Pages";
 
-export default function Sidebar({toggle,onEmojiClick}) {
+export default function Sidebar({
+	toggleFavorite,
+	toggle,
+	onEmojiClick,
+}) {
 	// useContext state= pages
 	const changePages = usePagesUpdate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -44,7 +48,7 @@ export default function Sidebar({toggle,onEmojiClick}) {
 			</div>
 			<div className="h-3/4 overflow-x-hidden overflow-y-auto">
 				<div className="mb-4">
-					<FavoritePage onEmojiClick={onEmojiClick} />
+					<FavoritePage onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
 				</div>
 				<div className="mb-4">
 					<Share />
@@ -61,7 +65,7 @@ export default function Sidebar({toggle,onEmojiClick}) {
 						</button>
 					</div>
 
-					<Private onEmojiClick={onEmojiClick} />
+					<Private onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
 				</div>
 				<div className="px-1 py-2">
 					<Templates />

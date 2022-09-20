@@ -5,7 +5,7 @@ import { usePages, usePagesUpdate } from "../../Pages";
 import { useCurrentPageUpdateId } from "../../CurrentPageId";
 import { useParams } from "react-router-dom";
 
-export default function Private({ onEmojiClick }) {
+export default function Private({ onEmojiClick,toggleFavorite }) {
 	const pages = usePages();
 	const changePages = usePagesUpdate();
 	const changeCurrentPageId = useCurrentPageUpdateId();
@@ -42,7 +42,8 @@ export default function Private({ onEmojiClick }) {
 					pageTitle={item.title}
 					pageIcon={item.icon}
 					pageID={item.id}
-					pageFavorite={item.id}
+					pageFavorite={item.favorite}
+					toggleFavorite ={toggleFavorite}
 				/>
 			))}
 		</div>
