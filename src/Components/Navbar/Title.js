@@ -21,7 +21,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 		<div>
 			<ActionButton
 				titleIcon={pageIcon ? pageIcon : "🗒️"}
-				content={pageTitle}
+				content={pageTitle ? pageTitle : "Untitled"}
 				className="IsTitle py-0.5 -mr-0.5"
 				handleClick={handleToggle}
 			/>
@@ -44,6 +44,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 								onChange={callback}
 								className="share-like-input h-7 w-full rounded title"
 								value={pageTitle}
+								placeholder="Untitled"
 							/>
 						</div>
 					</div>

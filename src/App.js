@@ -5,7 +5,8 @@ import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import axios from "axios";
-import {usePagesUpdate } from "./Pages";
+import { usePagesUpdate } from "./Pages";
+import PageHeader from "./Components/PageHeader/index.js"
 
 function App() {
 	const changePages = usePagesUpdate();
@@ -133,8 +134,10 @@ function App() {
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}
 					/>
-					{/* < PageHeader /> */}
-					<Editor />
+					<div className="relative content overflow-auto ">
+						< PageHeader  onEmojiClick={onEmojiClick}/>
+						<Editor />
+					</div>
 				</div>
 			</div>
 		</div>

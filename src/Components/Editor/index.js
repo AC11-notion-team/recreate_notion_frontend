@@ -129,9 +129,7 @@ function Editor() {
         }
         if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
           const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
-          console.log(block)
           const newPage = block.meta.id
-          
           if (newPage){
             isAddPageLink = false
             changePages(prevPages => [...prevPages, block.meta])
@@ -265,10 +263,8 @@ function Editor() {
   };
   
   return (
-    <div className="relative content overflow-auto ">
-        
+    <div >
         <div  id={EDITTOR_HOLDER_ID}> </div>
-        <div onClick={()=> console.log(currentPageId)}>click here</div>
     </div>
   );
 }

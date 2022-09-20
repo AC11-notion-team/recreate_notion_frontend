@@ -38,6 +38,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
                             onChange={cb}
                             className="share-like-input h-7 w-full rounded title"
                             value={pageTitle}
+                            placeholder="Untitled"  
                         />
                     </div>
                 </div>}
