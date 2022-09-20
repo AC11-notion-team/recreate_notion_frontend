@@ -26,7 +26,7 @@ export default function Private({ onEmojiClick,toggleFavorite }) {
 					},
 				});
 				changePages(response.data.pages);
-				changeCurrentPageId(params["page_id"] || response.data.pages[0].id);
+				changeCurrentPageId(params["page_id"] || localStorage.getItem("currentPageId") || response.data.pages[0].id);
 			} catch (error) {
 				console.log(error);
 			}
@@ -37,7 +37,7 @@ export default function Private({ onEmojiClick,toggleFavorite }) {
 		<div className="px-1 py-1">
 			{pages.map((item, i) => (
 				<Page
-					key={i}
+					key={item.id}
 					onEmojiClick={onEmojiClick}
 					pageTitle={item.title}
 					pageIcon={item.icon}

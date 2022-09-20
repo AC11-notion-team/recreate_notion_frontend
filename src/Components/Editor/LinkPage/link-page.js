@@ -99,22 +99,15 @@ export default class PageLink {
     this.nodes.linkPage = this.preparePage()
 
     if (Object.keys(this.data.link).length) {
-      console.log("load")
       this.startFetchLinkData();
     } else {
-      console.log("add")
       this.addPage()
-      // this.startAddPage();
     }
     this.nodes.wrapper.appendChild(this.nodes.container);
 
     return this.nodes.wrapper;
   }
 
-  startAddPage(){
-    this.addPage()
-  }
-  
   async addPage(){
     const baseUrl = process.env.REACT_APP_BASEURL;
     
@@ -205,10 +198,10 @@ export default class PageLink {
   showPage({ title, url, icon }){
     this.nodes.container.appendChild(this.nodes.linkPage);
     
-    if (icon){
-      this.nodes.linkIcon.textContent = icon
-      this.nodes.linkPage.appendChild(this.nodes.linkIcon);
-    }
+    // if (icon){
+    this.nodes.linkIcon.textContent = icon || "🗒️"
+    this.nodes.linkPage.appendChild(this.nodes.linkIcon);
+    // }
 
     if (title) {
       this.nodes.linkTitle.textContent = title;

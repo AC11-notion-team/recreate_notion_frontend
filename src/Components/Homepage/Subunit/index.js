@@ -12,7 +12,6 @@ const  Nav = props => (
         <div className="hidden md:block p-1 text-xl">
             <ul className="flex ">
             <NavItem href="/Product" text="Product">
-            {/* {isHovered  ?   <Navlist /> : null}    */}
             </NavItem>
             <IoIosArrowDown />
                         
@@ -68,11 +67,9 @@ export default function EditableBlock () {
                 </div>
                 <form onSubmit={(event) => {
                     event.preventDefault();
-                    console.log("TODO submit form")
                     }}
                     className="hidden md:block space-x-1" 
                     >
-                    {/* <Button  type="submit">Try Notion free</Button> */}
                 </form>
                 <div className="md:flex max-w-xl content-start  ">
                     <img src="https://www.notion.so/cdn-cgi/image/format=auto,width=1080,quality=100/front-static/pages/product/home-page-hero-refreshed-v3.png" alt="" />

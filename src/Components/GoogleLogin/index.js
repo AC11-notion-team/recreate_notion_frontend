@@ -25,7 +25,6 @@ const GoogleLogin = () => {
 				image: payload.picture
 			})
 			.then((res) => {
-				console.log(res.data);
 				localStorage.setItem("zettel_user_token", res.data.auth_token);
 				localStorage.setItem("zettel_user_id", res.data.user_id);
 			})
