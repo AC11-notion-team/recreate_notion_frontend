@@ -22,6 +22,7 @@ import axios from 'axios';
 import ActionCable from 'actioncable'
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
 import { usePagesUpdate } from "../../Pages";
+import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -39,18 +40,9 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
+  const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
-  // This can also be an async getter function. See notes below on Async Urls.
-  const socketUrl = `ws://localhost:3001/cable?token=Bearer ${localStorage.getItem("zettel_user_token") || null}`;
-  const editorCable = useMemo(() => ActionCable.createConsumer(socketUrl), [])
-  // useCallback(() => editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
-  //   {
-  //     connected: () => console.log("connected"), 
-  //     received: (data) => {
-  //       console.log(data)
-  //       setBlocks(data.blocks)
-  //     }
-  //   }), [currentPageId])
+
   const initEditor = useCallback((initialData) => {
     const editor = new EditorJS({
       holder: EDITTOR_HOLDER_ID,
@@ -64,8 +56,6 @@ function Editor() {
       },
       onChange: async (api, event) => {
         let content = await editor.save();
-        console.log(event)
-        console.log(content)
         // Put your logic here to save this data to your DB
         if (event.type === "block-removed" && !event.detail.target.isEmpty) {
           const config = {
@@ -234,9 +224,8 @@ function Editor() {
 
       }, 
     });
-    // debugger;
-    // return editor
   },[currentPageId]);
+
   useEffect(() => {
 		const config = {
 			method: "get",
@@ -256,19 +245,10 @@ function Editor() {
 						blocks: res.data.blocks,
 					};
 					if (!ejInstance.current) {
-            console.log("currentPageId rerender")
 						initEditor(initialData);
 					}
 				})
 				.catch((err) => console.error(err));
-      editorCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
-      {
-        connected: () => console.log("connected"), 
-        received: (data) => {
-          console.log(data)
-          setBlocks(data.blocks)
-        }
-      })
     }
     
     return () => {
@@ -278,13 +258,14 @@ function Editor() {
 	}, [currentPageId, initEditor]);
 
   useEffect(() => {
-		if (blocks) {
+		if (wsReceivedData) {
+      console.log(wsReceivedData)
       ejInstance.current?.destroy();
       ejInstance.current = null;
       if (!ejInstance.current) {
         const initialData = {
           time: Date.now(),
-          blocks: blocks,
+          blocks: wsReceivedData,
         };
         console.log("blocks rerender")
         initEditor(initialData);
@@ -295,12 +276,12 @@ function Editor() {
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
-	}, [blocks, initEditor]);
+	}, [wsReceivedData, initEditor]);
 
   
   
   return (
-    <div className="relative content overflow-auto ">
+    <div>
         <div  id={EDITTOR_HOLDER_ID}> </div>
     </div>
   );

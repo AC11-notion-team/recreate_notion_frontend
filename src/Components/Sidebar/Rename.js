@@ -8,7 +8,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
     const currentPageId = useCurrentPageId();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsRename") === true) {
+		if (e.target.closest("div").className.includes("IsRename") === true) {
 			setIsRename((prevTitleButton) => !prevTitleButton);
 		}
         
@@ -38,6 +38,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
                             onChange={cb}
                             className="share-like-input h-7 w-full rounded title"
                             value={pageTitle}
+                            placeholder="Untitled"  
                         />
                     </div>
                 </div>}

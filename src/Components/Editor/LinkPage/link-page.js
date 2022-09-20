@@ -99,22 +99,15 @@ export default class PageLink {
     this.nodes.linkPage = this.preparePage()
 
     if (Object.keys(this.data.link).length) {
-      console.log("load")
       this.startFetchLinkData();
     } else {
-      console.log("add")
       this.addPage()
-      // this.startAddPage();
     }
     this.nodes.wrapper.appendChild(this.nodes.container);
 
     return this.nodes.wrapper;
   }
 
-  startAddPage(){
-    this.addPage()
-  }
-  
   async addPage(){
     const baseUrl = process.env.REACT_APP_BASEURL;
     
@@ -137,7 +130,7 @@ export default class PageLink {
 
   onAddPage(inputdata){
     const domainUrl = process.env.REACT_APP_DOMAINURL;
-    const url = `${domainUrl}${inputdata.id}`
+    const url = `${domainUrl}/${inputdata.id}`
     this.data = {
       link: url,
       meta: inputdata,

@@ -83,6 +83,6 @@
 .ce-header {
   font-weight: 500;
 }
-
-
-
+.state {
+  @apply w-full;
+}

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserInviteList from "./UserInviteList";
 import axios from "axios";
 import { useCurrentPageId } from "../../../../CurrentPageId";
-import { useInviteUpdate } from "../../../../InviteUser";
 import { usePages } from "../../../../Pages";
-
 import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const ShareToParticularPerson = () => {
@@ -58,17 +56,16 @@ const ShareToParticularPerson = () => {
 				currentPageId: currentPageId,
 				inviteUsers: checkbox.state,
 			},
-		})
-			.then((res) => {
-				setSearchUser("");
-				setInvistList((prev) => {
-					return [...prev, ...res.data];
-				});
-				setUserInformation([]);
-			})
-			.catch((err) => {
-				console.log(err);
+		}).then((res) => {
+			setSearchUser("");
+			setInvistList((prev) => {
+				return [...prev, ...res.data];
 			});
+			setUserInformation([]);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 	};
 	const removeInvite = (email) => {
 		axios({
@@ -101,7 +98,7 @@ const ShareToParticularPerson = () => {
 					onChange={searchUserToggle}
 					value={searchUser}
 				/>
-				<button className="share-Universal button-bg" onClick={submitInvite}>
+				<button className="share-Universal button-bg border-b-4 border-blue-400 hover:bg-blue-400 hover:border-blue-500" onClick={submitInvite}>
 					<p className="overflow-x-hidden leading-5 text-white whitespace-nowra">
 						Invite
 					</p>
@@ -111,15 +108,14 @@ const ShareToParticularPerson = () => {
 				<div>
 					{userInformation.map((item, i) => (
 						<div key={i}>
-							<div className="flex">
-								<div className="inline-flex">
-									<Checkbox value={item.email} {...checkbox}></Checkbox>
-								</div>
-								<UserInviteList
-									username={item.username}
-									email={item.email}
-									picture={item.picture}
-								/>
+							<div className="w-full ">
+								<Checkbox value={item.email} {...checkbox} className="flex w-full">
+									<UserInviteList
+										username={item.username}
+										email={item.email}
+										picture={item.picture}
+									/>
+								</Checkbox>
 							</div>
 						</div>
 					))}
@@ -144,7 +140,7 @@ const ShareToParticularPerson = () => {
 									onClick={(item) => {
 										removeInvite(item.target.dataset.email);
 									}}
-									className="absolute right-0 inline-block px-3 text-base font-bold text-center text-white bg-blue-500 border-b-4 border-blue-700 rounded top-3 py-1/2 hover:bg-blue-400 hover:border-blue-500"
+									className="absolute right-0 inline-block px-3 text-base font-bold text-center text-white button-bg border-b-4 border-blue-400 rounded top-3 py-1/2 hover:bg-blue-400 hover:border-blue-500 mr-2"
 								>
 									X
 								</button>

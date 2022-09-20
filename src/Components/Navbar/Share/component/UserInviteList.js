@@ -1,21 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import userImg from "../../../image/user.png";
-import check from "../../../image/check.png";
-import { useInviteUsers, useInviteUpdate } from "../../../../InviteUser";
-import { Checkbox } from "pretty-checkbox-react";
+import { useInviteUpdate } from "../../../../InviteUser";
 
 export default function UserInviteList({ username, email, picture }) {
-	const inviteUsers = useInviteUsers();
 	const changeInviteUser = useInviteUpdate();
 	const callback = () => {
 		changeInviteUser(username);
 	};
-	const user = inviteUsers.map((item) => item);
-
+	
 	return (
-		<div className="inline">
-			<div
-				className="flex items-center justify-between p-2 mb-2 bg-white point flex-nowrap"
+		<div className="inline w-full">
+			<div className="flex items-center justify-between p-2 mb-2 bg-white  flex-nowrap point w-full"
 				onClick={callback}
 			>
 				<div className="flex items-center justify-between ">

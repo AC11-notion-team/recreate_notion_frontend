@@ -3,12 +3,13 @@ import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
 import { useCurrentPageId } from "../../CurrentPageId";
 
+
 export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	const currentPageId = useCurrentPageId();
 
 	const [isTitleButton, setIsTitleButton] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsTitle") === true) {
+		if (e.target.closest("div").className.includes("IsTitle")) {
 			setIsTitleButton((prevTitleButton) => !prevTitleButton);
 		}
 	};
@@ -20,7 +21,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 		<div>
 			<ActionButton
 				titleIcon={pageIcon ? pageIcon : "🗒️"}
-				content={pageTitle}
+				content={pageTitle ? pageTitle : "Untitled"}
 				className="IsTitle py-0.5 -mr-0.5"
 				handleClick={handleToggle}
 			/>
@@ -43,6 +44,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 								onChange={callback}
 								className="share-like-input h-7 w-full rounded title"
 								value={pageTitle}
+								placeholder="Untitled"
 							/>
 						</div>
 					</div>
