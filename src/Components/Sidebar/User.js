@@ -41,7 +41,7 @@ export default function User ({toggle}){
                 <div className="User flex items-center group-hover:opacity-80 py-1.5 px-0.5 w-full" onClick={handleToggle}>
                     <img className="User w-5 h-5 mr-2" src={user} alt="userImg" />
                     <div className="flex items-center">
-                        <p className="User mr-1 font-semibold text-sm"> user's Notion</p>
+                        <p className="User mr-1 font-semibold text-sm"> user's Zettel</p>
                         <img className="User w-4 h-3" src={userData} alt="userData" />  
                     </div>   
                 </div>
@@ -61,7 +61,7 @@ export default function User ({toggle}){
                         <div className="flex items-center px-1">
                             <img className="w-7 h-7 mr-2" src={user} alt="userImg" />
                             <div className="min-w-max">
-                                <p className="mr-1 font-semibold text-sm whitespace-pre"> user's Notion</p>
+                                <p className="mr-1 font-semibold text-sm whitespace-pre"> user's Zettel</p>
                                 <p className="text-xs text-gray-600 whitespace-pre">Personal Pro Plan (free)</p>
                             </div>
                         </div>
@@ -69,13 +69,7 @@ export default function User ({toggle}){
                     <hr />
                     <div className="bg-gray-50">
                         <div className="py-1">
-                            <p className="text-xs text-gray-600 py-1 px-3 point my-1">Create work account</p>
-                            <p className="text-xs text-gray-600 py-1 px-3 point my-1">Add another account</p>
                             <p className="text-xs text-gray-600 py-1 px-3 point my-1" onClick={logout}>Log out all</p>
-                        </div>
-                        <hr />
-                        <div>
-                            <p className="text-xs text-gray-600 p-3 point">Get Mac app</p>
                         </div>
                     </div>
                 </div>

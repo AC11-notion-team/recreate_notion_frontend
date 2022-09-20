@@ -2,7 +2,6 @@ import React from "react";
 import FavoritePage from "./FavoritePage";
 import Private from "./Private";
 import Share from "./Share";
-import Templates from "./Templates";
 import Trash from "./Trash";
 import User from "./User";
 import QuickFind from "./QuickFind";
@@ -68,7 +67,6 @@ export default function Sidebar({
 					<Private onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
 				</div>
 				<div className="px-1 py-2">
-					<Templates />
 					<Trash />
 				</div>
 			</div>

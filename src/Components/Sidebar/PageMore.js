@@ -3,9 +3,7 @@ import more from "../image/more.png";
 import trash from "../image/delete.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
-import link from "../image/link.png";
 import ActionButton from "../Navbar/ActionButton";
-import duplicate from "../image/duplicate.png";
 import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
@@ -92,18 +90,6 @@ export default function PageMore({
 							content="Add to Favorites"
 							className="py-1"
 							handleClick={callback}
-						/>
-						<ActionButton
-							src={duplicate}
-							alt="duplicate"
-							content="Duplicate"
-							className="py-1"
-						/>
-						<ActionButton
-							src={link}
-							alt="link"
-							content="Copy link"
-							className="py-1"
 						/>
 						<Rename
 							pageTitle={pageTitle}

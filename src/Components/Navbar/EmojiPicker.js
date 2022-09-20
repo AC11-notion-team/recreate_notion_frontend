@@ -14,7 +14,7 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 	return (
 		<div>
 			<div>
-				<span alt="title" onClick={toggleEmoji}>
+				<span className="w-full " alt="title" onClick={toggleEmoji}>
 					{pageIcon ? pageIcon : "🗒️"}
 				</span>
 			</div>
@@ -22,6 +22,8 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 				<div className="absolute z-50">
 					<Picker
 						onEmojiClick={callback}
+						disableSkinTonePicker={true}
+						preload={true}
 					/>
 				</div>
 			)}

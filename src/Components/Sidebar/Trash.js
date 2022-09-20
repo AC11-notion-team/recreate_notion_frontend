@@ -19,7 +19,7 @@ export default function Trash (){
         if(isTrash){
             axios({
                 method: "get",
-                url: `${baseUrl}/users/trash_page`,
+                url: `${baseUrl}/users/trash_page.json`,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
