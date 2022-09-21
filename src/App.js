@@ -6,7 +6,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import axios from "axios";
 import { usePagesUpdate } from "./Hooks/Pages";
-import PageHeader from "./Components/PageHeader/index.js"
+import PageHeader from "./Components/PageHeader/PageHeader.js"
 import { WsReceivedProvider } from "./Hooks/useActionCable";
 
 function App() {

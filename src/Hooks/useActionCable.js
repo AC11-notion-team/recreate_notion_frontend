@@ -20,7 +20,6 @@ export function WsReceivedProvider({ children }){
         {
             connected: () => console.log("Connect to Acontion Cable"), 
             received: (data) => {
-                console.log(data)
                 if(data.user_id !== user_id){
                     setWsReceivedData(data.blocks)
                 }

@@ -8,10 +8,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
     const currentPageId = useCurrentPageId();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.closest("div").className.includes("IsRename") === true) {
-			setIsRename((prevTitleButton) => !prevTitleButton);
-		}
-        
+        setIsRename((prevTitleButton) => !prevTitleButton);
 	};
     const cb = (event) => onEmojiClick(event, currentPageId,pageID)
     return(
@@ -41,7 +38,8 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
                             placeholder="Untitled"  
                         />
                     </div>
-                </div>}
+                </div>
+            }
         </div>
     )
 }

@@ -19,7 +19,6 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import ActionCable from 'actioncable'
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 import { usePagesUpdate } from "../../Hooks/Pages";
 import { useWsReceivedData } from "../../Hooks/useActionCable"
@@ -35,7 +34,6 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-  const [blocks, setBlocks] = useState("");
 	const currentPageId = useCurrentPageId();
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
@@ -251,32 +249,29 @@ function Editor() {
 				.catch((err) => console.error(err));
     }
     
+	}, [currentPageId, initEditor]);
+
+  useEffect(() => {
+		if (wsReceivedData) {
+      console.log(wsReceivedData)
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+      if (!ejInstance.current) {
+        const initialData = {
+          time: Date.now(),
+          blocks: wsReceivedData,
+        };
+        console.log("blocks rerender")
+        initEditor(initialData);
+      }
+    }
+    
     return () => {
+      console.log("component is unmouted")
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
-	}, [currentPageId, initEditor]);
-
-  // useEffect(() => {
-	// 	if (wsReceivedData) {
-  //     console.log(wsReceivedData)
-  //     ejInstance.current?.destroy();
-  //     ejInstance.current = null;
-  //     if (!ejInstance.current) {
-  //       const initialData = {
-  //         time: Date.now(),
-  //         blocks: wsReceivedData,
-  //       };
-  //       console.log("blocks rerender")
-  //       initEditor(initialData);
-  //     }
-  //   }
-    
-  //   return () => {
-  //     ejInstance.current?.destroy();
-  //     ejInstance.current = null;
-  //   };
-	// }, [wsReceivedData, initEditor]);
+	}, [wsReceivedData, initEditor]);
 
   
   

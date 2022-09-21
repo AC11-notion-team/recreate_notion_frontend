@@ -1,5 +1,5 @@
 import React from "react";
-import Share from "./Share";
+import Share from "./Share/Share";
 import More from "./More";
 import Title from "./Title";
 import menu from "../image/menu.png";

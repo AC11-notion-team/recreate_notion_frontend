@@ -32,11 +32,14 @@ export default function Private({ onEmojiClick }) {
 				console.log(error);
 			}
 		})();
+		return () => {
+			console.log("pages rerender")
+		}
 	}, []);
 
 	return (
 		<div className="px-1 py-1">
-			{pages.map((item, i) => (
+			{pages.map((item) => (
 				<Page
 					key={item.id}
 					onEmojiClick={onEmojiClick}
