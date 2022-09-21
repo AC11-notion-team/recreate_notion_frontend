@@ -17,23 +17,8 @@ export default function User ({toggle}){
     const logout =()=>{
         localStorage.removeItem('zettel_user_token')
         localStorage.removeItem('zettel_user_id')
-        navigate("homepage")
+        navigate("/")
     };
-    // axios({
-    //     method: "get",
-    //     url: `${baseUrl}/users/search_user.json`,
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
-    //     },
-    //     params:{
-    //         "search": e.target.value
-    //     }
-    // }).then((res)=>{
-    //     setUserInformation(res.data.users)
-    // }).catch((err) => {
-    //     console.log(err);
-    // });
 
     return(
         <div>

@@ -2,7 +2,7 @@ import React,{useState,useEffect} from "react";
 import trash from "../image/trash.png"
 import axios from "axios";
 import TrashPage from "./TrashPage"
-import {useTrashPages,useTrashPagesUpdate} from "../../TrashPages"
+import {useTrashPages,useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
 export default function Trash (){
@@ -27,7 +27,7 @@ export default function Trash (){
             }).then((res)=>{
                 changeTrashPages(res.data.pages)
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             });
         }
     },[isTrash])

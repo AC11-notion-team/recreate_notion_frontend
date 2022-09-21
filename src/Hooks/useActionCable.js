@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useContext, useState, useCallback } from 'react'
 import ActionCable from 'actioncable'
-import { useCurrentPageId } from "../CurrentPageId";
+import { useCurrentPageId } from "./CurrentPageId";
 import jwt_decode from "jwt-decode";
 
 const WsReceivedContext = React.createContext();
@@ -18,17 +18,16 @@ export function WsReceivedProvider({ children }){
     useEffect(() => {
         actionCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
         {
-            connected: () => console.log("Connect to Acontion Cable"), 
+            // connected: () => console.log("Connect to Acontion Cable"), 
             received: (data) => {
-                console.log(data)
                 if(data.user_id !== user_id){
                     setWsReceivedData(data.blocks)
                 }
             }
         })
-        console.log(`subscribed: ${currentPageId}`)
+        // console.log(`subscribed: ${currentPageId}`)
         return () => {
-            console.log('Disconnect to Action Cable')
+            // console.log('Disconnect to Action Cable')
             actionCable.disconnect()
             setWsReceivedData("")
         } 

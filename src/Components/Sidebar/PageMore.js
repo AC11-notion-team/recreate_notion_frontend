@@ -8,9 +8,9 @@ import duplicate from "../image/duplicate.png";
 import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
-import { usePagesUpdate } from "../../Pages";
-import { useCurrentPageUpdateId } from "../../CurrentPageId";
-import {useTrashPagesUpdate} from "../../TrashPages"
+import { usePagesUpdate } from "../../Hooks/Pages";
+import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
 export default function PageMore({

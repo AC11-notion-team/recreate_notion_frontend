@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import UserInviteList from "./UserInviteList";
 import axios from "axios";
-import { useCurrentPageId } from "../../../../CurrentPageId";
-import { usePages } from "../../../../Pages";
+import { useCurrentPageId } from "../../../../Hooks/CurrentPageId";
+import { usePages } from "../../../../Hooks/Pages";
 import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const ShareToParticularPerson = () => {
@@ -32,7 +32,7 @@ const ShareToParticularPerson = () => {
 					setUserInformation(res.data.users);
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 				});
 		}
 	};
@@ -64,7 +64,7 @@ const ShareToParticularPerson = () => {
 			setUserInformation([]);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 	};
 	const removeInvite = (email) => {
