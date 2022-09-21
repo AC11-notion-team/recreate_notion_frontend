@@ -3,6 +3,7 @@ import trash from "../image/trash.png"
 import axios from "axios";
 import TrashPage from "./TrashPage"
 import {useTrashPages,useTrashPagesUpdate} from "../../Hooks/TrashPages"
+import { useDetectClickOutside } from "react-detect-click-outside";
 
 
 export default function Trash (){
@@ -10,11 +11,14 @@ export default function Trash (){
     const [isTrash, setIsTrash] = useState(false)
     const toggleTrash = () => {
         setIsTrash(prevTrash => !prevTrash)
-       
     }
     const trashPage = useTrashPages()
     const changeTrashPages = useTrashPagesUpdate()
-    
+    const ref = useDetectClickOutside({
+		onTriggered: () => setIsTrash(false),
+		allowAnyKey: false,
+	});
+
     useEffect(()=>{
         if(isTrash){
             axios({
@@ -34,7 +38,7 @@ export default function Trash (){
     
     
     return(
-        <div>
+        <div ref={ref}>
             <div className="flex items-center point py-1 px-3" onClick={toggleTrash}>
                 <img className="w-5 h-5 mr-2" src={trash} alt="templates" />
                 <p className="text-sm font-semibold text-gray-600">Trash</p>
