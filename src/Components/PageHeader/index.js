@@ -1,5 +1,4 @@
 import React from "react";
-
 import { usePages } from "../../Pages";
 import { useCurrentPageId } from "../../CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
@@ -8,9 +7,7 @@ import Emoji from "../Navbar/EmojiPicker";
 function PageHeader({onEmojiClick}) {
     const pages = usePages();
 	const currentPageId = useCurrentPageId();
-    console.log("render header")
-	const pageItem =   pages.filter((item) => {
-        console.log("render item")
+	const pageItem = pages.filter((item) => {
 		return item.id === currentPageId;
 	});
 	const pageTitle = pageItem[0]?.title;
