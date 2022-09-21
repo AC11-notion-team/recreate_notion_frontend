@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import pageButtonRight from "../image/pageButtonRight.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
-import { useCurrentPageUpdateId } from "../../CurrentPageId";
+import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 
 const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();

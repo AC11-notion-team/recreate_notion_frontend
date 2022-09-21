@@ -1,12 +1,13 @@
 import React, { useState, useLayoutEffect } from "react";
 import "./App.css";
-import Editor from "./Components/Editor";
+import Editor from "./Components/Editor/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import axios from "axios";
-import { usePagesUpdate } from "./Pages";
-import PageHeader from "./Components/PageHeader/index.js"
+import { usePagesUpdate } from "./Hooks/Pages";
+import PageHeader from "./Components/PageHeader/PageHeader.js"
+import { WsReceivedProvider } from "./Hooks/useActionCable";
 
 function App() {
 	const changePages = usePagesUpdate();
@@ -106,7 +107,7 @@ function App() {
 					/>
 					<div className="relative content overflow-auto ">
 						< PageHeader  onEmojiClick={onEmojiClick}/>
-						<Editor />
+						< Editor />
 					</div>
 				</div>
 			</div>

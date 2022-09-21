@@ -86,3 +86,9 @@
 .state {
   @apply w-full;
 }
+.image-tool__caption {
+  display: none !important;
+}
+.embed-tool__caption {
+  display: none !important;
+}

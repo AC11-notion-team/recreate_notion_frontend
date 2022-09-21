@@ -1,7 +1,7 @@
 import React from "react";
-import {useFavorite,useFavoriteUpdate} from "../../Favorite"
-import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
+import {useFavorite,useFavoriteUpdate} from "../../Hooks/Favorite"
+import { usePages } from "../../Hooks/Pages";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Page from "./Page";
 
 export default function Star({onEmojiClick}) {
@@ -10,9 +10,6 @@ export default function Star({onEmojiClick}) {
 	const currentPageId = useCurrentPageId();
 	const changeFavorite = useFavoriteUpdate();
 
-	console.log(pages);
-
-	
 	return (
 		<div>
 			{favorite && (<div>
@@ -21,9 +18,9 @@ export default function Star({onEmojiClick}) {
 							FAVORITES
 						</p>
 					</div>
-					{pages.map((item, i) => (
+					{pages.map((item) => (
 						<Page
-							key={i}
+							key={item.id}
 							onEmojiClick={onEmojiClick}
 							pageTitle={item.title}
 							pageIcon={item.icon}

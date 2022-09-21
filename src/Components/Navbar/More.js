@@ -16,10 +16,10 @@ import MenuButton from "./MenuButton";
 import ActionButton from "./ActionButton"
 import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
-import { useCurrentPageId ,useCurrentPageUpdateId  } from "../../CurrentPageId";
-import { usePagesUpdate } from "../../Pages";
+import { useCurrentPageId ,useCurrentPageUpdateId  } from "../../Hooks/CurrentPageId";
+import { usePagesUpdate } from "../../Hooks/Pages";
 import axios from "axios";
-import {useFavorite,useFavoriteUpdate} from "../../Favorite"
+import {useFavorite,useFavoriteUpdate} from "../../Hooks/Favorite"
 
 export default function More(){
     const favorite = useFavorite();

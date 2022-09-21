@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import search from "../image/search.png"
 import axios from 'axios';
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
+import {useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 
 
 

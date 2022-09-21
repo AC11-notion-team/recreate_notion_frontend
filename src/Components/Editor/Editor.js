@@ -1,6 +1,5 @@
-import React, {useRef, useState, useEffect} from "react";
+import React, {useRef, useState, useEffect, useCallback, useMemo} from "react";
 import EditorJS from '@editorjs/editorjs';
-import Code from '@editorjs/code';
 import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter'
 import DragDrop from 'editorjs-drag-drop';
@@ -18,11 +17,11 @@ import Quote from '@editorjs/quote';
 import Underline from '@editorjs/underline';
 import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
-// import ToggleBlock from 'editorjs-toggle-block';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
-import { usePagesUpdate } from "../../Pages";
+import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import { usePagesUpdate } from "../../Hooks/Pages";
+// import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -39,40 +38,10 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
+  // const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
-  
-  useEffect(() => {
-		const config = {
-			method: "get",
-			url: `${baseUrl}/pages/${currentPageId}.json`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization:
-					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
-			},
-		};
-		if (currentPageId) {
-			axios(config)
-				.then((res) => {
-					const initialData = {
-						time: Date.now(),
-						blocks: res.data.blocks,
-					};
-					if (!ejInstance.current) {
-						initEditor(initialData);
-					}
-          
-				})
-				.catch((err) => console.error(err));
-    }
-    
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
-	}, [currentPageId]);
 
-  const initEditor = (initialData) => {
+  const initEditor = useCallback((initialData) => {
     const editor = new EditorJS({
       holder: EDITTOR_HOLDER_ID,
       logLevel: "ERROR",
@@ -85,8 +54,6 @@ function Editor() {
       },
       onChange: async (api, event) => {
         let content = await editor.save();
-        console.log(event)
-        console.log(content)
         // Put your logic here to save this data to your DB
         if (event.type === "block-removed" && !event.detail.target.isEmpty) {
           const config = {
@@ -200,7 +167,7 @@ function Editor() {
                         // any other image data you want to store, such as width, height, color, extension, etc
                       }
                     }
-                  }).catch(err => console.log("fetch_image_error" + err))
+                  }).catch(err => console.error("fetch_image_error" + err))
               },
             },
           },
@@ -253,17 +220,66 @@ function Editor() {
 
         textVariant: TextVariantTune,
 
-        // toggle: {
-        //   class: ToggleBlock,
-        //   inlineToolbar: true,
-        // },
-
       }, 
     });
-  };
+  },[currentPageId]);
+
+  useEffect(() => {
+		const config = {
+			method: "get",
+			url: `${baseUrl}/pages/${currentPageId}.json`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization:
+					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+			},
+		};
+		if (currentPageId) {
+			axios(config)
+				.then((res) => {
+					const initialData = {
+						time: Date.now(),
+						blocks: res.data.blocks,
+					};
+					if (!ejInstance.current) {
+						initEditor(initialData);
+					}
+				})
+				.catch((err) => console.error(err));
+    }
+
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
+	}, [currentPageId, initEditor]);
+
+  // useEffect(() => {
+	// 	if (wsReceivedData) {
+
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //     if (!ejInstance.current) {
+  //       const initialData = {
+  //         time: Date.now(),
+  //         blocks: wsReceivedData,
+  //       };
+
+  //       initEditor(initialData);
+  //     }
+  //   }
+    
+  //   return () => {
+
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //   };
+	// }, [wsReceivedData, initEditor]);
+
+  
   
   return (
-    <div >
+    <div>
         <div  id={EDITTOR_HOLDER_ID}> </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Page from "./Page";
 import axios from "axios";
-import { usePages, usePagesUpdate } from "../../Pages";
-import { useCurrentPageUpdateId } from "../../CurrentPageId";
+import { usePages, usePagesUpdate } from "../../Hooks/Pages";
+import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 import { useParams } from "react-router-dom";
 
 export default function Private({ onEmojiClick }) {
@@ -26,18 +26,18 @@ export default function Private({ onEmojiClick }) {
 					},
 				});
 				changePages(response.data.pages);
-				changeCurrentPageId(params["page_id"] || response.data.pages[0].id);
+				changeCurrentPageId(params["page_id"] || localStorage.getItem("currentPageId") || response.data.pages[0].id);
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 		})();
 	}, []);
 
 	return (
 		<div className="px-1 py-1">
-			{pages.map((item, i) => (
+			{pages.map((item) => (
 				<Page
-					key={i}
+					key={item.id}
 					onEmojiClick={onEmojiClick}
 					pageTitle={item.title}
 					pageIcon={item.icon}
