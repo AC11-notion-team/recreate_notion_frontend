@@ -167,7 +167,7 @@ function Editor() {
                         // any other image data you want to store, such as width, height, color, extension, etc
                       }
                     }
-                  }).catch(err => console.log("fetch_image_error" + err))
+                  }).catch(err => console.error("fetch_image_error" + err))
               },
             },
           },
@@ -237,7 +237,6 @@ function Editor() {
 		if (currentPageId) {
 			axios(config)
 				.then((res) => {
-          console.log(res.data.blocks)
 					const initialData = {
 						time: Date.now(),
 						blocks: res.data.blocks,
@@ -253,7 +252,7 @@ function Editor() {
 
   useEffect(() => {
 		if (wsReceivedData) {
-      console.log(wsReceivedData)
+
       ejInstance.current?.destroy();
       ejInstance.current = null;
       if (!ejInstance.current) {
@@ -261,13 +260,13 @@ function Editor() {
           time: Date.now(),
           blocks: wsReceivedData,
         };
-        console.log("blocks rerender")
+
         initEditor(initialData);
       }
     }
     
     return () => {
-      console.log("component is unmouted")
+
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
