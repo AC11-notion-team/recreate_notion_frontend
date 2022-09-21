@@ -49,17 +49,10 @@ export default function QuickFind(){
                 <div className="relative  w-6/12 h-3/5 m-auto top-40 left-10 right-10 bg-white opacity-100 rounded-lg">
                     <div className="px-5 py-3 flex items-center">
                         <img className="w-5 h-5 mr-3" src={search} alt="seach" value={isSearchText} />
-                        <input type="text" placeholder="Search username's Notion..." onChange={handleChange} className="focus:outline-none w-full text-xl"/>
+                        <input type="text" placeholder="Search Pages ..." onChange={handleChange} className="focus:outline-none w-full text-xl"/>
                     </div>
                     <hr />
-                    <div className="flex px-5 py-3 overflow-x-auto">
-                        <SearchTypeh  src={letter} alt="letter" content="Only search titles"/>
-                        <SearchTypeh  src={searchUser} alt="search-user" content="Created by"/>
-                        <SearchTypeh  src={searchPage} alt="search-page" content="In page"/>
-                        <SearchTypeh  src={calendar} alt="calendar" content="Date"/>
-                    </div>
-
-                    <div className="h-4/6 overflow-x-hidden overflow-y-auto px-1 py-1">
+                    <div className="h-5/6 overflow-x-hidden overflow-y-auto px-1 py-1">
                         <div className="mb-3">
                             <p className="text-sm font-semibold text-gray-500 px-4">Today</p>
                             <div>
@@ -73,27 +66,20 @@ export default function QuickFind(){
                             <p className="text-sm font-semibold text-gray-500 px-4">Yesterday</p>
                             <div>
                                 <SearchPageList />
+                                <SearchPageList />
+                                <SearchPageList />
+                                <SearchPageList />
                             </div>
                         </div>
                         <div>
                             <p className="text-sm font-semibold text-gray-500 px-4">Past Week</p>
                             <div>
                                 <SearchPageList />
+                                <SearchPageList />
+                                <SearchPageList />
+                                <SearchPageList />
                             </div>
                         </div>
-                    </div>
-
-                    <div className="relative flex items-center overflow-x-hidden px-5 py-3 mt-auto border-t ">
-                        <div className="flex items-center mr-5 flex-nowrap">
-                            <img className="w-5 h-5 p-1" src={backIcon} alt="back-icon" />
-                            <p className="text-sm text-gray-400">Open</p>
-                        </div>
-                        <div className="flex items-center flex-nowrap">
-                            <p className="text-sm text-gray-400 whitespace-nowrap -mr-1.5">⌘</p>
-                            <img className="w-5 h-5 p-1" src={backIcon} alt="back-icon" />
-                            <p className="text-sm whitespace-nowrap text-gray-400">Open in a new tab</p>
-                        </div>
-                        
                     </div>
                 </div>
             </div>}

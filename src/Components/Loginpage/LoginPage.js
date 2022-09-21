@@ -107,6 +107,8 @@ export default function LoginPage() {
       if(res.data.status==="success"){
         localStorage.setItem("zettel_user_token", res.data.auth_token);
         localStorage.setItem("zettel_user_id", res.data.user_id);
+        localStorage.setItem("zettel_user_email", res.data.user_email);
+        console.log(res);
         Swal.fire({
           position: 'top-end',
           icon: 'success',

@@ -19,10 +19,9 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import ActionCable from 'actioncable'
+// import ActionCable from 'actioncable'
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
 import { usePagesUpdate } from "../../Pages";
-import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -40,7 +39,6 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
-  const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
 
   const initEditor = useCallback((initialData) => {

@@ -29,7 +29,7 @@ export default function Header({
 	}
 
 	return (
-		<div className="flex h-12 justify-between px-2 leading-10 relative">
+		<nav className="flex h-12 justify-between px-2 leading-10 relative">
 			<div className="flex ">
 				{!isSide && (
 					<div className="flex items-center">
@@ -60,6 +60,6 @@ export default function Header({
 				</div>
 				<More favorite={pageFavorite} toggleFavorite={toggleFavorite} />
 			</div>
-		</div>
+		</nav>
 	);
 }

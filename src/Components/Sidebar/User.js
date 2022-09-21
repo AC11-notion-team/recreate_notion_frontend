@@ -2,9 +2,7 @@ import React,{useState} from "react";
 import user from "../image/user.png"
 import userData from "../image/userData.png"
 import menuLeft from "../image/menu-left.png"
-import more from "../image/more.png"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function User ({toggle}){
     let navigate = useNavigate()
@@ -19,21 +17,11 @@ export default function User ({toggle}){
         localStorage.removeItem('zettel_user_id')
         navigate("homepage")
     };
-    // axios({
-    //     method: "get",
-    //     url: `${baseUrl}/users/search_user.json`,
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
-    //     },
-    //     params:{
-    //         "search": e.target.value
-    //     }
-    // }).then((res)=>{
-    //     setUserInformation(res.data.users)
-    // }).catch((err) => {
-    //     console.log(err);
-    // });
+    
+    const userName = localStorage.getItem("zettel_user_id")
+    const userEmail =  localStorage.getItem("zettel_user_email")  
+
+    
 
     return(
         <div>
@@ -41,7 +29,7 @@ export default function User ({toggle}){
                 <div className="User flex items-center group-hover:opacity-80 py-1.5 px-0.5 w-full" onClick={handleToggle}>
                     <img className="User w-5 h-5 mr-2" src={user} alt="userImg" />
                     <div className="flex items-center">
-                        <p className="User mr-1 font-semibold text-sm"> user's Zettel</p>
+                        <p className="User mr-1 font-semibold text-sm"> {userName}'s Zettel</p>
                         <img className="User w-4 h-3" src={userData} alt="userData" />  
                     </div>   
                 </div>
@@ -51,18 +39,12 @@ export default function User ({toggle}){
             </div>
             {isUser && <div onClick={handleToggle}  className="User fixed  w-screen top-0 bottom-0 left-0 ">
                 <div className="absolute bg-white left-3 top-12 w-3/12  box-shadow  border z-10 rounded min-w-max">
-                    <div className=" flex items-center justify-between p-2">
-                        <p className="text-sm">fdjfjfd@gmail.com</p>
-                        <button className="p-1">
-                            <img className="w-5 h-5 p-1" src={more} alt="moreButton" />
-                        </button>
-                    </div>
                     <div className="flex items-center justify-between point mb-2 p-2 flex-nowrap ">
                         <div className="flex items-center px-1">
                             <img className="w-7 h-7 mr-2" src={user} alt="userImg" />
                             <div className="min-w-max">
-                                <p className="mr-1 font-semibold text-sm whitespace-pre"> user's Zettel</p>
-                                <p className="text-xs text-gray-600 whitespace-pre">Personal Pro Plan (free)</p>
+                                <p className="font-semibold whitespace-pre"> {userName}'s Zettel</p>
+                                <p className="ml-1 whitespace-pre text-xs">{userEmail}</p>
                             </div>
                         </div>
                     </div>

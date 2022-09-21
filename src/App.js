@@ -7,7 +7,7 @@ import Split from "split.js";
 import axios from "axios";
 import { usePagesUpdate } from "./Pages";
 import PageHeader from "./Components/PageHeader/index.js"
-import { WsReceivedProvider } from "./Hooks/useActionCable";
+
 
 function App() {
 	const changePages = usePagesUpdate();
@@ -137,9 +137,7 @@ function App() {
 					/>
 					<div className="relative content overflow-auto ">
 						< PageHeader  onEmojiClick={onEmojiClick}/>
-						<WsReceivedProvider>
 							< Editor />
-						</WsReceivedProvider>
 					</div>
 				</div>
 			</div>
