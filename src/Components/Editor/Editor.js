@@ -21,7 +21,7 @@ import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 import { usePagesUpdate } from "../../Hooks/Pages";
-import { useWsReceivedData } from "../../Hooks/useActionCable"
+// import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -38,7 +38,7 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
-  const wsReceivedData = useWsReceivedData();
+  // const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
 
   const initEditor = useCallback((initialData) => {
@@ -250,27 +250,27 @@ function Editor() {
     
 	}, [currentPageId, initEditor]);
 
-  useEffect(() => {
-		if (wsReceivedData) {
+  // useEffect(() => {
+	// 	if (wsReceivedData) {
 
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-      if (!ejInstance.current) {
-        const initialData = {
-          time: Date.now(),
-          blocks: wsReceivedData,
-        };
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //     if (!ejInstance.current) {
+  //       const initialData = {
+  //         time: Date.now(),
+  //         blocks: wsReceivedData,
+  //       };
 
-        initEditor(initialData);
-      }
-    }
+  //       initEditor(initialData);
+  //     }
+  //   }
     
-    return () => {
+  //   return () => {
 
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
-	}, [wsReceivedData, initEditor]);
+  //     ejInstance.current?.destroy();
+  //     ejInstance.current = null;
+  //   };
+	// }, [wsReceivedData, initEditor]);
 
   
   
