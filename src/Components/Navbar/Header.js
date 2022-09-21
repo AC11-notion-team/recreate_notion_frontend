@@ -1,13 +1,13 @@
 import React from "react";
-import Share from "./Share";
+import Share from "./Share/Share";
 import More from "./More";
 import Title from "./Title";
 import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
-import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
+import { usePages } from "../../Hooks/Pages";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 
 export default function Header({
 	isSide,

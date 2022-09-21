@@ -15,7 +15,7 @@ export default function User ({toggle}){
     const logout =()=>{
         localStorage.removeItem('zettel_user_token')
         localStorage.removeItem('zettel_user_id')
-        navigate("homepage")
+        navigate("/")
     };
     
     const userName = localStorage.getItem("zettel_user_id")
@@ -29,7 +29,7 @@ export default function User ({toggle}){
                 <div className="User flex items-center group-hover:opacity-80 py-1.5 px-0.5 w-full" onClick={handleToggle}>
                     <img className="User w-5 h-5 mr-2" src={user} alt="userImg" />
                     <div className="flex items-center">
-                        <p className="User mr-1 font-semibold text-sm"> {userName}'s Zettel</p>
+                        <p className="User mr-1 font-medium text-sm whitespace-nowrap"> {userName}'s Zettel</p>
                         <img className="User w-4 h-3" src={userData} alt="userData" />  
                     </div>   
                 </div>
@@ -38,8 +38,8 @@ export default function User ({toggle}){
                 </button>
             </div>
             {isUser && <div onClick={handleToggle}  className="User fixed  w-screen top-0 bottom-0 left-0 ">
-                <div className="absolute bg-white left-3 top-12 w-3/12  box-shadow  border z-10 rounded min-w-max">
-                    <div className="flex items-center justify-between point mb-2 p-2 flex-nowrap ">
+                <div className="absolute bg-white left-3 top-12 w-64  box-shadow  border z-10 rounded min-w-max">
+                    <div className="flex items-center justify-between mb-2 p-2 flex-nowrap ">
                         <div className="flex items-center px-1">
                             <img className="w-7 h-7 mr-2" src={user} alt="userImg" />
                             <div className="min-w-max">

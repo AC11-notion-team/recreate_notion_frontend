@@ -2,7 +2,7 @@ import React,{useState,useEffect} from "react";
 import trash from "../image/trash.png"
 import axios from "axios";
 import TrashPage from "./TrashPage"
-import {useTrashPages,useTrashPagesUpdate} from "../../TrashPages"
+import {useTrashPages,useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
 export default function Trash (){
@@ -27,7 +27,7 @@ export default function Trash (){
             }).then((res)=>{
                 changeTrashPages(res.data.pages)
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             });
         }
     },[isTrash])
@@ -39,7 +39,7 @@ export default function Trash (){
                 <img className="w-5 h-5 mr-2" src={trash} alt="templates" />
                 <p className="text-sm font-semibold text-gray-600">Trash</p>
             </div>
-            {isTrash && <div className="absolute left-full top-96 w-80 h-96 rounded shadow-2xl bg-white overflow-x-hidden">
+            {isTrash && <div className="absolute left-full top-80 w-80 h-96 rounded shadow-2xl bg-white overflow-x-hidden">
                 <p className="px-4 py-2 text-md text-center">All pages</p>
                 <hr />
                 <div className="overflow-y-auto h-80">

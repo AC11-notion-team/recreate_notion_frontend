@@ -7,7 +7,7 @@ import User from "./User";
 import QuickFind from "./QuickFind";
 import addPage from "../image/plus.png";
 import axios from "axios";
-import { usePagesUpdate } from "../../Pages";
+import { usePagesUpdate } from "../../Hooks/Pages";
 
 export default function Sidebar({
 	toggleFavorite,

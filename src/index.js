@@ -5,13 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.js";
-import RequireAuth from "./Components/RequireAuth";
+import RequireAuth from "./Components/RequireAuth/RequireAuth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CurrentPageIdProvider } from "./CurrentPageId";
-import { PagesProvider } from "./Pages";
-import { InviteProvider } from "./InviteUser";
-import {EmojiStateProvider} from "./EmojiState"
-import {TrashPagesProvider}from "./TrashPages"
+import { CurrentPageIdProvider } from "./Hooks/CurrentPageId";
+import { PagesProvider } from "./Hooks/Pages";
+import { InviteProvider } from "./Hooks/InviteUser";
+import {EmojiStateProvider} from "./Hooks/EmojiState"
+import {TrashPagesProvider}from "./Hooks/TrashPages"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,10 +24,10 @@ root.render(
 								<BrowserRouter>
 									<Routes>
 										<Route element={< RequireAuth />}>
-											<Route path="/" element={<App />} />
-											<Route path="/:page_id" element={<App />} />
+											<Route path="/app" element={<App />} />
+											<Route path="/app/:page_id" element={<App />} />
 										</Route>
-										<Route path="homepage" element={<HomePage />} />
+										<Route path="/" element={<HomePage />} />
 										<Route path="login-page" element={<LoginPage />} />
 									</Routes>
 								</BrowserRouter>

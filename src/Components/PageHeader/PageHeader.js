@@ -1,6 +1,7 @@
-import React from "react";
-import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
+import React, { useRef } from "react";
+import { useDetectClickOutside } from "react-detect-click-outside";
+import { usePages } from "../../Hooks/Pages";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
 
 
@@ -12,6 +13,7 @@ function PageHeader({onEmojiClick}) {
 	});
 	const pageTitle = pageItem[0]?.title;
 	const pageIcon = pageItem[0]?.icon;
+    
 
     return (
         <div className="mt-8 mb-16 mx-20 w-auto">

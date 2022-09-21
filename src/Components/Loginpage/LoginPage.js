@@ -66,7 +66,7 @@ export default function LoginPage() {
     }).then((res)=>{
       setstatus("unvertify")
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
   async function goToVertify(data){
@@ -92,7 +92,7 @@ export default function LoginPage() {
       }
       setstatus(res.data.status)
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
   async function goToLogin(data){
@@ -107,16 +107,7 @@ export default function LoginPage() {
       if(res.data.status==="success"){
         localStorage.setItem("zettel_user_token", res.data.auth_token);
         localStorage.setItem("zettel_user_id", res.data.user_id);
-        localStorage.setItem("zettel_user_email", res.data.user_email);
-        console.log(res);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been success login',
-          showConfirmButton: false,
-          timer: 1500
-        })
-        return navigate("/");
+        return navigate("/app");
       }
       Swal.fire({
         icon: 'error',
@@ -126,7 +117,7 @@ export default function LoginPage() {
       })
       setstatus(res.data.status)
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
 
@@ -242,8 +233,6 @@ export default function LoginPage() {
               }
                
             </div>
-
-           
 
             <div>
               <button

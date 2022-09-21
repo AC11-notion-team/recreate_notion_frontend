@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import { usePages } from "../../Pages";
+import { usePages } from "../../Hooks/Pages";
 import Page from "./Page";
 
 export default function Star({toggleFavorite,onEmojiClick}) {
@@ -26,7 +26,7 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 					</div>
 					{favoritePages?.map((item, i) => (
 						<Page
-							key={i}
+							key={item.id}
 							onEmojiClick={onEmojiClick}
 							pageTitle={item.title}
 							pageIcon={item.icon}

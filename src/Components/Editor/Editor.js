@@ -19,9 +19,9 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-// import ActionCable from 'actioncable'
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../CurrentPageId";
-import { usePagesUpdate } from "../../Pages";
+import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import { usePagesUpdate } from "../../Hooks/Pages";
+// import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -34,7 +34,6 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-  const [blocks, setBlocks] = useState("");
 	const currentPageId = useCurrentPageId();
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
@@ -167,7 +166,7 @@ function Editor() {
                         // any other image data you want to store, such as width, height, color, extension, etc
                       }
                     }
-                  }).catch(err => console.log("fetch_image_error" + err))
+                  }).catch(err => console.error("fetch_image_error" + err))
               },
             },
           },
@@ -247,8 +246,8 @@ function Editor() {
 				})
 				.catch((err) => console.error(err));
     }
-    
     return () => {
+
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
@@ -256,7 +255,7 @@ function Editor() {
 
   // useEffect(() => {
 	// 	if (wsReceivedData) {
-  //     console.log(wsReceivedData)
+
   //     ejInstance.current?.destroy();
   //     ejInstance.current = null;
   //     if (!ejInstance.current) {
@@ -264,12 +263,13 @@ function Editor() {
   //         time: Date.now(),
   //         blocks: wsReceivedData,
   //       };
-  //       console.log("blocks rerender")
+
   //       initEditor(initialData);
   //     }
   //   }
     
   //   return () => {
+
   //     ejInstance.current?.destroy();
   //     ejInstance.current = null;
   //   };

@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const GoogleLogin = () => {
 	const googlebuttonref = useRef();
 	const [user, setuser] = useState(false);
+	let navigate = useNavigate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	useEffect(() => {
 		if (user === false) {
@@ -27,18 +27,13 @@ const GoogleLogin = () => {
 			.then((res) => {
 				localStorage.setItem("zettel_user_token", res.data.auth_token);
 				localStorage.setItem("zettel_user_id", res.data.user_id);
+				return navigate("/app");
 			})
-			.catch((err) => console.log(err))
+			.catch((err) => console.error(err))
 			.finally(()=>{
 				setuser(payload);
 			});
-		Swal.fire({
-			position: "top-end",
-			icon: "success",
-			title: "Your work has been success login",
-			showConfirmButton: false,
-			timer: 1500,
-		});
+		
 	};
 	useScript("https://accounts.google.com/gsi/client", () => {
 		window.google.accounts.id.initialize({
@@ -65,7 +60,6 @@ const GoogleLogin = () => {
 			}}
 		>
 			{!user && <div ref={googlebuttonref}></div>}
-			{user && <Navigate to="/" replace={true} />}
 		</div>
 	);
 };

@@ -1,17 +1,14 @@
 import React,{useState} from "react"
 import rename from "../image/edit.png";
 import ActionButton from "../Navbar/ActionButton";
-import { useCurrentPageId } from "../../CurrentPageId";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
 
-export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,pageID}){
+export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID}){
     const currentPageId = useCurrentPageId();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
-		if (e.target.closest("div").className.includes("IsRename") === true) {
-			setIsRename((prevTitleButton) => !prevTitleButton);
-		}
-        
+        setIsRename((prevTitleButton) => !prevTitleButton);
 	};
     const cb = (event) => onEmojiClick(event, currentPageId,pageID)
     return(
@@ -41,7 +38,8 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
                             placeholder="Untitled"  
                         />
                     </div>
-                </div>}
+                </div>
+            }
         </div>
     )
 }

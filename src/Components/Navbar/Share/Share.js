@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
 import globe from "../../image/globe.png";
-import MenuButton from "../MenuButton";
+import ActionButton from "../ActionButton";
 import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
-import LearnMore from "./component/LearnMore";
 import axios from "axios";
 import { Switch } from "@headlessui/react";
-import { useCurrentPageId } from "../../../CurrentPageId";
+import { useCurrentPageId } from "../../../Hooks/CurrentPageId";
+import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default function Share() {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const [isShare, setIsShare] = useState(false);
+	const [isShare, setIsShare] = useState(() => false);
 	const currentPageId = useCurrentPageId();
 	const handleToggle = (e) => {
-		if (e.target.className.includes("IsShare") === true) {
-			setIsShare((prevShare) => !prevShare);
-		}
+		setIsShare((prevShare) => {
+			return !prevShare
+		});
 	};
 	const [editable, setEditable] = useState([false, false]);
-
+	const shareRef = useDetectClickOutside({
+		onTriggered: () => {
+			setIsShare(false)
+		},
+		allowAnyKey: false,
+	});
 	const inviteUrl = `${domainUrl}/${currentPageId}`;
 	useEffect(() => {
 		if (currentPageId) {
@@ -61,7 +66,7 @@ export default function Share() {
 					state: state,
 				},
 			}).catch((err) => {
-				console.log(err);
+				console.error(err);
 			});
 		}
 	}, [editable]);
@@ -78,21 +83,17 @@ export default function Share() {
 	};
 
 	return (
-		<div className="flex items-center">
-			<MenuButton
+		<div ref={shareRef} className="flex items-center">
+			<ActionButton
 				className="IsShare"
 				handleClick={handleToggle}
 				content="Share"
 			/>
 
 			{isShare && (
-				<div
-					onClick={handleToggle}
-					className="fixed top-0 bottom-0 left-0 z-20 w-screen IsShare"
-				>
-					<div className="absolute w-4/12 bg-white border-2 rounded box-shadow right-4 top-12 min-w-min">
-						<ShareToParticularPerson />
-						<hr />
+				<div  className="absolute w-5/12 bg-white border-2 rounded z-10 box-shadow right-4 top-12 min-w-min">
+					<ShareToParticularPerson />
+					<hr />
 						<div className="point">
 							<div className="flex items-center justify-between px-2 py-3">
 								<div className="flex items-center">
@@ -130,10 +131,8 @@ export default function Share() {
 								handleEditable={handleEditable}
 							/>
 						)}
+					<hr />
 
-						<hr />
-						<LearnMore />
-					</div>
 				</div>
 			)}
 		</div>

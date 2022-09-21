@@ -106,21 +106,12 @@
 .codex-editor__redactor {
   @apply w-4/6 m-auto;
 }
-.link-tool__content--rendered {
-  border: 0px none #ffffff !important;
-  box-shadow: 0 0 0 #ffffff !important;
+.link-page__content {
+  @apply flex items-center p-2;
 }
-.link-tool__content {
-  display: flex !important;
-  align-items: center !important;
-  padding: 5px !important;
+.link-page__anchor {
+  @apply text-lg mr-2 no-underline;
 }
-/* .link-tool__title {
-  margin: 0 0 0 8px !important;
-  border-bottom: 1px solid #d0d0d0;
-  font-size: 18px !important;
-  font-weight: 500 !important;
-} */
-.link-tool__anchor {
-  font-size: 18px !important;
+.link-page__title {
+  @apply text-lg no-underline;
 }

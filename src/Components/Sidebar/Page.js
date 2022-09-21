@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import pageButtonRight from "../image/pageButtonRight.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
-import { useCurrentPageUpdateId } from "../../CurrentPageId";
+import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 
 const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFavorite}) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
@@ -31,29 +31,24 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFav
 							onEmojiClick={onEmojiClick}
 						/>
 					</button>
-					<button className="w-full text-left" 
-                            onClick={() => {changeCurrentPageId(pageID)}}>
-						<p
-							className="ml-2 overflow-x-hidden text-sm font-semibold text-gray-600 whitespace-nowrap"
-							value={pageTitle}
-						>
-							 {pageTitle}
+					<div className="w-full text-left" 
+					     onClick={() => {changeCurrentPageId(pageID)}}>
+						<p className="ml-3 overflow-x-hidden text-sm font-semibold text-gray-600 whitespace-nowrap" value={pageTitle} >
+							{pageTitle ? pageTitle : "Untitled"}
 						</p>
-					</button>
+					</div>
 				</div>
-				<div className="flex items-center mx-2 h-5">
-					{displayDropdown && (
-						<PageMore
-							pageTitle={pageTitle}
-							pageIcon={pageIcon}
-							onEmojiClick={onEmojiClick}
-							closeDropdown={closeDropdown}
-							pageID={pageID}
-							pageFavorite={pageFavorite}
-							toggleFavorite={toggleFavorite}
-						/>
-					)}
-				</div>
+				{displayDropdown && (
+					<PageMore
+						pageTitle={pageTitle}
+						pageIcon={pageIcon}
+						onEmojiClick={onEmojiClick}
+						closeDropdown={closeDropdown}
+						pageID={pageID}
+						pageFavorite={pageFavorite}
+						toggleFavorite={toggleFavorite}
+					/>
+				)}
 			</div>
 		</div>
 	);

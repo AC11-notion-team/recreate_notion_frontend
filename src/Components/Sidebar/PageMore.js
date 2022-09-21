@@ -7,9 +7,9 @@ import ActionButton from "../Navbar/ActionButton";
 import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
-import { usePagesUpdate } from "../../Pages";
-import { useCurrentPageUpdateId } from "../../CurrentPageId";
-import {useTrashPagesUpdate} from "../../TrashPages"
+import { usePagesUpdate } from "../../Hooks/Pages";
+import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
 export default function PageMore({
@@ -29,6 +29,8 @@ export default function PageMore({
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
+
+
 
 	const ref = useDetectClickOutside({
 		onTriggered: closeDropdown,
@@ -65,7 +67,7 @@ export default function PageMore({
 	}
 
 	return (
-		<div ref={ref}>
+		<div ref={ref} onMouseOut={()=>setIsPageMore(false)}>
 			<div onClick={handleToggle}>
 				<button
 					className="w-5 h-5 p-1 hidden group-hover:inline-block hover:bg-gray-300 hover:rounded"
@@ -74,33 +76,31 @@ export default function PageMore({
 					<img src={more} alt="sidePageMoreButton" className="w-full h-full" />
 				</button>
 			</div>
-			{isPageMore && (
-				<div className="fixed z-10 bg-white border rounded box-shadow w-60 ">
-					<div className="p-1.5">
-						<ActionButton
-							src={trash}
-							alt="delete"
-							content="Delete"
-							handleClick={removePage}
-							className="py-1"
-						/>
-						<ActionButton
-							src={pageFavorite ? fullStar : emptyStar}
-							alt="Favorite"
-							content="Add to Favorites"
-							className="py-1"
-							handleClick={callback}
-						/>
-						<Rename
-							pageTitle={pageTitle}
-							pageIcon={pageIcon}
-							pageID={pageID}
-							onEmojiClick={onEmojiClick}
-							handlePageMore={handleToggle}
-						/>
-					</div>
+
+			{isPageMore && <div className="absolute bg-white border rounded box-shadow w-60 ">
+				<div className="p-1.5">
+					<ActionButton
+						src={trash}
+						alt="delete"
+						content="Delete"
+						handleClick={removePage}
+						className="py-1"
+					/>
+					<ActionButton
+						src={pageFavorite ? fullStar : emptyStar}
+						alt="Favorite"
+						content="Add to Favorites"
+						className="py-1"
+						handleClick={callback}
+					/>
+					<Rename
+						pageTitle={pageTitle}
+						pageIcon={pageIcon}
+						pageID={pageID}
+						onEmojiClick={onEmojiClick}
+					/>
 				</div>
-			)}
+			</div>}
 		</div>
 	);
 }
