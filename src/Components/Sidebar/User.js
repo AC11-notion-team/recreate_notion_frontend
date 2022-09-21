@@ -5,6 +5,7 @@ import menuLeft from "../image/menu-left.png"
 import more from "../image/more.png"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Logout from '../../Hooks/Logout'
 
 export default function User ({toggle}){
     let navigate = useNavigate()
@@ -15,8 +16,7 @@ export default function User ({toggle}){
         }
     }
     const logout =()=>{
-        localStorage.removeItem('zettel_user_token')
-        localStorage.removeItem('zettel_user_id')
+        Logout()
         navigate("/")
     };
 

@@ -247,7 +247,11 @@ function Editor() {
 				})
 				.catch((err) => console.error(err));
     }
-    
+
+    return () => {
+      ejInstance.current?.destroy();
+      ejInstance.current = null;
+    };
 	}, [currentPageId, initEditor]);
 
   // useEffect(() => {
