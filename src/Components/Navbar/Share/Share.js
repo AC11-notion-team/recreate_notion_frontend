@@ -67,7 +67,7 @@ export default function Share() {
 					state: state,
 				},
 			}).catch((err) => {
-				console.log(err);
+				console.error(err);
 			});
 		}
 	}, [editable]);

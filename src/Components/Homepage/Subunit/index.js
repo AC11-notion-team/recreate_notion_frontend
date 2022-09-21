@@ -67,8 +67,7 @@ export default function EditableBlock () {
                 <Button type="submit" >Try Zettel free</Button>
                 </div>
                 <form onSubmit={(event) => {
-                    event.preventDefault();
-                    console.log("TODO submit form")
+                        event.preventDefault();
                     }}
                     className="hidden md:block space-x-1" 
                     >

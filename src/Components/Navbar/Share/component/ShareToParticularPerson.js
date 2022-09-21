@@ -32,7 +32,7 @@ const ShareToParticularPerson = () => {
 					setUserInformation(res.data.users);
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 				});
 		}
 	};
@@ -64,7 +64,7 @@ const ShareToParticularPerson = () => {
 			setUserInformation([]);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 	};
 	const removeInvite = (email) => {

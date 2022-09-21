@@ -33,7 +33,7 @@ export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
             })
             changeCurrentPage(res.data.id)
         }).catch((err) => {
-            console.log(err);
+            console.error(err);
         });
     }
 

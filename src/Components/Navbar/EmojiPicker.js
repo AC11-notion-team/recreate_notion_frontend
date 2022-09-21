@@ -12,10 +12,7 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 		setIsEmoji(false)
 	}
 	const ref = useDetectClickOutside({
-		onTriggered: () => {
-			console.log("clickout side Emoji")
-			setIsEmoji(false)
-		},
+		onTriggered: () => setIsEmoji(false),
 		allowAnyKey: false,
 	});
 

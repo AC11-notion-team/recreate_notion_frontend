@@ -10,9 +10,6 @@ export default function Star({onEmojiClick}) {
 	const currentPageId = useCurrentPageId();
 	const changeFavorite = useFavoriteUpdate();
 
-	console.log(pages);
-
-	
 	return (
 		<div>
 			{favorite && (<div>
@@ -21,9 +18,9 @@ export default function Star({onEmojiClick}) {
 							FAVORITES
 						</p>
 					</div>
-					{pages.map((item, i) => (
+					{pages.map((item) => (
 						<Page
-							key={i}
+							key={item.id}
 							onEmojiClick={onEmojiClick}
 							pageTitle={item.title}
 							pageIcon={item.icon}

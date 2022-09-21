@@ -66,7 +66,7 @@ export default function LoginPage() {
     }).then((res)=>{
       setstatus("unvertify")
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
   async function goToVertify(data){
@@ -92,7 +92,7 @@ export default function LoginPage() {
       }
       setstatus(res.data.status)
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
   async function goToLogin(data){
@@ -117,7 +117,7 @@ export default function LoginPage() {
       })
       setstatus(res.data.status)
     }).catch((error)=>{
-      console.log(error);
+      console.error(error);
     })
   }
 

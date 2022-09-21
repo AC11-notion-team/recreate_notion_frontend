@@ -27,7 +27,7 @@ export default function Trash (){
             }).then((res)=>{
                 changeTrashPages(res.data.pages)
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             });
         }
     },[isTrash])

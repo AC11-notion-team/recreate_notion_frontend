@@ -18,16 +18,16 @@ export function WsReceivedProvider({ children }){
     useEffect(() => {
         actionCable.subscriptions.create({"channel": "PageChannel", "id": currentPageId }, 
         {
-            connected: () => console.log("Connect to Acontion Cable"), 
+            // connected: () => console.log("Connect to Acontion Cable"), 
             received: (data) => {
                 if(data.user_id !== user_id){
                     setWsReceivedData(data.blocks)
                 }
             }
         })
-        console.log(`subscribed: ${currentPageId}`)
+        // console.log(`subscribed: ${currentPageId}`)
         return () => {
-            console.log('Disconnect to Action Cable')
+            // console.log('Disconnect to Action Cable')
             actionCable.disconnect()
             setWsReceivedData("")
         } 
