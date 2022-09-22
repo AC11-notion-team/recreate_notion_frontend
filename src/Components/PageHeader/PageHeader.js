@@ -1,9 +1,7 @@
-import React, { useRef, useState } from "react";
-import { useDetectClickOutside } from "react-detect-click-outside";
+import React, { useState } from "react";
 import { usePages, usePagesUpdate } from "../../Hooks/Pages";
 import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
-import LazyLoad from "react-lazy-load";
 
 import aws from "aws-sdk";
 import axios from "axios";
@@ -15,10 +13,9 @@ function PageHeader({ onEmojiClick }) {
 	const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const [showUploadImg, setShowUploadImg] = useState(false);
+	const [setShowUploadImg] = useState(false);
 	const handleMouseEnter = () => setShowUploadImg(true);
 	const handleMouseOut = () => setShowUploadImg(false);
-	const changePages = usePagesUpdate();
 	// const [pageCover, setPageCover] = useState("");
 
 	const S3Client = new aws.S3({
@@ -84,7 +81,6 @@ function PageHeader({ onEmojiClick }) {
 			});
 	};
 
-<<<<<<< HEAD
 	return (
 		<div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut}>
 			<div className="relative">
@@ -101,26 +97,26 @@ function PageHeader({ onEmojiClick }) {
 					/>
 				</label>
 				{cover && (
-					<section class="w-full ">
+					<section class="w-full relative ">
 						<img
 							src={cover}
 							className="object-cover w-full h-48 overflow-hidden"
 							alt="cover"
 						/>
+						<div className="absolute mb-2 ml-3 text-6xl cursor-pointer left-44 -bottom-7">
+							<Emoji
+								currentPageID={currentPageId}
+								pageIcon={pageIcon}
+								onEmojiClick={onEmojiClick}
+							/>
+						</div>
 					</section>
 				)}
 			</div>
 			<div className="w-auto mx-20 mt-8 mb-16">
-				<div className="relative flex items-center w-4/6 m-auto">
-					<div className="absolute top-0 left-0 ml-3 cursor-pointer">
-						<Emoji
-							currentPageID={currentPageId}
-							pageIcon={pageIcon}
-							onEmojiClick={onEmojiClick}
-						/>
-					</div>
+				<div className="relative flex items-center w-4/6 max-w-screen-sm m-auto">
 					<input
-						className="w-3/4 pl-2 ml-12 text-2xl outline-none"
+						className="w-3/4 text-4xl font-bold outline-none"
 						placeholder="Untitled"
 						onChange={(event) => onEmojiClick(event, currentPageId)}
 						id={currentPageId}
@@ -130,29 +126,6 @@ function PageHeader({ onEmojiClick }) {
 			</div>
 		</div>
 	);
-=======
-    return (
-        <div className="mt-8 mb-16 mx-20 w-auto">
-            <div className="relative flex items-center w-4/6 m-auto max-w-screen-sm">
-                <div className="absolute top-0 left-0 cursor-pointer ml-3 text-4xl">
-                    <Emoji
-                    currentPageID={currentPageId}
-                    pageIcon={pageIcon}
-                    onEmojiClick={onEmojiClick}
-                    />
-                </div>
-                <input
-                    className= "ml-12 text-4xl font-bold  pl-2 outline-none w-3/4" 
-                    placeholder="Untitled"
-                    onChange={(event) => onEmojiClick(event, currentPageId)}
-                    id={currentPageId}
-                    value = { pageTitle || '' }
-                />  
-            </div>
-        </div>
-            
-    );
->>>>>>> 1b17a58ada39e5d718bf44973f5349b90996b6b7
 }
 
 export default PageHeader;
