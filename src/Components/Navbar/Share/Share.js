@@ -25,7 +25,7 @@ export default function Share() {
 		},
 		allowAnyKey: false,
 	});
-	const inviteUrl = `${domainUrl}/${currentPageId}`;
+	const inviteUrl = `${domainUrl}/app/${currentPageId}`;
 	useEffect(() => {
 		if (currentPageId) {
 			axios({

@@ -38,9 +38,9 @@ export default function QuickFind(){
                 search: event.target.value
             }
             }).then((res)=>{
-            setkeyword(res.data.pages)
+                setkeyword(res.data.pages)
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             });
     };
 

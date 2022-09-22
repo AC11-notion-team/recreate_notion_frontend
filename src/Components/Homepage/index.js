@@ -7,7 +7,7 @@ import Resources from "./Subunit/Resources.js";
 
 function Homepage() {
 	return (
-		<div className="Homepage">
+		<div className="Homepage bg-[#fffefc]">
 			<EditableBlock />
 			<Features />
 			<Slideshow />
