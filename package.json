@@ -49,6 +49,7 @@
     "react-input-checkbox": "^1.1.0",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.4",
     "react-use-websocket": "3.0.0",
     "split.js": "^1.6.5",
     "sweetalert2": "^11.4.31",
