@@ -5,8 +5,8 @@ import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import axios from "axios";
-import { usePagesUpdate } from "./Hooks/Pages";
-import PageHeader from "./Components/PageHeader/PageHeader.js"
+import { usePagesUpdate, usePages } from "./Hooks/Pages";
+import PageHeader from "./Components/PageHeader/PageHeader.js";
 import { WsReceivedProvider } from "./Hooks/useActionCable";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 	//我的最愛
 	const [isFavorite, setIsFavorite] = useState(false);
 
-	const toggleFavorite = (currentPageID,pageID) =>{
+	const toggleFavorite = (currentPageID, pageID) => {
 		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 		axios({
 			method: "put",
@@ -27,25 +27,26 @@ function App() {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 			},
-			data:{
-				"favorite": isFavorite,
-			}	
-		}).then((res)=>{
-			changePages((prevPages)=>{
-				return prevPages.map((item)=>{
-					if(pageID){
-						return (item.id === pageID ?
-							{ ...item, favorite: isFavorite } : item)
-					}else{
-						return item.id === currentPageID? 
-						{ ...item, favorite: isFavorite} : item
+			data: {
+				favorite: isFavorite,
+			},
+		}).then((res) => {
+			changePages((prevPages) => {
+				return prevPages.map((item) => {
+					if (pageID) {
+						return item.id === pageID
+							? { ...item, favorite: isFavorite }
+							: item;
+					} else {
+						return item.id === currentPageID
+							? { ...item, favorite: isFavorite }
+							: item;
 					}
-				})
-			})
-		})
-		
-	}
-		
+				});
+			});
+		});
+	};
+
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
@@ -60,20 +61,19 @@ function App() {
 		}
 	}, [isSide]);
 
-
-	const onEmojiClick = (event, currentPageID,pageID, emojiObject) => {
-		const { type,value, className} = event.target;
+	const onEmojiClick = (event, currentPageID, pageID, emojiObject) => {
+		const { type, value, className } = event.target;
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					if(pageID){
-						return (item.id === pageID ?
-							{ ...item, icon: emojiObject.emoji }
-						   : item)
-					}else{
-						return item.id === currentPageID? 
-						{ ...item, icon: emojiObject.emoji }
-						: item
+					if (pageID) {
+						return item.id === pageID
+							? { ...item, icon: emojiObject.emoji }
+							: item;
+					} else {
+						return item.id === currentPageID
+							? { ...item, icon: emojiObject.emoji }
+							: item;
 					}
 				});
 			});
@@ -84,20 +84,18 @@ function App() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
-				data:{
-					"icon": emojiObject.emoji
-				}	
+				data: {
+					icon: emojiObject.emoji,
+				},
 			});
 		}
 		if (type === "text") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
-					if(pageID){
-						return (item.id === pageID ?
-							{ ...item, title: value } : item)
-					}else{
-						return item.id === currentPageID? 
-						{ ...item, title: value } : item
+					if (pageID) {
+						return item.id === pageID ? { ...item, title: value } : item;
+					} else {
+						return item.id === currentPageID ? { ...item, title: value } : item;
 					}
 				});
 			});
@@ -108,18 +106,18 @@ function App() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
 				},
-				data:{
-					"title": value,
-				}	
+				data: {
+					title: value,
+				},
 			});
 		}
 	};
 
 	return (
 		<div>
-			<div className="split h-screen w-full flex">
+			<div className="flex w-full h-screen split">
 				{isSide && (
-					<div id="split-0" className="relative side-minW flex-grow-0">
+					<div id="split-0" className="relative flex-grow-0 side-minW">
 						<Sidebar
 							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
@@ -135,9 +133,9 @@ function App() {
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}
 					/>
-					<div className="relative content overflow-auto ">
-						< PageHeader  onEmojiClick={onEmojiClick}/>
-						< Editor />
+					<div className="relative overflow-auto content ">
+						<PageHeader onEmojiClick={onEmojiClick} />
+						<Editor />
 					</div>
 				</div>
 			</div>

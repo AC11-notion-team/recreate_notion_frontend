@@ -28,16 +28,19 @@ const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
 const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
-const S3Client = new aws.S3({region, accessKeyId, secretAccessKey, signatureVersion: 'v4'});
+const S3Client = new aws.S3({
+	region,
+	accessKeyId,
+	secretAccessKey,
+	signatureVersion: "v4",
+});
 const baseUrl = process.env.REACT_APP_BASEURL;
-
-
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
 	const currentPageId = useCurrentPageId();
-  const changeCurrentPage = useCurrentPageUpdateId();
-  const changePages = usePagesUpdate()
+	const changeCurrentPage = useCurrentPageUpdateId();
+	const changePages = usePagesUpdate();
 	const ejInstance = useRef();
   const Navigate = useNavigate();
   const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
@@ -108,126 +111,136 @@ function Editor() {
         }
       },
 
-      autofocus: false,
-      tools: { 
+		autofocus: false,
+		tools: {
+			checklist: {
+				class: Checklist,
+				inlineToolbar: true,
+			},
 
-        checklist:{
-          class: Checklist,
-          inlineToolbar:true,
-        },
+			code: EditorjsCodeflask,
 
-        code: EditorjsCodeflask,
+			embed: Embed,
 
-        embed: Embed,
+			delimeter: Delimiter,
 
-        delimeter: Delimiter,
+			footnotes: Footnotes,
 
-        footnotes: Footnotes,
+			header: {
+				class: Header,
+				inlineToolbar: true,
+				config: {
+					placeholder: "Enter a header",
+				},
+			},
 
-        header: {
-          class: Header,
-          inlineToolbar: true,
-          config: {
-            placeholder: 'Enter a header',
-          },
-        },
 
-        image: {
-          class: ImageTool,
-          config:{
-            endpoints: {
-              byUrl: `${baseUrl}/uploadImageByUrl`,
-            },
-            additionalRequestHeaders:{
-              Authorization: token,
-            },
-            uploader: {
-              /**
-               * Upload file to the server and return an uploaded image data
-               */
-              async uploadByFile(file){
-                // your own uploading logic here  
-                const ranBytes = Math.floor(Math.random()*10000000000000)
-                const imageName = ranBytes.toString()
-                const params = {
-                  Bucket: bucketName,
-                  Key: imageName,
-                  Expires: 60
-                }
-                const url = await S3Client.getSignedUrlPromise('putObject', params)
-                
-                return fetch(url, {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "image/*",
-                    },
-                    body: file
-                  }).then((res)=>{ 
-                    return {
-                      success: 1,
-                      file: {
-                        url: res.url.split('?')[0],
-                        // any other image data you want to store, such as width, height, color, extension, etc
-                      }
-                    }
-                  }).catch(err => console.error("fetch_image_error" + err))
-              },
-            },
-          },
-        },
+			image: {
+			class: ImageTool,
+			config:{
+				endpoints: {
+				byUrl: `${baseUrl}/uploadImageByUrl`,
+				},
+				additionalRequestHeaders:{
+				Authorization: token,
+				},
+				uploader: {
+				/**
+				 * Upload file to the server and return an uploaded image data
+				 */
+				async uploadByFile(file){
+					// your own uploading logic here  
+					const ranBytes = Math.floor(Math.random()*10000000000000)
+					const imageName = ranBytes.toString()
+					const params = {
+					Bucket: bucketName,
+					Key: imageName,
+					Expires: 60
+					}
+					const url = await S3Client.getSignedUrlPromise('putObject', params)
+					
+					return fetch(url, {
+						method: "PUT",
+						headers: {
+						"Content-Type": "image/*",
+						},
+						body: file
+					}).then((res)=>{ 
+						return {
+						success: 1,
+						file: {
+							url: res.url.split('?')[0],
+							// any other image data you want to store, such as width, height, color, extension, etc
+						}
+						}
+					}).catch(err => console.error("fetch_image_error" + err))
+				},
+				},
+			},
+			},
 
-        inlineCode: InlineCode, 
-        
-        link:{
-          class: LinkTool,
-          config: {
-            endpoint: `${baseUrl}/fetch`,
-            headers:{
-              Authorization: token,
-            },
-          },
-        },
+			inlineCode: InlineCode, 
+			
+			link:{
+			class: LinkTool,
+			config: {
+				endpoint: `${baseUrl}/fetch`,
+				headers:{
+				Authorization: token,
+				},
+			},
+			},
 
-        linkpage: {
-          class: LinkPage,
-        },
+			link: {
+				class: LinkTool,
+				config: {
+					endpoint: `${baseUrl}/fetch`,
+					headers: {
+						Authorization: `Bearer ${
+							localStorage.getItem("zettel_user_token") || null
+						}`,
+					},
+				},
+			},
 
-        marker:{
-          class: Marker,
-        },
+			linkpage: {
+				class: LinkPage,
+			},
 
-        list:{
-          class: NestedList,
-          inlineToolbar: true,
-          config: {
-            placeholder: 'List',
-          },
-        },
+			marker: {
+				class: Marker,
+			},
 
-        quote:{
-          class: Quote,
-          inlineToolbar:true,
-        },
+			list: {
+				class: NestedList,
+				inlineToolbar: true,
+				config: {
+					placeholder: "List",
+				},
+			},
 
-        underline:{
-          class: Underline,
-        },
+			quote: {
+				class: Quote,
+				inlineToolbar: true,
+			},
 
-        table:{
-          class: Table,
-          inlineToolbar: true,
-          config:{
-            withHeadings: true,
-          }
-        },
+			underline: {
+				class: Underline,
+			},
 
-        textVariant: TextVariantTune,
+			table: {
+				class: Table,
+				inlineToolbar: true,
+				config: {
+					withHeadings: true,
+				},
+			},
 
-      }, 
-    });
-  },[currentPageId]);
+			textVariant: TextVariantTune,
+		},
+	});},[currentPageId]);
 
-  useEffect(() => {
+	useEffect(() => {
 		const config = {
 			method: "get",
 			url: `${baseUrl}/pages/${currentPageId}.json`,
@@ -261,35 +274,33 @@ function Editor() {
     };
 	}, [currentPageId, token, initEditor, Navigate]);
 
-  // useEffect(() => {
+	// useEffect(() => {
 	// 	if (wsReceivedData) {
 
-  //     ejInstance.current?.destroy();
-  //     ejInstance.current = null;
-  //     if (!ejInstance.current) {
-  //       const initialData = {
-  //         time: Date.now(),
-  //         blocks: wsReceivedData,
-  //       };
+	//     ejInstance.current?.destroy();
+	//     ejInstance.current = null;
+	//     if (!ejInstance.current) {
+	//       const initialData = {
+	//         time: Date.now(),
+	//         blocks: wsReceivedData,
+	//       };
 
-  //       initEditor(initialData);
-  //     }
-  //   }
-    
-  //   return () => {
+	//       initEditor(initialData);
+	//     }
+	//   }
 
-  //     ejInstance.current?.destroy();
-  //     ejInstance.current = null;
-  //   };
+	//   return () => {
+
+	//     ejInstance.current?.destroy();
+	//     ejInstance.current = null;
+	//   };
 	// }, [wsReceivedData, initEditor]);
 
-  
-  
-  return (
-    <div>
-        <div  id={EDITTOR_HOLDER_ID}> </div>
-    </div>
-  );
+	return (
+		<div>
+			<div id={EDITTOR_HOLDER_ID}> </div>
+		</div>
+	);
 }
 
-export default Editor
+export default Editor;
