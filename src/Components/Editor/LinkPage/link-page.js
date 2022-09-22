@@ -130,7 +130,7 @@ export default class PageLink {
 
   onAddPage(inputdata){
     const domainUrl = process.env.REACT_APP_DOMAINURL;
-    const url = `${domainUrl}/${inputdata.id}`
+    const url = `${domainUrl}/app/${inputdata.id}`
     this.data = {
       link: url,
       meta: inputdata,

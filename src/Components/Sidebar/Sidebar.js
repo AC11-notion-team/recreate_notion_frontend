@@ -2,7 +2,6 @@ import React from "react";
 import FavoritePage from "./FavoritePage";
 import Private from "./Private";
 import Share from "./Share";
-import Templates from "./Templates";
 import Trash from "./Trash";
 import User from "./User";
 import QuickFind from "./QuickFind";
@@ -10,7 +9,11 @@ import addPage from "../image/plus.png";
 import axios from "axios";
 import { usePagesUpdate } from "../../Hooks/Pages";
 
-export default function Sidebar({toggle,onEmojiClick}) {
+export default function Sidebar({
+	toggleFavorite,
+	toggle,
+	onEmojiClick,
+}) {
 	// useContext state= pages
 	const changePages = usePagesUpdate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -37,14 +40,14 @@ export default function Sidebar({toggle,onEmojiClick}) {
 			});
 	};
 	return (
-		<div className="absolute inset-0 h-screen side-minW bg-gray-50 z-30">
+		<div className="absolute inset-0 h-screen side-minW bg-gray-100">
 			<User toggle={toggle} />
 			<div className="mb-2 px-1 py-2">
 				<QuickFind />
 			</div>
 			<div className="h-3/4 overflow-x-hidden overflow-y-auto">
 				<div className="mb-4">
-					<FavoritePage onEmojiClick={onEmojiClick} />
+					<FavoritePage onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
 				</div>
 				<div className="mb-4">
 					<Share />
@@ -61,10 +64,9 @@ export default function Sidebar({toggle,onEmojiClick}) {
 						</button>
 					</div>
 
-					<Private onEmojiClick={onEmojiClick} />
+					<Private onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
 				</div>
 				<div className="px-1 py-2">
-					<Templates />
 					<Trash />
 				</div>
 			</div>

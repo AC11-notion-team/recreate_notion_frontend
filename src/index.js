@@ -12,14 +12,12 @@ import { PagesProvider } from "./Hooks/Pages";
 import { InviteProvider } from "./Hooks/InviteUser";
 import {EmojiStateProvider} from "./Hooks/EmojiState"
 import {TrashPagesProvider}from "./Hooks/TrashPages"
-import {FavoriteProvider} from "./Hooks/Favorite"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
 		<PagesProvider>
 			<CurrentPageIdProvider>
-				<FavoriteProvider>
 					<TrashPagesProvider>
 						<InviteProvider>
 							<EmojiStateProvider>
@@ -37,7 +35,6 @@ root.render(
 							</EmojiStateProvider>
 						</InviteProvider>
 					</TrashPagesProvider>
-				</FavoriteProvider>
 			</CurrentPageIdProvider>
 		</PagesProvider>
 	</>

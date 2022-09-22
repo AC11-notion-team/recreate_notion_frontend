@@ -19,14 +19,15 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 	return (
 		<div ref={ref}>
 			<div>
-				<span alt="title" onClick={toggleEmoji}>
+				<span className="w-full " alt="title" onClick={toggleEmoji}>
 					{pageIcon ? pageIcon : "🗒️"}
 				</span>
 			</div>
 			{isEmoji && (
-				<div className="absolute">
+				<div className="absolute z-10">
 					<Picker
 						onEmojiClick={callback}
+						disableSearchBar={true}
 					/>
 				</div>
 			)}

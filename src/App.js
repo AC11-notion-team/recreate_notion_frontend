@@ -11,13 +11,41 @@ import { WsReceivedProvider } from "./Hooks/useActionCable";
 
 function App() {
 	const changePages = usePagesUpdate();
-
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-
-	// 控制sidebar 出現跟消失
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+	//我的最愛
+	const [isFavorite, setIsFavorite] = useState(false);
+
+	const toggleFavorite = (currentPageID,pageID) =>{
+		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${currentPageID}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+			},
+			data:{
+				"favorite": isFavorite,
+			}	
+		}).then((res)=>{
+			changePages((prevPages)=>{
+				return prevPages.map((item)=>{
+					if(pageID){
+						return (item.id === pageID ?
+							{ ...item, favorite: isFavorite } : item)
+					}else{
+						return item.id === currentPageID? 
+						{ ...item, favorite: isFavorite} : item
+					}
+				})
+			})
+		})
+		
+	}
+		
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
@@ -34,7 +62,7 @@ function App() {
 
 
 	const onEmojiClick = (event, currentPageID,pageID, emojiObject) => {
-		const { type,value, className } = event.target;
+		const { type,value, className} = event.target;
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
@@ -84,15 +112,16 @@ function App() {
 					"title": value,
 				}	
 			});
-		}	
+		}
 	};
 
 	return (
 		<div>
-			<div className="split h-screen w-full flex overflow-hidden">
+			<div className="split h-screen w-full flex">
 				{isSide && (
 					<div id="split-0" className="relative side-minW flex-grow-0">
 						<Sidebar
+							toggleFavorite={toggleFavorite}
 							toggle={toggleSide}
 							onEmojiClick={onEmojiClick}
 						/>
@@ -101,6 +130,7 @@ function App() {
 
 				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
+						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}

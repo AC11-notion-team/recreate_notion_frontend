@@ -4,7 +4,7 @@ import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 
-const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
+const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFavorite}) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
 	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const closeDropdown = useCallback(() => {
@@ -16,7 +16,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 
 	return (
 		<div className="px-1 py-1 " onMouseEnter={showDropdown}>
-			<div className="flex items-center point group px-1.5 py-1">
+			<div className="flex items-center point group px-1.5 py-1 h-7">
 				<div className="flex items-center w-full" 
 					>
 					<button className="flex items-center w-5 h-5 mr-1">
@@ -31,27 +31,24 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID }) => {
 							onEmojiClick={onEmojiClick}
 						/>
 					</button>
-					<button className="w-full text-left" 
-                            onClick={() => {changeCurrentPageId(pageID)}}>
-						<p
-							className="ml-2 overflow-x-hidden text-sm font-semibold text-gray-600 whitespace-nowrap"
-							value={pageTitle}
-						>
-							{pageTitle}
+					<div className="w-full text-left" 
+					     onClick={() => {changeCurrentPageId(pageID)}}>
+						<p className="ml-3 text-sm font-semibold text-gray-600 whitespace-nowrap" value={pageTitle} >
+							{pageTitle ? pageTitle : "Untitled"}
 						</p>
-					</button>
+					</div>
 				</div>
-				<div className="flex items-center mx-2 h-5">
-					{displayDropdown && (
-						<PageMore
-							pageTitle={pageTitle}
-							pageIcon={pageIcon}
-							onEmojiClick={onEmojiClick}
-							closeDropdown={closeDropdown}
-							pageID={pageID}
-						/>
-					)}
-				</div>
+				{displayDropdown && (
+					<PageMore
+						pageTitle={pageTitle}
+						pageIcon={pageIcon}
+						onEmojiClick={onEmojiClick}
+						closeDropdown={closeDropdown}
+						pageID={pageID}
+						pageFavorite={pageFavorite}
+						toggleFavorite={toggleFavorite}
+					/>
+				)}
 			</div>
 		</div>
 	);
