@@ -16,7 +16,6 @@ function PageHeader({ onEmojiClick }) {
 	const [setShowUploadImg] = useState(false);
 	const handleMouseEnter = () => setShowUploadImg(true);
 	const handleMouseOut = () => setShowUploadImg(false);
-	// const [pageCover, setPageCover] = useState("");
 
 	const S3Client = new aws.S3({
 		region,
