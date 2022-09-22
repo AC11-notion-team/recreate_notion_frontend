@@ -82,7 +82,7 @@ function PageHeader({ onEmojiClick }) {
 			<div className="relative ">
 				<label
 					htmlFor="coverImg"
-					className="absolute px-1 py-0.5 text-sm bg-white border rounded right-5 bottom-2 hidden group-hover:inline-block z-10"
+					className="absolute px-1 py-0.5 text-sm bg-white border rounded right-5 bottom-2 z-10"
 				>
 					change cover
 					<input
