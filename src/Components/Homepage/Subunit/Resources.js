@@ -59,8 +59,8 @@ const Company = [
 export default function Resources (props) {
     return (
     <>
-        <div className="max-w-7xl mx-auto pb-28 border-b-2  border-grey-100 mt-32 mb-20 bg-[#fffefc]"/>
-        <div className="max-w-7xl mx-auto  flex ">   
+        <div className="max-w-6xl mx-auto pb-28 border-b-2  border-grey-100 mt-32 mb-20 bg-[#fffefc]"/>
+        <div className="max-w-6xl mx-auto  flex ">   
             <div className=" w-full justify-between md:flex">
                 <div className="flex mr-5">
                     <img className="h-12 w-12 mr-3 " src="/zettel.png" alt="Zettel" />
@@ -71,7 +71,7 @@ export default function Resources (props) {
                     <ul className="text-xl font-light leading-9 mb-4 text-gray-400 ">{Product.map((item , index)=><a href="#"><li className="hover:text-red-500 hover:underline decoration-2" id={index} >{item}</li></a>)}</ul>
                 </div>
                 <div>
-                    <h2 className="text-2xl font-semibold ">Notion for</h2>
+                    <h2 className="text-2xl font-semibold ">Zettel for</h2>
                     <ul className="text-xl font-light leading-9 mb-4 text-gray-400 ">{Notionfor.map((item , index)=><a href="#"><li className="hover:text-red-500 hover:underline decoration-2" id={index} >{item}</li></a>)}</ul>
                 </div>
                 <div>

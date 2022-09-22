@@ -13,12 +13,12 @@ const Button = props => (
 export default function StartNotion (props) {
     return (
     <>
-    <div className="flex flex-col items-center max-w-7xl mx-auto relative bg-[#fffefc]">
+    <div className="flex flex-col items-center max-w-6xl mx-auto relative bg-[#fffefc]">
             <img className="w-20 h-20 mb-8" src="/zettel.png" alt="" />
         <div className="font-bold text-6xl leading-tight ">Try Zettel today</div>  
             <p className="text-2xl font-light leading-9  text-gray-500 ">Get started for free.</p>
             <p className="text-2xl font-light leading-9 mb-4 text-gray-500 ">Add your whole team as your needs grow.</p>
-             <a href="login-page"> <Button>Try Zettel free</Button></a>
+             <a href="/app"> <Button>Try Zettel free</Button></a>
 
         <div className="flex mt-3  ">
             <p className="text-2xl font-light leading-9 mb-4 text-gray-500 ">On a big team? </p>

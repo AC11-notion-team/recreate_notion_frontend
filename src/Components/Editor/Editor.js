@@ -40,16 +40,18 @@ function Editor() {
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
   const Navigate = useNavigate();
+  const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
   // const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
 
 
-  const initEditor = useCallback((initialData) => {
+  const initEditor = useCallback((initialData, readOnly) => {
     const editor = new EditorJS({
       holder: EDITTOR_HOLDER_ID,
       logLevel: "ERROR",
       data: initialData,
       inlineToolbar: true,
+      readOnly: readOnly,
       placeholder: "Let`s write an awesome story!",
       onReady: () => {
         ejInstance.current = editor;
@@ -64,8 +66,7 @@ function Editor() {
             url: `${baseUrl}/pages/delete_data`,
             headers: {
               "Content-Type": "application/json",
-              Authorization:
-              `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+              Authorization: token,
             },
             data: {
               page_id: currentPageId ,
@@ -83,8 +84,7 @@ function Editor() {
             url: `${baseUrl}/pages/${currentPageId}/save_data`,
             headers: {
               "Content-Type": "application/json",
-              Authorization:
-              `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+              Authorization: token,
             },
             data: {
               api: content,
@@ -139,7 +139,7 @@ function Editor() {
               byUrl: `${baseUrl}/uploadImageByUrl`,
             },
             additionalRequestHeaders:{
-              Authorization: `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+              Authorization: token,
             },
             uploader: {
               /**
@@ -183,7 +183,7 @@ function Editor() {
           config: {
             endpoint: `${baseUrl}/fetch`,
             headers:{
-              Authorization: `Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+              Authorization: token,
             },
           },
         },
@@ -233,26 +233,25 @@ function Editor() {
 			url: `${baseUrl}/pages/${currentPageId}.json`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization:
-					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
+				Authorization: token,
 			},
 		};
-    console.log(currentPageId)
 		if (currentPageId) {
-      console.log("send request")
 			axios(config)
 				.then((res) => {
-          console.log(res)
 					const initialData = {
 						time: Date.now(),
 						blocks: res.data.blocks,
 					};
+          const readOnly = !res.data.editable
 					if (!ejInstance.current) {
-						initEditor(initialData);
+						initEditor(initialData, readOnly);
 					}
 				})
 				.catch((err) => {
           console.error(err)
+          localStorage.setItem("currentPageId", "")
+          Navigate("/unknown-page")
         });
     }
 
@@ -260,7 +259,7 @@ function Editor() {
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
-	}, [currentPageId, initEditor]);
+	}, [currentPageId, token, initEditor, Navigate]);
 
   // useEffect(() => {
 	// 	if (wsReceivedData) {
