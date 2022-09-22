@@ -33,6 +33,7 @@ export default function PageMore({
 		onTriggered: closeDropdown,
 		allowAnyKey: false,
 	});
+
 	let prevId =""
 	const removePage = () => {
 		axios({
@@ -61,7 +62,7 @@ export default function PageMore({
 	};
 
 	return (
-		<div ref={ref}>
+		<div ref={ref} onMouseLeave = {closeDropdown}>
 			<div onClick={handleToggle}>
 				<button
 					className="w-5 h-5 p-1 hidden group-hover:inline-block hover:bg-gray-300 hover:rounded"
