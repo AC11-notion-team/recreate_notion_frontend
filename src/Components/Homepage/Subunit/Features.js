@@ -66,9 +66,7 @@ export default function Features (props) {
             <div className="mt-20 ">
                 <h2 className="font-bold text-5xl leading-tight  mb-2">Built for endless uses.<br/>Across all teams.</h2>
                 <h3 className="text-2xl font-light leading-9 mb-4 text-gray-400 ">Notion solves problems common and unique to<br/> every team. These are just a few.</h3>
-                <a href="http://zettel.com">
-                    <Button type="submit" >Try Zettel free</Button>
-                </a>
+                <a href="login-page"> <Button>Try Zettel free</Button></a>
             </div>
             <div className="md:flex  content-start mt-20">
                 <img className="w-72" src="https://www.notion.so/cdn-cgi/image/format=auto,width=3840,quality=100/front-static/pages/product/bookshelf-spot.png" alt="" />

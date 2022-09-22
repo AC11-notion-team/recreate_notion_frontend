@@ -18,7 +18,8 @@ export default function StartNotion (props) {
         <div className="font-bold text-6xl leading-tight ">Try Zettel today</div>  
             <p className="text-2xl font-light leading-9  text-gray-500 ">Get started for free.</p>
             <p className="text-2xl font-light leading-9 mb-4 text-gray-500 ">Add your whole team as your needs grow.</p>
-             <Button type="submit" >Try Zettel free</Button>
+             <a href="login-page"> <Button>Try Zettel free</Button></a>
+
         <div className="flex mt-3  ">
             <p className="text-2xl font-light leading-9 mb-4 text-gray-500 ">On a big team? </p>
             <a className=" underline decoration-2 text-2xl font-light leading-9 mb-4 text-gray-500 hover:text-red-500 "  href="#">Contact sales</a>

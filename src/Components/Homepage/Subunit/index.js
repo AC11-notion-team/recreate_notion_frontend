@@ -26,8 +26,7 @@ const  Nav = props => (
             <ul className="flex flex-wrap items-center  text-xlg ">
                 <NavItem href="https://github.com/AC11-notion-team" classname="border-r-1 relative after:absolute after:bg-gray-100 after:w-0.5 after:h-6 after:-right-2" text="Contact sales"/>
                 <NavItem href="/login-page" text="Log in" />
-                <Button type="submit" >Try Zettel free</Button>
-                
+                <a href="login-page"> <Button>Try Zettel free</Button></a>
             </ul>
         </div>
     </nav>
@@ -62,8 +61,9 @@ export default function EditableBlock () {
             <div className="text-center md:text-left md:flex justify-between max-w-7xl mx-auto  md:mt-28 ">
                 <div>
                 <h1 className="font-bold text-7xl leading-tight  mb-2 ">One workspace. <br/> Every team.</h1>
-                <p className="text-2xl font-light leading-9 mb-4 text-gray-400 ">We’re more than a doc. Or a table. Customize <br/> Notion to work the way you do.</p>
-                <Button type="submit" >Try Zettel free</Button>
+                <p className="text-2xl font-light leading-9 mb-4 text-gray-400 ">We’re more than a doc. Or a table. Customize <br/> Zettel to work the way you do.</p>
+                <a href="login-page"> <Button>Try Zettel free</Button></a>
+                
                 </div>
                 <form onSubmit={(event) => {
                         event.preventDefault();
