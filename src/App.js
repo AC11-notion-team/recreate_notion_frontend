@@ -11,14 +11,42 @@ import { WsReceivedProvider } from "./Hooks/useActionCable";
 
 function App() {
 	const changePages = usePagesUpdate();
-	const Pages = usePages();
-
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-
-	// 控制sidebar 出現跟消失
 	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+	//我的最愛
+	const [isFavorite, setIsFavorite] = useState(false);
+
+	const toggleFavorite = (currentPageID, pageID) => {
+		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${currentPageID}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+			},
+			data: {
+				favorite: isFavorite,
+			},
+		}).then((res) => {
+			changePages((prevPages) => {
+				return prevPages.map((item) => {
+					if (pageID) {
+						return item.id === pageID
+							? { ...item, favorite: isFavorite }
+							: item;
+					} else {
+						return item.id === currentPageID
+							? { ...item, favorite: isFavorite }
+							: item;
+					}
+				});
+			});
+		});
+	};
+
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
 		if (isSide) {
@@ -87,15 +115,20 @@ function App() {
 
 	return (
 		<div>
-			<div className="flex w-full h-screen overflow-hidden split">
+			<div className="flex w-full h-screen split">
 				{isSide && (
 					<div id="split-0" className="relative flex-grow-0 side-minW">
-						<Sidebar toggle={toggleSide} onEmojiClick={onEmojiClick} />
+						<Sidebar
+							toggleFavorite={toggleFavorite}
+							toggle={toggleSide}
+							onEmojiClick={onEmojiClick}
+						/>
 					</div>
 				)}
 
 				<div id="split-1" className="flex-grow overflow-hidden">
 					<Header
+						toggleFavorite={toggleFavorite}
 						isSide={isSide}
 						toggleSide={toggleSide}
 						onEmojiClick={onEmojiClick}

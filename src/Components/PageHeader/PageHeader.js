@@ -84,6 +84,7 @@ function PageHeader({ onEmojiClick }) {
 			});
 	};
 
+<<<<<<< HEAD
 	return (
 		<div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut}>
 			<div className="relative">
@@ -129,6 +130,29 @@ function PageHeader({ onEmojiClick }) {
 			</div>
 		</div>
 	);
+=======
+    return (
+        <div className="mt-8 mb-16 mx-20 w-auto">
+            <div className="relative flex items-center w-4/6 m-auto max-w-screen-sm">
+                <div className="absolute top-0 left-0 cursor-pointer ml-3 text-4xl">
+                    <Emoji
+                    currentPageID={currentPageId}
+                    pageIcon={pageIcon}
+                    onEmojiClick={onEmojiClick}
+                    />
+                </div>
+                <input
+                    className= "ml-12 text-4xl font-bold  pl-2 outline-none w-3/4" 
+                    placeholder="Untitled"
+                    onChange={(event) => onEmojiClick(event, currentPageId)}
+                    id={currentPageId}
+                    value = { pageTitle || '' }
+                />  
+            </div>
+        </div>
+            
+    );
+>>>>>>> 1b17a58ada39e5d718bf44973f5349b90996b6b7
 }
 
 export default PageHeader;

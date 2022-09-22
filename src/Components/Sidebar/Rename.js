@@ -4,13 +4,18 @@ import ActionButton from "../Navbar/ActionButton";
 import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
 
-export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,pageID}){
+export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMore}){
     const currentPageId = useCurrentPageId();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
         setIsRename((prevTitleButton) => !prevTitleButton);
 	};
-    const cb = (event) => onEmojiClick(event, currentPageId,pageID)
+    const callback = (event) => onEmojiClick(event, currentPageId,pageID)
+    const handleKeyPress =(e)=>{
+		if(e.key === "Enter"){
+			handleMore()
+		}
+	}
     return(
         <div>
             <ActionButton
@@ -32,10 +37,11 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,handlePageMore,
                         </div>
                         <input
                             type="text"
-                            onChange={cb}
-                            className="share-like-input h-7 w-full rounded title"
+                            onChange={callback}
+                            className="input h-7 w-full rounded title px-1" 
                             value={pageTitle}
-                            placeholder="Untitled"  
+                            placeholder="Untitled"
+                            onKeyPress={(e)=>handleKeyPress(e)}  
                         />
                     </div>
                 </div>
