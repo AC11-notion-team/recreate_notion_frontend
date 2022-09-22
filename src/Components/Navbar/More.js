@@ -56,7 +56,6 @@ export default function More({favorite,toggleFavorite}){
             {isMore&& <div onClick={handleToggle}  className="IsMore fixed  w-screen top-0 bottom-0 left-0 z-20">
                 <div className="absolute w-60 bg-white border-2 box-shadow right-4 top-12 rounded-md p-1.5">
                     <ActionButton src={favorite ? fullStar:emptyStar} alt="favorite" content={favorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={callback} />
-                    <ActionButton src={link} alt="copyLink" content="Copy link" className="py-0.5"/>
                     <ActionButton src={trash} alt="delete" content="Delete" className="py-0.5" handleClick={removePage}/>
                 </div>
             </div>}

@@ -90,7 +90,7 @@ export default function PageMore({
 					<ActionButton
 						src={pageFavorite ? fullStar : emptyStar}
 						alt="Favorite"
-						content="Add to Favorites"
+						content={pageFavorite ? "Remove from Favorites":"Add to Favorites"} 
 						className="py-1"
 						handleClick={callback}
 					/>

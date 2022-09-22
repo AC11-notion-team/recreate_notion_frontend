@@ -38,7 +38,7 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMo
                         <input
                             type="text"
                             onChange={callback}
-                            className="share-like-input h-7 w-full rounded title"
+                            className="input h-7 w-full rounded title px-1" 
                             value={pageTitle}
                             placeholder="Untitled"
                             onKeyPress={(e)=>handleKeyPress(e)}  

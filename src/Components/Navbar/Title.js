@@ -25,11 +25,13 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	});
 	return (
 		<div ref = {ref} >
-			<ActionButton
-				titleIcon={pageIcon ? pageIcon : "🗒️"}
-				content={pageTitle ? pageTitle : "Untitled"}
-				handleClick={handleToggle}
-			/>
+			<div className="h-6 flex items-center">
+				<ActionButton
+					titleIcon={pageIcon ? pageIcon : "🗒️"}
+					content={pageTitle ? pageTitle : "Untitled"}
+					handleClick={handleToggle}
+				/>
+			</div>
 			{isTitleButton && (
 				<div className="absolute border-2 box-shadow bg-white top-10 rounded flex-grow z-10 w-3/12 min-w-max ">
 					<div className="flex items-center py-1 px-2">
@@ -43,7 +45,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 						<input
 							type="text"
 							onChange={callback}
-							className="share-like-input h-7 w-full rounded title"
+							className="input h-7 w-full rounded px-1"
 							value={pageTitle}
 							placeholder="Untitled"
 							onKeyPress={(e)=>handleKeyPress(e)}

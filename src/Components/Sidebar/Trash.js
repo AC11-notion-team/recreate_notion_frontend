@@ -50,7 +50,7 @@ export default function Trash (){
                     { trashPage.map((item,i)=>(
                         <TrashPage 
                             trashPageID = {item.id}
-                            trashPageIcon = {item.icom}
+                            trashPageIcon = {item.icon}
                             trashPageTitle = {item.title}
                             key={i}
                         />

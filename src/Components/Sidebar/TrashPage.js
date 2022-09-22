@@ -35,8 +35,9 @@ export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
         }).catch((err) => {
             console.error(err);
         });
+        
     }
-
+  
     return(
         <div className="flex items-center justify-between py-2 px-4 point group">
             <div className="flex items-center">
