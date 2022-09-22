@@ -6,7 +6,7 @@ import Emoji from "../Navbar/EmojiPicker";
 import aws from "aws-sdk";
 import axios from "axios";
 import { useEffect } from "react";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import CircleLoader from "react-spinners/CircleLoader";
 
 function PageHeader({ onEmojiClick }) {
 	const bucketName = process.env.REACT_APP_S3BUCKET;
@@ -113,11 +113,11 @@ function PageHeader({ onEmojiClick }) {
 						/>
 					)}
 
-					<PacmanLoader
-						color="#36d7b7"
+					<CircleLoader
+						color="#d69636"
 						loading={loading}
 						cssOverride={override}
-						size={25}
+						size={50}
 					/>
 
 					{cover && (
