@@ -78,6 +78,9 @@
 .embed-tool__caption {
   display: none !important;
 }
+.ce-delimiter {
+  overflow: hidden;
+}
 .ce-delimiter:before {
   content: "_________________________________________________________________________________________" !important;
   letter-spacing: 0px !important;
