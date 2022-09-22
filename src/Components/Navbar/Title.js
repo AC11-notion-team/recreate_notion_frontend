@@ -14,6 +14,11 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 	const callback = (e) => {
 		onEmojiClick(e,currentPageId)
 	}
+	const handleKeyPress =(e)=>{
+		if(e.key === "Enter"){
+			setIsTitleButton(false)
+		}
+	}
 	const ref = useDetectClickOutside({
 		onTriggered: () => setIsTitleButton(false),
 		allowAnyKey: false,
@@ -41,6 +46,7 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 							className="share-like-input h-7 w-full rounded title"
 							value={pageTitle}
 							placeholder="Untitled"
+							onKeyPress={(e)=>handleKeyPress(e)}
 						/>
 					</div>
 				</div>

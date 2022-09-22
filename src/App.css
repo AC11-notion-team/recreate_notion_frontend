@@ -35,7 +35,7 @@
 }
 
 .gutter {
-  background-color: #eee;
+  background-color: #ccc;
   background-repeat: no-repeat;
   background-position: 50%;
 }
@@ -79,7 +79,7 @@
   display: none !important;
 }
 .ce-delimiter:before {
-  content: "________________________" !important;
+  content: "__________________________________________" !important;
   letter-spacing: 0px !important;
   font-size: 5px !important;
   color: #808080;
@@ -114,4 +114,14 @@
 }
 .link-page__title {
   @apply text-lg no-underline;
+}
+.pageMore {
+  left: 18rem;
+  top: 20.5rem;
+}
+.ce-popover__item {
+  @apply hover:bg-gray-300;
+}
+.cdx-marker{
+  background: rgba(230,230,55,0.5) !important;
 }

@@ -67,17 +67,17 @@ export default function PageMore({
 	}
 
 	return (
-		<div ref={ref} onMouseOut={()=>setIsPageMore(false)}>
+		<div ref={ref} >
 			<div onClick={handleToggle}>
 				<button
-					className="w-5 h-5 p-1 hidden group-hover:inline-block hover:bg-gray-300 hover:rounded"
+					className="w-5 h-5 p-1 hidden group-hover:inline-block hover:bg-gray-300 hover:rounded "
 					data-aa="aa"
 				>
 					<img src={more} alt="sidePageMoreButton" className="w-full h-full" />
+					
 				</button>
 			</div>
-
-			{isPageMore && <div className="absolute bg-white border rounded box-shadow w-60 ">
+			{isPageMore && <div className="absolute bg-white border rounded box-shadow w-60 z-50">
 				<div className="p-1.5">
 					<ActionButton
 						src={trash}
@@ -98,9 +98,11 @@ export default function PageMore({
 						pageIcon={pageIcon}
 						pageID={pageID}
 						onEmojiClick={onEmojiClick}
+						handleMore={handleToggle}
 					/>
 				</div>
 			</div>}
+	
 		</div>
 	);
 }

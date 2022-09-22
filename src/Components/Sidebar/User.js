@@ -3,6 +3,7 @@ import user from "../image/user.png"
 import userData from "../image/userData.png"
 import menuLeft from "../image/menu-left.png"
 import { useNavigate } from "react-router-dom";
+import Logout from '../../Hooks/Logout'
 
 export default function User ({toggle}){
     let navigate = useNavigate()
@@ -13,8 +14,7 @@ export default function User ({toggle}){
         }
     }
     const logout =()=>{
-        localStorage.removeItem('zettel_user_token')
-        localStorage.removeItem('zettel_user_id')
+        Logout()
         navigate("/")
     };
     

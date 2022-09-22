@@ -40,7 +40,7 @@ export default function Sidebar({
 			});
 	};
 	return (
-		<div className="absolute inset-0 h-screen side-minW bg-gray-50 z-30">
+		<div className="absolute inset-0 h-screen side-minW bg-gray-100">
 			<User toggle={toggle} />
 			<div className="mb-2 px-1 py-2">
 				<QuickFind />

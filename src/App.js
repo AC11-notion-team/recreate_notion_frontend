@@ -137,7 +137,7 @@ function App() {
 					/>
 					<div className="relative content overflow-auto ">
 						< PageHeader  onEmojiClick={onEmojiClick}/>
-							< Editor />
+						< Editor />
 					</div>
 				</div>
 			</div>

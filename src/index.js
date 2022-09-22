@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import HomePage from "./Components/Homepage";
 import LoginPage from "./Components/Loginpage/LoginPage.js";
 import RequireAuth from "./Components/RequireAuth/RequireAuth";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CurrentPageIdProvider } from "./Hooks/CurrentPageId";
 import { PagesProvider } from "./Hooks/Pages";
 import { InviteProvider } from "./Hooks/InviteUser";
@@ -29,6 +29,7 @@ root.render(
 										</Route>
 										<Route path="/" element={<HomePage />} />
 										<Route path="login-page" element={<LoginPage />} />
+										<Route path="*" element={<Navigate to="/" replace />} />
 									</Routes>
 								</BrowserRouter>
 							</EmojiStateProvider>

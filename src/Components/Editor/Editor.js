@@ -38,6 +38,7 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
+  // const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
 
   const initEditor = useCallback((initialData) => {
@@ -246,8 +247,8 @@ function Editor() {
 				})
 				.catch((err) => console.error(err));
     }
-    return () => {
 
+    return () => {
       ejInstance.current?.destroy();
       ejInstance.current = null;
     };
