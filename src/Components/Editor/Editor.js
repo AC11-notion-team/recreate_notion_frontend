@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useCallback, useMemo} from "react";
+import React, {useRef, useEffect, useCallback} from "react";
 import EditorJS from '@editorjs/editorjs';
 import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter'
@@ -21,6 +21,7 @@ import aws from 'aws-sdk';
 import axios from 'axios';
 import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 import { usePagesUpdate } from "../../Hooks/Pages";
+import { useNavigate } from "react-router-dom"
 // import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
@@ -38,8 +39,10 @@ function Editor() {
   const changeCurrentPage = useCurrentPageUpdateId();
   const changePages = usePagesUpdate()
 	const ejInstance = useRef();
+  const Navigate = useNavigate();
   // const wsReceivedData = useWsReceivedData();
   let isAddPageLink = false;
+
 
   const initEditor = useCallback((initialData) => {
     const editor = new EditorJS({
@@ -156,7 +159,7 @@ function Editor() {
                 return fetch(url, {
                     method: "PUT",
                     headers: {
-                      // "Content-Type": "image/*",
+                      "Content-Type": "image/*",
                     },
                     body: file
                   }).then((res)=>{ 
@@ -234,9 +237,12 @@ function Editor() {
 					`Bearer ${localStorage.getItem("zettel_user_token") || null}`,
 			},
 		};
+    console.log(currentPageId)
 		if (currentPageId) {
+      console.log("send request")
 			axios(config)
 				.then((res) => {
+          console.log(res)
 					const initialData = {
 						time: Date.now(),
 						blocks: res.data.blocks,
@@ -245,7 +251,9 @@ function Editor() {
 						initEditor(initialData);
 					}
 				})
-				.catch((err) => console.error(err));
+				.catch((err) => {
+          console.error(err)
+        });
     }
 
     return () => {
