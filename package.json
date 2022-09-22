@@ -47,8 +47,6 @@
     "react-hook-form": "^7.34.2",
     "react-icons": "^4.4.0",
     "react-input-checkbox": "^1.1.0",
-    "react-lazy-load": "^4.0.1",
-    "react-lazy-load-image-component": "^1.5.5",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "react-use-websocket": "3.0.0",
