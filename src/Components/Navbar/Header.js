@@ -1,28 +1,35 @@
 import React from "react";
-import Share from "./Share";
+import Share from "./Share/Share";
 import More from "./More";
 import Title from "./Title";
 import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
-import { usePages } from "../../Pages";
-import { useCurrentPageId } from "../../CurrentPageId";
-import {useFavorite,useFavoriteUpdate} from "../../Favorite"
+import { usePages } from "../../Hooks/Pages";
+import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 
-export default function Header({isSide,toggleSide,onEmojiClick,}) {
+export default function Header({
+	isSide,
+	toggleFavorite,
+	toggleSide,
+	onEmojiClick,
+}) {
 	const pages = usePages();
 	const currentPageId = useCurrentPageId();
-	const favorite = useFavorite();
-	const changeFavorite = useFavoriteUpdate();
+
 	const pageItem = pages.filter((item) => {
 		return item.id === currentPageId;
 	});
 	const pageTitle = pageItem[0]?.title;
 	const pageIcon = pageItem[0]?.icon;
+	const pageFavorite = pageItem[0]?.favorite;
+	const callback =()=>{
+		toggleFavorite(currentPageId)
+	}
 
 	return (
-		<div className="flex h-12 justify-between px-2 leading-10 relative">
+		<nav className="flex h-12 justify-between px-2 leading-10 relative">
 			<div className="flex ">
 				{!isSide && (
 					<div className="flex items-center">
@@ -44,16 +51,15 @@ export default function Header({isSide,toggleSide,onEmojiClick,}) {
 			</div>
 			<div className="flex">
 				<Share />
-				<div className="flex items-center">
+				<div className="flex items-center" onClick={callback}>
 					<MenuButton
 						className="IsFavorite"
-						handleClick={changeFavorite}
 						alt="favoriteButton"
-						src={favorite ? fullStar : emptyStar}
+						src={pageFavorite ? fullStar : emptyStar}
 					/>
 				</div>
-				<More  />
+				<More favorite={pageFavorite} toggleFavorite={toggleFavorite} />
 			</div>
-		</div>
+		</nav>
 	);
 }

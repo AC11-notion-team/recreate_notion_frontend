@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import UserInviteList from "./UserInviteList";
 import axios from "axios";
-import { useCurrentPageId } from "../../../../CurrentPageId";
-import { usePages } from "../../../../Pages";
+import { useCurrentPageId } from "../../../../Hooks/CurrentPageId";
+import { usePages } from "../../../../Hooks/Pages";
 import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const ShareToParticularPerson = () => {
@@ -32,7 +32,7 @@ const ShareToParticularPerson = () => {
 					setUserInformation(res.data.users);
 				})
 				.catch((err) => {
-					console.log(err);
+					console.error(err);
 				});
 		}
 	};
@@ -64,7 +64,7 @@ const ShareToParticularPerson = () => {
 			setUserInformation([]);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 	};
 	const removeInvite = (email) => {
@@ -93,7 +93,7 @@ const ShareToParticularPerson = () => {
 			<div className="flex items-center justify-between mb-3 flex-nowrap">
 				<input
 					type="text"
-					className="w-full mr-2 overflow-x-hidden text-left border-b-4 flex-nowrap share-Universal boredr-1 share-like-input point min-w-min"
+					className="w-full mr-2 overflow-x-hidden text-left border-b-4 flex-nowrap share-Universal boredr-1 input point min-w-min"
 					placeholder="Add emails,people,integratons..."
 					onChange={searchUserToggle}
 					value={searchUser}

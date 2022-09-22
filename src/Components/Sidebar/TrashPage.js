@@ -1,9 +1,9 @@
 import React from "react";
 import backIcon from "../image/back-arrow.png"
 import axios from "axios";
-import { usePagesUpdate } from "../../Pages";
-import {useCurrentPageUpdateId} from "../../CurrentPageId"
-import {useTrashPagesUpdate} from "../../TrashPages"
+import { usePagesUpdate } from "../../Hooks/Pages";
+import {useCurrentPageUpdateId} from "../../Hooks/CurrentPageId"
+import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
     const baseUrl = process.env.REACT_APP_BASEURL;
@@ -33,10 +33,11 @@ export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
             })
             changeCurrentPage(res.data.id)
         }).catch((err) => {
-            console.log(err);
+            console.error(err);
         });
+        
     }
-
+  
     return(
         <div className="flex items-center justify-between py-2 px-4 point group">
             <div className="flex items-center">

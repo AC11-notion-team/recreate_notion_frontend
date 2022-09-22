@@ -1,6 +1,6 @@
 import React from "react";
 import userImg from "../../../image/user.png";
-import { useInviteUpdate } from "../../../../InviteUser";
+import { useInviteUpdate } from "../../../../Hooks/InviteUser";
 
 export default function UserInviteList({ username, email, picture }) {
 	const changeInviteUser = useInviteUpdate();
