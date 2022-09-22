@@ -16,9 +16,9 @@ function PageHeader({onEmojiClick}) {
     
 
     return (
-        <div className=" mt-8 mb-16 mx-20 w-auto">
-            <div className="relative flex items-center w-4/6 m-auto">
-                <div className="absolute top-0 left-0 cursor-pointer ml-3">
+        <div className="mt-8 mb-16 mx-20 w-auto">
+            <div className="relative flex items-center w-4/6 m-auto max-w-screen-sm">
+                <div className="absolute top-0 left-0 cursor-pointer ml-3 text-4xl">
                     <Emoji
                     currentPageID={currentPageId}
                     pageIcon={pageIcon}
@@ -26,7 +26,7 @@ function PageHeader({onEmojiClick}) {
                     />
                 </div>
                 <input
-                    className= "ml-12 text-2xl  pl-2 outline-none w-3/4" 
+                    className= "ml-12 text-4xl font-bold  pl-2 outline-none w-3/4" 
                     placeholder="Untitled"
                     onChange={(event) => onEmojiClick(event, currentPageId)}
                     id={currentPageId}

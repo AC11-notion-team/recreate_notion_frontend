@@ -3,7 +3,6 @@ import globe from "../../image/globe.png";
 import ActionButton from "../ActionButton";
 import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
-import LearnMore from "./component/LearnMore";
 import axios from "axios";
 import { Switch } from "@headlessui/react";
 import { useCurrentPageId } from "../../../Hooks/CurrentPageId";
@@ -133,7 +132,7 @@ export default function Share() {
 							/>
 						)}
 					<hr />
-					<LearnMore />
+
 				</div>
 			)}
 		</div>
