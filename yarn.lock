@@ -1197,11 +1197,6 @@
   resolved "https://registry.npmjs.org/@editorjs/checklist/-/checklist-1.3.0.tgz"
   integrity sha512-087oW0oOIE5HX8llj4Eap/reFDFw8VCLlp6GU0E9GEp7f3zy2aV6KdFR+6dbYhZ50w7tSnkMpCAcSq1NXJeB4Q==
 
-"@editorjs/code@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.npmjs.org/@editorjs/code/-/code-2.7.0.tgz"
-  integrity sha512-gXtTce915fHp3H9i4IqhTxEDbbkT2heFfYiW/bhFHsCmZDpyGzfZxi94kmrEqDmbxXjV49ZZ6GZbR26If13KJw==
-
 "@editorjs/delimiter@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@editorjs/delimiter/-/delimiter-1.2.0.tgz"
@@ -1270,11 +1265,6 @@
   version "2.4.0"
   resolved "https://registry.npmjs.org/@editorjs/quote/-/quote-2.4.0.tgz"
   integrity sha512-IWOBWjL2ngPP63GcIAltyD9kc7OVZFma4kS+T5JRHvKKDspYsnmrxsbRmCPc+coZQzqPxXHkiOZuNMdmGX/Y3w==
-
-"@editorjs/simple-image@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@editorjs/simple-image/-/simple-image-1.4.1.tgz"
-  integrity sha512-8lqcMYKrxhnDNasqq4Id9/SwXymSofVb4SJBC7gQoJmNG9bfRgVEXLsEUnuLzn8ixkAYlK2oNTc7ioZdD8bEOw==
 
 "@editorjs/table@^2.0.4":
   version "2.0.4"
@@ -8765,11 +8755,6 @@ signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
-
-simple-image-editorjs@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/simple-image-editorjs/-/simple-image-editorjs-1.4.0.tgz"
-  integrity sha512-XSjWtf6HzzxWR4Fk0PTr3tpvw5OxCTHXJYEhMc0e8+uIa79H9M6Ct55ujWQctt6XP0IoXuhshCdPKFrcyUNtnw==
 
 sisteransi@^1.0.5:
   version "1.0.5"
