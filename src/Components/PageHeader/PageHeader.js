@@ -13,9 +13,6 @@ function PageHeader({ onEmojiClick }) {
 	const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const [setShowUploadImg] = useState(false);
-	const handleMouseEnter = () => setShowUploadImg(true);
-	const handleMouseOut = () => setShowUploadImg(false);
 
 	const S3Client = new aws.S3({
 		region,
@@ -81,11 +78,11 @@ function PageHeader({ onEmojiClick }) {
 	};
 
 	return (
-		<div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut}>
-			<div className="relative">
+		<div className="group">
+			<div className="relative ">
 				<label
 					htmlFor="coverImg"
-					className="absolute px-1 py-0.5 text-sm bg-white border rounded right-5 bottom-2"
+					className="absolute px-1 py-0.5 text-sm bg-white border rounded right-5 bottom-2 z-10"
 				>
 					change cover
 					<input
@@ -95,13 +92,16 @@ function PageHeader({ onEmojiClick }) {
 						onChange={upload}
 					/>
 				</label>
-				{cover && (
-					<section class="w-full relative ">
+
+				<section class="w-full relative ">
+					{cover && (
 						<img
 							src={cover}
 							className="object-cover w-full h-48 overflow-hidden"
 							alt="cover"
 						/>
+					)}
+					{cover && (
 						<div className="absolute mb-2 ml-3 text-6xl cursor-pointer left-44 -bottom-7">
 							<Emoji
 								currentPageID={currentPageId}
@@ -109,11 +109,21 @@ function PageHeader({ onEmojiClick }) {
 								onEmojiClick={onEmojiClick}
 							/>
 						</div>
-					</section>
-				)}
+					)}
+				</section>
 			</div>
 			<div className="w-auto mx-20 mt-8 mb-16">
 				<div className="relative flex items-center w-4/6 max-w-screen-sm m-auto">
+					{!cover && (
+						<div className="mb-2 mr-3 text-4xl cursor-pointer left-44 -bottom-7">
+							<Emoji
+								currentPageID={currentPageId}
+								pageIcon={pageIcon}
+								onEmojiClick={onEmojiClick}
+							/>
+						</div>
+					)}
+
 					<input
 						className="w-3/4 text-4xl font-bold outline-none"
 						placeholder="Untitled"

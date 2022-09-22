@@ -42,10 +42,10 @@ function Editor() {
 	const changeCurrentPage = useCurrentPageUpdateId();
 	const changePages = usePagesUpdate();
 	const ejInstance = useRef();
-  const Navigate = useNavigate();
-  const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
-  // const wsReceivedData = useWsReceivedData();
-  let isAddPageLink = false;
+	const Navigate = useNavigate();
+	const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
+	// const wsReceivedData = useWsReceivedData();
+	let isAddPageLink = false;
 
 
   const initEditor = useCallback((initialData, readOnly) => {
@@ -256,17 +256,17 @@ function Editor() {
 						time: Date.now(),
 						blocks: res.data.blocks,
 					};
-          const readOnly = !res.data.editable
+          			const readOnly =  !(res.data.editable || res.data.user_auth)
 					if (!ejInstance.current) {
 						initEditor(initialData, readOnly);
 					}
 				})
 				.catch((err) => {
-          console.error(err)
-          localStorage.setItem("currentPageId", "")
-          Navigate("/unknown-page")
-        });
-    }
+					console.error(err)
+					localStorage.setItem("currentPageId", "")
+					Navigate("/unknown-page")
+				});
+		}
 
     return () => {
       ejInstance.current?.destroy();

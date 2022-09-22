@@ -11,12 +11,11 @@ const  Nav = props => (
         </a>
         <div className="hidden md:block p-1 text-xl">
             <ul className="flex ">
-            <NavItem href="/Product" text="Product"></NavItem><IoIosArrowDown />
-            <NavItem href="/Download" text="Download" /><IoIosArrowDown />
-            <NavItem href="/Solitions" text="Solitions" /><IoIosArrowDown />
-            <NavItem href="/Resources" text="Resources" /><IoIosArrowDown />
-            <NavItem href="/Pricing" text="Pricing" />
-    
+                <NavItem href="/Product" text="Product"></NavItem><IoIosArrowDown />
+                <NavItem href="/Download" text="Download" /><IoIosArrowDown />
+                <NavItem href="/Solitions" text="Solitions" /><IoIosArrowDown />
+                <NavItem href="/Resources" text="Resources" /><IoIosArrowDown />
+                <NavItem href="/Pricing" text="Pricing" /> 
             </ul>
         </div>
         <div className="flex-1 flex justify-end max-auto">
