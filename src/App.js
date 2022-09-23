@@ -65,7 +65,6 @@ function App() {
 
 	const onEmojiClick = useCallback((event, currentPageID, pageID, emojiObject) => {
 		const { type, value, className } = event.target;
-		console.log("EmojiClick")
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
