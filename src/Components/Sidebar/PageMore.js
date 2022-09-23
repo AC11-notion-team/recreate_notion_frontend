@@ -13,7 +13,6 @@ import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
 export default function PageMore({
-	closeDropdown,
 	onEmojiClick,
 	pageTitle,
 	pageIcon,
@@ -26,18 +25,18 @@ export default function PageMore({
 	const changePages = usePagesUpdate();
 	const changeCurrentPageId = useCurrentPageUpdateId();
 	const changeTrashPages = useTrashPagesUpdate()
+	let prevId =""
+
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
-
-
-
+	const closeDropdown = ()=>setIsPageMore(false)
 	const ref = useDetectClickOutside({
 		onTriggered: closeDropdown,
 		allowAnyKey: false,
 	});
 
-	let prevId =""
+	
 	const removePage = () => {
 		axios({
 			method: "delete",
@@ -63,6 +62,7 @@ export default function PageMore({
 			})
 		})
 	};
+
 	const callback =()=>{
 		toggleFavorite(pageID)
 	}
