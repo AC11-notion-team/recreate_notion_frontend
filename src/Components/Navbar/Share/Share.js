@@ -91,7 +91,7 @@ export default function Share() {
 			/>
 
 			{isShare && (
-				<div  className="absolute w-5/12 bg-white border-2 rounded z-10 box-shadow right-4 top-12 min-w-min">
+				<div  className="absolute w-5/12 bg-white border-2 rounded z-20 box-shadow right-4 top-12 min-w-min">
 					<ShareToParticularPerson />
 					<hr />
 						<div className="point">

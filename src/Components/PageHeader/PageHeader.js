@@ -1,5 +1,5 @@
-import React, { useState, CSSProperties } from "react";
-import { usePages, usePagesUpdate } from "../../Hooks/Pages";
+import React, { useState} from "react";
+import { usePages} from "../../Hooks/Pages";
 import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
 
@@ -90,10 +90,10 @@ function PageHeader({ onEmojiClick }) {
 
 	return (
 		<div className="group">
-			<div className="relative ">
+			<div className="relative w-full">
 				<label
 					htmlFor="coverImg"
-					className="absolute px-1 py-0.5 text-sm bg-white border rounded right-5 bottom-2 z-10"
+					className="absolute px-1 py-0.5 text-sm border rounded right-8 top-1 z-10 hidden group-hover:inline-block group-hover:bg-gray-100 h-6 point"
 				>
 					change cover
 					<input
@@ -104,7 +104,7 @@ function PageHeader({ onEmojiClick }) {
 					/>
 				</label>
 
-				<section class="w-full relative ">
+				<section class="w-full relative">
 					{cover && (
 						<img
 							src={cover}
@@ -121,12 +121,16 @@ function PageHeader({ onEmojiClick }) {
 					/>
 
 					{cover && (
-						<div className="absolute mb-2 ml-3 text-6xl cursor-pointer left-44 -bottom-7">
-							<Emoji
-								currentPageID={currentPageId}
-								pageIcon={pageIcon}
-								onEmojiClick={onEmojiClick}
-							/>
+						<div className="w-auto flex justify-center">
+							<div className="absolute mb-2 text-6xl cursor-pointer -bottom-7 w-4/6 flex justify-center">
+								<div className="w-10/12 z-10">
+								<Emoji
+									currentPageID={currentPageId}
+									pageIcon={pageIcon}
+									onEmojiClick={onEmojiClick}
+								/>
+								</div>
+							</div>
 						</div>
 					)}
 				</section>
