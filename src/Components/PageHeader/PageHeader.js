@@ -96,7 +96,7 @@ function PageHeader({ onEmojiClick }) {
 				});
 			})
 			.catch(function (err) {
-				console.log(err);
+				console.error(err);
 			});
 	};
 
