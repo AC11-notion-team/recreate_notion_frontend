@@ -110,7 +110,7 @@
   @apply w-4/6 m-auto;
 }
 .link-page__content {
-  @apply flex items-center p-2;
+  @apply flex items-center p-2 hover:bg-gray-100;
 }
 .link-page__anchor {
   @apply text-lg mr-2 no-underline;

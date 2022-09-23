@@ -7,9 +7,6 @@ import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFavorite}) => {
 	const changeCurrentPageId = useCurrentPageUpdateId();
 	const [displayDropdown, setDisplayDropdown] = useState(false);
-	const closeDropdown = useCallback(() => {
-		setDisplayDropdown(false);
-	}, []);
 	const showDropdown = useCallback(() => {
 		setDisplayDropdown(true);
 	}, []);
@@ -43,7 +40,6 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFav
 						pageTitle={pageTitle}
 						pageIcon={pageIcon}
 						onEmojiClick={onEmojiClick}
-						closeDropdown={closeDropdown}
 						pageID={pageID}
 						pageFavorite={pageFavorite}
 						toggleFavorite={toggleFavorite}
