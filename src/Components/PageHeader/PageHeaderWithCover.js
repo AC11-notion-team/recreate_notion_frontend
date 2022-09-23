@@ -11,7 +11,6 @@ function PageHeaderWithCover({isChangeCover, cover, loading}){
         top: "6rem",
         left: "6rem",
         right: "6rem",
-
 	};
     return (
         <div className="relative w-full h-48" >
