@@ -268,10 +268,10 @@ function Editor() {
 				});
 		}
 
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
+		return () => {
+		ejInstance.current?.destroy();
+		ejInstance.current = null;
+		};
 	}, [currentPageId, token, initEditor, Navigate]);
 
 	// useEffect(() => {

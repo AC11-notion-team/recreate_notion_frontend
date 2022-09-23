@@ -4,7 +4,7 @@ import Logout from '../../Hooks/Logout'
 
 const RequireAuth = () =>{
     const userToken = localStorage.getItem("zettel_user_token");
-    const isTokenActive = jwtDecode(userToken).exp > (new Date().getTime() + 1)/1000
+    const isTokenActive = userToken ? jwtDecode(userToken).exp > (new Date().getTime() + 1)/1000 : false
     const location = useLocation();
     if (!isTokenActive){
         Logout()
