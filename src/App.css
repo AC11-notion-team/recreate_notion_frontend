@@ -82,7 +82,7 @@
   overflow: hidden;
 }
 .ce-delimiter:before {
-  content: "_________________________________________________________________________________________" !important;
+  content: "____________________________________________________________________________________________________________________" !important;
   letter-spacing: 0px !important;
   font-size: 5px !important;
   color: #808080;
@@ -110,7 +110,7 @@
   @apply w-4/6 m-auto;
 }
 .link-page__content {
-  @apply flex items-center p-2;
+  @apply flex items-center p-2 hover:bg-gray-100;
 }
 .link-page__anchor {
   @apply text-lg mr-2 no-underline;

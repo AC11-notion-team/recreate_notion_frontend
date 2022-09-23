@@ -153,4 +153,4 @@ const ShareToParticularPerson = () => {
 	);
 };
 
-export default ShareToParticularPerson;
+export default React.memo(ShareToParticularPerson);

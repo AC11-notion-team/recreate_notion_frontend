@@ -8,7 +8,7 @@ import { Switch } from "@headlessui/react";
 import { useCurrentPageId } from "../../../Hooks/CurrentPageId";
 import { useDetectClickOutside } from "react-detect-click-outside";
 
-export default function Share() {
+export default React.memo(function Share() {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(() => false);
@@ -91,7 +91,7 @@ export default function Share() {
 			/>
 
 			{isShare && (
-				<div  className="absolute w-5/12 bg-white border-2 rounded z-10 box-shadow right-4 top-12 min-w-min">
+				<div  className="absolute w-5/12 bg-white border-2 rounded z-20 box-shadow right-4 top-12 min-w-min">
 					<ShareToParticularPerson />
 					<hr />
 						<div className="point">
@@ -137,4 +137,4 @@ export default function Share() {
 			)}
 		</div>
 	);
-}
+})

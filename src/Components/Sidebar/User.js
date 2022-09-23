@@ -3,15 +3,18 @@ import user from "../image/user.png";
 import userData from "../image/userData.png";
 import menuLeft from "../image/menu-left.png";
 import { useNavigate } from "react-router-dom";
-import Logout from "../../Hooks/Logout";
+import { Logout } from "../../Hooks/LogStateChange";
+import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default function User({ toggle }) {
 	let navigate = useNavigate();
 	const [isUser, setIsUser] = useState(false);
-	const handleToggle = (e) => {
-		if (e.target.className.includes("User") === true) {
-			setIsUser((prevUser) => !prevUser);
-		}
+	const ref = useDetectClickOutside({
+		onTriggered: () => setIsUser(false),
+		allowAnyKey: false,
+	});
+	const handleToggle = () => {
+		setIsUser((prevUser) => !prevUser);
 	};
 	const logout = () => {
 		Logout();
@@ -22,7 +25,7 @@ export default function User({ toggle }) {
 	const userEmail = localStorage.getItem("zettel_user_email");
 
 	return (
-		<div>
+		<div ref={ref}>
 			<div className="flex items-center justify-between p-2 px-4 User point group">
 				<div
 					className="User flex items-center group-hover:opacity-80 py-1.5 px-0.5 w-full"

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
 import "./App.css";
 import Editor from "./Components/Editor/Editor";
 import Header from "./Components/Navbar/Header";
@@ -14,38 +14,40 @@ function App() {
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
-	const toggleSide = () => setIsSide((prevSide) => !prevSide);
+	const toggleSide = useCallback(() => setIsSide((prevSide) => !prevSide), []);
 	//我的最愛
 	const [isFavorite, setIsFavorite] = useState(false);
+	const token = `Bearer ${localStorage.getItem("zettel_user_token")}`
 
-	const toggleFavorite = (currentPageID, pageID) => {
+	const toggleFavorite = useCallback((currentPageID, pageID) => {
+		const currentIsFavorite = !isFavorite
 		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 		axios({
 			method: "put",
 			url: `${baseUrl}/pages/${currentPageID}`,
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+				Authorization: token,
 			},
 			data: {
-				favorite: isFavorite,
+				favorite: currentIsFavorite,
 			},
 		}).then((res) => {
 			changePages((prevPages) => {
 				return prevPages.map((item) => {
 					if (pageID) {
 						return item.id === pageID
-							? { ...item, favorite: isFavorite }
+							? { ...item, favorite: currentIsFavorite }
 							: item;
 					} else {
 						return item.id === currentPageID
-							? { ...item, favorite: isFavorite }
+							? { ...item, favorite: currentIsFavorite }
 							: item;
 					}
 				});
 			});
 		});
-	};
+	}, [baseUrl, changePages, isFavorite, token]);
 
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
@@ -61,7 +63,7 @@ function App() {
 		}
 	}, [isSide]);
 
-	const onEmojiClick = (event, currentPageID, pageID, emojiObject) => {
+	const onEmojiClick = useCallback((event, currentPageID, pageID, emojiObject) => {
 		const { type, value, className } = event.target;
 		if (className === "emoji-img") {
 			changePages((prevPages) => {
@@ -82,7 +84,7 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+					Authorization: token,
 				},
 				data: {
 					icon: emojiObject.emoji,
@@ -104,14 +106,14 @@ function App() {
 				url: `${baseUrl}/pages/${currentPageID}`,
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("zettel_user_token")}`,
+					Authorization: token,
 				},
 				data: {
 					title: value,
 				},
 			});
 		}
-	};
+	},[baseUrl, changePages, token]);
 
 	return (
 		<div>

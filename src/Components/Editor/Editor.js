@@ -48,197 +48,191 @@ function Editor() {
 	let isAddPageLink = false;
 
 
-  const initEditor = useCallback((initialData, readOnly) => {
-    const editor = new EditorJS({
-      holder: EDITTOR_HOLDER_ID,
-      logLevel: "ERROR",
-      data: initialData,
-      inlineToolbar: true,
-      readOnly: readOnly,
-      placeholder: "Let`s write an awesome story!",
-      onReady: () => {
-        ejInstance.current = editor;
-        new DragDrop(editor);
-      },
-      onChange: async (api, event) => {
-        let content = await editor.save();
-        // Put your logic here to save this data to your DB
-        if (event.type === "block-removed" && !event.detail.target.isEmpty) {
-          const config = {
-            method: "delete",
-            url: `${baseUrl}/pages/delete_data`,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            data: {
-              page_id: currentPageId ,
-              block_id: event.detail.target.id,
-            },
-          };
-          axios(config)
-            .then((res) => res)
-            .catch((err) => console.error(err));
-          return
-        }
-        if (event.type !== "block-removed") {
-          const config = {
-            method: "post",
-            url: `${baseUrl}/pages/${currentPageId}/save_data`,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            data: {
-              api: content,
-            },
-          };
-          axios(config)
-            .then((res) => res)
-            .catch((err) => console.error(err));
-        }
-        if (event.type === "block-added" && event.detail.target.name === "linkpage"){
-          isAddPageLink = true
-        }
-        if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
-          const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
-          const newPage = block.meta.id
-          if (newPage){
-            isAddPageLink = false
-            changePages(prevPages => [...prevPages, block.meta])
-            changeCurrentPage(newPage)
-          }
-        }
-      },
-
-		autofocus: false,
-		tools: {
-			checklist: {
-				class: Checklist,
-				inlineToolbar: true,
+	const initEditor = useCallback((initialData, readOnly) => {
+		const editor = new EditorJS({
+			holder: EDITTOR_HOLDER_ID,
+			logLevel: "ERROR",
+			data: initialData,
+			inlineToolbar: true,
+			readOnly: readOnly,
+			placeholder: "Let`s write an awesome story!",
+			onReady: () => {
+				ejInstance.current = editor;
+				new DragDrop(editor);
 			},
-
-			code: EditorjsCodeflask,
-
-			embed: Embed,
-
-			delimeter: Delimiter,
-
-			footnotes: Footnotes,
-
-			header: {
-				class: Header,
-				inlineToolbar: true,
-				config: {
-					placeholder: "Enter a header",
-				},
-			},
-
-
-			image: {
-			class: ImageTool,
-			config:{
-				endpoints: {
-				byUrl: `${baseUrl}/uploadImageByUrl`,
-				},
-				additionalRequestHeaders:{
-				Authorization: token,
-				},
-				uploader: {
-				/**
-				 * Upload file to the server and return an uploaded image data
-				 */
-				async uploadByFile(file){
-					// your own uploading logic here  
-					const ranBytes = Math.floor(Math.random()*10000000000000)
-					const imageName = ranBytes.toString()
-					const params = {
-					Bucket: bucketName,
-					Key: imageName,
-					Expires: 60
+			onChange: async (api, event) => {
+				let content = await editor.save();
+				// Put your logic here to save this data to your DB
+				if (event.type === "block-removed" && !event.detail.target.isEmpty) {
+				const config = {
+					method: "delete",
+					url: `${baseUrl}/pages/delete_data`,
+					headers: {
+					"Content-Type": "application/json",
+					Authorization: token,
+					},
+					data: {
+					page_id: currentPageId ,
+					block_id: event.detail.target.id,
+					},
+				};
+				axios(config)
+					.then((res) => res)
+					.catch((err) => console.error(err));
+				return
+				}
+				if (event.type !== "block-removed") {
+				const config = {
+					method: "post",
+					url: `${baseUrl}/pages/${currentPageId}/save_data`,
+					headers: {
+					"Content-Type": "application/json",
+					Authorization: token,
+					},
+					data: {
+					api: content,
+					},
+				};
+				axios(config)
+					.then((res) => res)
+					.catch((err) => console.error(err));
+				}
+				if (event.type === "block-added" && event.detail.target.name === "linkpage"){
+					isAddPageLink = true
+				}
+				if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
+					const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
+					const newPage = block.meta.id
+					if (newPage){
+						isAddPageLink = false
+						changePages(prevPages => [...prevPages, block.meta])
+						changeCurrentPage(newPage)
 					}
-					const url = await S3Client.getSignedUrlPromise('putObject', params)
-					
-					return fetch(url, {
-						method: "PUT",
-						headers: {
-						"Content-Type": "image/*",
-						},
-						body: file
-					}).then((res)=>{ 
-						return {
-						success: 1,
-						file: {
-							url: res.url.split('?')[0],
-							// any other image data you want to store, such as width, height, color, extension, etc
-						}
-						}
-					}).catch(err => console.error("fetch_image_error" + err))
-				},
-				},
-			},
+				}
 			},
 
-			inlineCode: InlineCode, 
-			
-			link:{
-			class: LinkTool,
-			config: {
-				endpoint: `${baseUrl}/fetch`,
-				headers:{
-				Authorization: token,
+			autofocus: false,
+			tools: {
+				checklist: {
+					class: Checklist,
+					inlineToolbar: true,
 				},
-			},
-			},
+				code: EditorjsCodeflask,
+				embed: Embed,
+				delimeter: Delimiter,
+				footnotes: Footnotes,
+				header: {
+					class: Header,
+					inlineToolbar: true,
+					config: {
+						placeholder: "Enter a header",
+					},
+				},
+				image: {
+				class: ImageTool,
+				config:{
+					endpoints: {
+					byUrl: `${baseUrl}/uploadImageByUrl`,
+					},
+					additionalRequestHeaders:{
+					Authorization: token,
+					},
+					uploader: {
+					/**
+					 * Upload file to the server and return an uploaded image data
+					 */
+					async uploadByFile(file){
+						// your own uploading logic here  
+						const ranBytes = Math.floor(Math.random()*10000000000000)
+						const imageName = ranBytes.toString()
+						const params = {
+						Bucket: bucketName,
+						Key: imageName,
+						Expires: 60
+						}
+						const url = await S3Client.getSignedUrlPromise('putObject', params)
+						
+						return fetch(url, {
+							method: "PUT",
+							headers: {
+								"Content-Type": "image/*",
+							},
+							body: file
+						}).then((res)=>{ 
+							return {
+								success: 1,
+								file: {
+									url: res.url.split('?')[0],
+									// any other image data you want to store, such as width, height, color, extension, etc
+								}
+							}
+						}).catch(err => console.error("fetch_image_error" + err))
+					},
+					},
+				},
+				},
 
-			link: {
+				inlineCode: InlineCode, 
+				
+				link:{
 				class: LinkTool,
 				config: {
 					endpoint: `${baseUrl}/fetch`,
-					headers: {
-						Authorization: `Bearer ${
-							localStorage.getItem("zettel_user_token") || null
-						}`,
+					headers:{
+					Authorization: token,
 					},
 				},
-			},
-
-			linkpage: {
-				class: LinkPage,
-			},
-
-			marker: {
-				class: Marker,
-			},
-
-			list: {
-				class: NestedList,
-				inlineToolbar: true,
-				config: {
-					placeholder: "List",
 				},
-			},
 
-			quote: {
-				class: Quote,
-				inlineToolbar: true,
-			},
-
-			underline: {
-				class: Underline,
-			},
-
-			table: {
-				class: Table,
-				inlineToolbar: true,
-				config: {
-					withHeadings: true,
+				link: {
+					class: LinkTool,
+					config: {
+						endpoint: `${baseUrl}/fetch`,
+						headers: {
+							Authorization: `Bearer ${
+								localStorage.getItem("zettel_user_token") || null
+							}`,
+						},
+					},
 				},
-			},
 
-			textVariant: TextVariantTune,
-		},
-	});},[currentPageId]);
+				linkpage: {
+					class: LinkPage,
+				},
+
+				marker: {
+					class: Marker,
+				},
+
+				list: {
+					class: NestedList,
+					inlineToolbar: true,
+					config: {
+						placeholder: "List",
+					},
+				},
+
+				quote: {
+					class: Quote,
+					inlineToolbar: true,
+				},
+
+				underline: {
+					class: Underline,
+				},
+
+				table: {
+					class: Table,
+					inlineToolbar: true,
+					config: {
+						withHeadings: true,
+					},
+				},
+
+				textVariant: TextVariantTune,
+			},
+		});
+	},[currentPageId]);
 
 	useEffect(() => {
 		const config = {
@@ -268,10 +262,10 @@ function Editor() {
 				});
 		}
 
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
-    };
+		return () => {
+		ejInstance.current?.destroy();
+		ejInstance.current = null;
+		};
 	}, [currentPageId, token, initEditor, Navigate]);
 
 	// useEffect(() => {
