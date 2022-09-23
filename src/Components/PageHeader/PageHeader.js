@@ -7,6 +7,7 @@ import aws from "aws-sdk";
 import axios from "axios";
 import { useEffect } from "react";
 import CircleLoader from "react-spinners/CircleLoader";
+import {usePagesUpdate} from "../../Hooks/Pages"
 
 function PageHeader({ onEmojiClick }) {
 	const bucketName = process.env.REACT_APP_S3BUCKET;
@@ -27,7 +28,7 @@ function PageHeader({ onEmojiClick }) {
 		margin: "0 auto",
 		borderColor: "red",
 	};
-
+	const updatePages = usePagesUpdate()
 	const S3Client = new aws.S3({
 		region,
 		accessKeyId,
@@ -91,7 +92,13 @@ function PageHeader({ onEmojiClick }) {
 					},
 				}).then((res) => {
 					setLoading(false);
-
+					updatePages((prev)=>{
+						return prev.map( item => {
+							return item.id === currentPageId
+							? {...item, cover: res.data.message}
+							: item
+						})
+					})
 					setCover(res.data.message);
 				});
 			})
