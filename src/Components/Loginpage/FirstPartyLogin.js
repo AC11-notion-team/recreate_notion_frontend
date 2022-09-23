@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { Login } from "../../Hooks/LogStateChange"
 
 export default function FirstPartyLogin(){
     const baseUrl = process.env.REACT_APP_BASEURL;
@@ -103,8 +104,7 @@ export default function FirstPartyLogin(){
         }
         }).then((res)=>{
         if(res.data.status==="success"){
-            localStorage.setItem("zettel_user_token", res.data.auth_token);
-            localStorage.setItem("zettel_user_id", res.data.user_id);
+            Login(res.data.auth_token, res.data.user_id)
             return navigate("/app");
         }
         Swal.fire({
@@ -115,7 +115,7 @@ export default function FirstPartyLogin(){
         })
         setstatus(res.data.status)
         }).catch((error)=>{
-        console.error(error);
+            console.error(error);
         })
     }
 

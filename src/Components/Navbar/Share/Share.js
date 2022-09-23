@@ -8,7 +8,7 @@ import { Switch } from "@headlessui/react";
 import { useCurrentPageId } from "../../../Hooks/CurrentPageId";
 import { useDetectClickOutside } from "react-detect-click-outside";
 
-export default function Share() {
+export default React.memo(function Share() {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(() => false);
@@ -137,4 +137,4 @@ export default function Share() {
 			)}
 		</div>
 	);
-}
+})

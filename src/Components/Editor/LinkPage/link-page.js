@@ -209,6 +209,7 @@ export default class PageLink {
 
     this.nodes.linkPage.classList.add(this.CSS.linkContentRendered);
     this.nodes.linkPage.setAttribute('href', url);
+    this.nodes.linkPage.setAttribute('target', "_self");
 
   }
   /**

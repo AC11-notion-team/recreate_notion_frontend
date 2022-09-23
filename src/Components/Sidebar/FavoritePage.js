@@ -8,7 +8,7 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 
 	useEffect(()=>{
 		setFavoritePages(
-			 pages.filter(item =>
+			pages.filter(item =>
 				 item.favorite === true
 			)
 		)

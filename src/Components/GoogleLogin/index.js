@@ -3,6 +3,7 @@ import { useScript } from "./hooks/useScrip";
 import jwt_deocde from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Login } from "../../Hooks/LogStateChange"
 
 const GoogleLogin = () => {
 	const googlebuttonref = useRef();
@@ -25,8 +26,7 @@ const GoogleLogin = () => {
 				image: payload.picture
 			})
 			.then((res) => {
-				localStorage.setItem("zettel_user_token", res.data.auth_token);
-				localStorage.setItem("zettel_user_id", res.data.user_id);
+				Login(res.data.auth_token, res.data.user_id)
 				return navigate("/app");
 			})
 			.catch((err) => console.error(err))
