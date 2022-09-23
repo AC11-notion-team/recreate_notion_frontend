@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import search from "../image/search.png"
 import axios from 'axios';
 import {useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
@@ -11,8 +11,17 @@ export default function QuickFind(){
     const handleToggle = (e) => {
         if(e.target.className.includes("QuickFind") === true){
             setIsQuickFind(prevQuickFind => !prevQuickFind)
+            
         }
+        
+        
     };
+    useEffect(()=>{
+        if (isQuickFind===false){
+            setkeyword([])
+            setSearchText("")
+        }
+    },[isQuickFind])
     const [searchText,setSearchText] = useState("")
     const baseUrl = process.env.REACT_APP_BASEURL
     const [Keyword,setkeyword] = useState([])
@@ -39,7 +48,6 @@ export default function QuickFind(){
         changeCurrentPageId(pageid)
         setIsQuickFind(false)
         setkeyword([])
-        
     }
             
             
@@ -49,8 +57,8 @@ export default function QuickFind(){
             <div className="flex items-center justify-between py-2 px-4 point group" 
             onClick={()=>page(props.pageId)}>
                 <div className="flex items-center" >
-                    <p className="text-sm font-semibold text-xl">{props.pageIcon? props.pageIcon : "🗒️"}</p>
-                    <p className="text-sm font-semibold ml-3 text-lg">{props.pageTitle}</p>
+                    <p className="text-sm font-semibold ">{props.pageIcon? props.pageIcon : "🗒️"}</p>
+                    <p className="text-sm font-semibold ml-3 ">{props.pageTitle}</p>
                 </div>
             </div>
         )  

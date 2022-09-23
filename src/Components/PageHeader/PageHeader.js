@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, CSSProperties } from "react";
 import { usePages, usePagesUpdate } from "../../Hooks/Pages";
 import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
@@ -6,6 +6,7 @@ import Emoji from "../Navbar/EmojiPicker";
 import aws from "aws-sdk";
 import axios from "axios";
 import { useEffect } from "react";
+import CircleLoader from "react-spinners/CircleLoader";
 
 function PageHeader({ onEmojiClick }) {
 	const bucketName = process.env.REACT_APP_S3BUCKET;
@@ -13,6 +14,11 @@ function PageHeader({ onEmojiClick }) {
 	const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
+	const override = {
+		display: "block",
+		margin: "0 auto",
+		borderColor: "red",
+	};
 
 	const S3Client = new aws.S3({
 		region,
@@ -29,11 +35,15 @@ function PageHeader({ onEmojiClick }) {
 	const pageIcon = pageItem[0]?.icon;
 	const pageCover = pageItem[0]?.cover;
 	const [cover, setCover] = useState("");
+	const [loading, setLoading] = useState(false);
+	let [color, setColor] = useState("#36d7b7");
 	useEffect(() => {
 		setCover(pageCover);
 	}, [currentPageId]);
 
 	const upload = async (file) => {
+		setCover("");
+		setLoading();
 		let files = file.target.files[0];
 		const params = {
 			Bucket: bucketName,
@@ -56,7 +66,6 @@ function PageHeader({ onEmojiClick }) {
 				return axios.put(signedUrl, files, options);
 			})
 			.then(function (result) {
-				setCover("");
 				axios({
 					method: "put",
 					url: `${baseUrl}/pages/${currentPageId}/cover`,
@@ -69,6 +78,8 @@ function PageHeader({ onEmojiClick }) {
 						coverUrl: result.config.url.split("?")[0],
 					},
 				}).then((res) => {
+					setLoading(false);
+
 					setCover(res.data.message);
 				});
 			})
@@ -88,7 +99,7 @@ function PageHeader({ onEmojiClick }) {
 					<input
 						id="coverImg"
 						type="file"
-						className="hidden block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+						className="hidden w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
 						onChange={upload}
 					/>
 				</label>
@@ -101,6 +112,14 @@ function PageHeader({ onEmojiClick }) {
 							alt="cover"
 						/>
 					)}
+
+					<CircleLoader
+						color="#d69636"
+						loading={loading}
+						cssOverride={override}
+						size={50}
+					/>
+
 					{cover && (
 						<div className="absolute mb-2 ml-3 text-6xl cursor-pointer left-44 -bottom-7">
 							<Emoji

@@ -9,18 +9,10 @@ const  Nav = props => (
                 <span className="text-xl font-bold ml-2">Zettel</span>
             </div>
         </a>
-        <div className="hidden md:block p-1 text-xl">
-            <ul className="flex ">
-                <NavItem href="/Product" text="Product"></NavItem><IoIosArrowDown />
-                <NavItem href="/Download" text="Download" /><IoIosArrowDown />
-                <NavItem href="/Solitions" text="Solitions" /><IoIosArrowDown />
-                <NavItem href="/Resources" text="Resources" /><IoIosArrowDown />
-                <NavItem href="/Pricing" text="Pricing" /> 
-            </ul>
-        </div>
+        
         <div className="flex-1 flex justify-end max-auto">
             <ul className="flex flex-wrap items-center  text-xlg ">
-                
+                <NavItem href="https://github.com/AC11-notion-team" classname="border-r-1 relative after:absolute after:bg-gray-100 after:w-0.5 after:h-6 after:-right-2" text="GitHub"/>
                 <NavItem href="/login-page" text="Log in" />
                 <a href="/app"> <Button>Try Zettel free</Button></a>
             </ul>
