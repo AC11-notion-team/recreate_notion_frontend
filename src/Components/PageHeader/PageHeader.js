@@ -1,5 +1,5 @@
-import React, { useState, CSSProperties } from "react";
-import { usePages, usePagesUpdate } from "../../Hooks/Pages";
+import React, { useState} from "react";
+import { usePages} from "../../Hooks/Pages";
 import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
 import PageHeaderWithCover from "./PageHeaderWithCover"
