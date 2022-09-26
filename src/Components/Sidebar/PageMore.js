@@ -18,7 +18,8 @@ export default function PageMore({
 	pageIcon,
 	pageID,
 	toggleFavorite,
-	pageFavorite
+	pageFavorite,
+	page
 }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
@@ -26,7 +27,7 @@ export default function PageMore({
 	const changeCurrentPageId = useCurrentPageUpdate();
 	const changeTrashPages = useTrashPagesUpdate()
 	let prevId =""
-
+	// const {id: pageID, icon: pageIcon, title: pageTitle} =
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};

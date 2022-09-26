@@ -18,40 +18,30 @@ function PageHeader({ onEmojiClick }) {
 	const [isChangeCover, setIsChangeCover] = useState(false)
 	const showButton = () => setIsChangeCover(true)
 	const closeButton = () => setIsChangeCover(false)
-	const updateCurrentPage =	useCurrentPageUpdate()
 
-	const hanleEditTitle = (event)=>{
+	const updateCurrentPage =	useCurrentPageUpdate()
+	const handleEditTitle = (event)=>{
 		updateCurrentPage({...currentPage, title: event.target.value})
+	}
+	const handleChangeCover = (imageUrl)=>{
+		updateCurrentPage({...currentPage, cover: imageUrl})
 	}
 	const override = {
 		display: "block",
 		margin: "0 auto",
 		borderColor: "red",
 	};
-	const updatePages = usePagesUpdate()
 	const S3Client = new aws.S3({
 		region,
 		accessKeyId,
 		secretAccessKey,
 		signatureVersion: "v4",
 	});
-	const pages = usePages();
 	
 	const currentPage = useCurrentPage();
-	const { id: currentPageId, title, icon: pageIcon } = currentPage
-	const [cover, setCover] = useState("");
+	const { id: currentPageId, title, icon: pageIcon, cover} = currentPage
 	const [loading, setLoading] = useState(false);
 	const [color, setColor] = useState("#36d7b7");
-	// useEffect(() => {
-	// 	const pageItem = pages.filter((item) => {
-	// 		return item.id === currentPageId;
-	// 	});
-	// 	if(pageItem.length){
-	// 		setTitle(pageItem[0].title);
-	// 		setPageIcon(pageItem[0].icon);
-	// 		setCover(pageItem[0].cover);
-	// 	}
-	// }, [currentPageId, pages]);
 
 	const upload = async (file) => {
 		let files = file.target.files[0];
@@ -92,14 +82,14 @@ function PageHeader({ onEmojiClick }) {
 					},
 				}).then((res) => {
 					setLoading(false);
-					updatePages((prev)=>{
-						return prev.map( item => {
-							return item.id === currentPageId
-							? {...item, cover: res.data.message}
-							: item
-						})
-					})
-					setCover(res.data.message);
+					// updatePages((prev)=>{
+					// 	return prev.map( item => {
+					// 		return item.id === currentPageId
+					// 		? {...item, cover: res.data.message}
+					// 		: item
+					// 	})
+					// })
+					handleChangeCover(res.data.message);
 				});
 			})
 			.catch(function (err) {
@@ -157,14 +147,14 @@ function PageHeader({ onEmojiClick }) {
 					<input
 						className="w-3/4 text-4xl font-bold outline-none"
 						placeholder="Untitled"
-						onChange={(event) => hanleEditTitle(event)}
+						onChange={(event) => handleEditTitle(event)}
 						value={title}
 					/>
 					<input
 						id="coverImg"
 						type="file"
 						className="hidden"
-						// onChange={upload}
+						onChange={upload}
 					/>
 				</div>
 			</div>

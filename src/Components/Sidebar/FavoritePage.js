@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from "react";
 import { usePages } from "../../Hooks/Pages";
 import Page from "./Page";
+import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 
 export default function Star({toggleFavorite,onEmojiClick}) {
 	const pages = usePages();
 	const [favoritePages,setFavoritePages] = useState([])
-
+	const changeCurrentPage = useCurrentPageUpdate();
 	useEffect(()=>{
 		setFavoritePages(
 			pages.filter(item =>
@@ -13,7 +14,10 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 			)
 		)
 	},[pages])
-	
+	const handleChangeCurrentPage = (page) => {
+		console.log(page)
+		changeCurrentPage(page)
+	}
 	return (
 		<div>
 			{favoritePages?.length>0 ?<div>
@@ -22,15 +26,12 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 							FAVORITES
 						</p>
 					</div>
-					{favoritePages?.map((item, i) => (
+					{favoritePages?.map((page) => (
 						<Page
-							key={item.id}
+							key={page.id}
 							onEmojiClick={onEmojiClick}
-							pageTitle={item.title}
-							pageIcon={item.icon}
-							pageID={item.id}
-							page={item}
-							pageFavorite={item.id}
+							handleChangeCurrentPage = {() => handleChangeCurrentPage(page)}
+							page={page}
 							toggleFavorite={toggleFavorite}
 						/>
 					))}

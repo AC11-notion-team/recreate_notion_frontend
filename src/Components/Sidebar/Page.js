@@ -3,9 +3,9 @@ import pageButtonRight from "../image/pageButtonRight.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 
-const Page = ({onEmojiClick,page, pageID, toggleFavorite, handleChangeCurrentPage}) => {
+const Page = ({onEmojiClick,page, toggleFavorite, handleChangeCurrentPage}) => {
 	console.log(page)
-	const {title: pageTitle, icon: pageIcon, favorite: pageFavorite} = page
+	const {title: pageTitle, icon: pageIcon, favorite: pageFavorite, id: pageID} = page
 	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const showDropdown = useCallback(() => {
 		setDisplayDropdown(true);
