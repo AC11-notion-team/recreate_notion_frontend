@@ -16,6 +16,7 @@ export function PagesProvider({ children }) {
 	function changePages(pages) {
 		setPages(pages);
 	}
+	
 
 	return (
 		<PagesContext.Provider value={pages}>

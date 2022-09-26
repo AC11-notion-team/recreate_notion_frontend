@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import { usePages} from "../../Hooks/Pages";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 import Emoji from "../Navbar/EmojiPicker";
 import PageHeaderWithCover from "./PageHeaderWithCover"
 import aws from "aws-sdk";
@@ -16,12 +16,12 @@ function PageHeader({ onEmojiClick }) {
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isChangeCover, setIsChangeCover] = useState(false)
-	const [title, setTitle] = useState("")
 	const showButton = () => setIsChangeCover(true)
 	const closeButton = () => setIsChangeCover(false)
+	const updateCurrentPage =	useCurrentPageUpdate()
+
 	const hanleEditTitle = (event)=>{
-		onEmojiClick(event, currentPageId)
-		setTitle(event.target.value)
+		updateCurrentPage({...currentPage, title: event.target.value})
 	}
 	const override = {
 		display: "block",
@@ -36,22 +36,22 @@ function PageHeader({ onEmojiClick }) {
 		signatureVersion: "v4",
 	});
 	const pages = usePages();
-	const currentPageId = useCurrentPageId();
-	const [pageIcon, setPageIcon] = useState("");
 	
+	const currentPage = useCurrentPage();
+	const { id: currentPageId, title, icon: pageIcon } = currentPage
 	const [cover, setCover] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [color, setColor] = useState("#36d7b7");
-	useEffect(() => {
-		const pageItem = pages.filter((item) => {
-			return item.id === currentPageId;
-		});
-		if(pageItem.length){
-			setTitle(pageItem[0].title);
-			setPageIcon(pageItem[0].icon);
-			setCover(pageItem[0].cover);
-		}
-	}, [currentPageId, pages]);
+	// useEffect(() => {
+	// 	const pageItem = pages.filter((item) => {
+	// 		return item.id === currentPageId;
+	// 	});
+	// 	if(pageItem.length){
+	// 		setTitle(pageItem[0].title);
+	// 		setPageIcon(pageItem[0].icon);
+	// 		setCover(pageItem[0].cover);
+	// 	}
+	// }, [currentPageId, pages]);
 
 	const upload = async (file) => {
 		let files = file.target.files[0];
@@ -164,7 +164,7 @@ function PageHeader({ onEmojiClick }) {
 						id="coverImg"
 						type="file"
 						className="hidden"
-						onChange={upload}
+						// onChange={upload}
 					/>
 				</div>
 			</div>

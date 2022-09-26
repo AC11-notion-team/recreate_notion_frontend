@@ -1,11 +1,11 @@
 import React,{useState} from "react"
 import rename from "../image/edit.png";
 import ActionButton from "../Navbar/ActionButton";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 import Emoji from "../Navbar/EmojiPicker";
 
 export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMore}){
-    const currentPageId = useCurrentPageId();
+    const currentPageId = useCurrentPage();
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
         setIsRename((prevTitleButton) => !prevTitleButton);

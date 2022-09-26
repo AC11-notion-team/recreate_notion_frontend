@@ -9,7 +9,7 @@ import RequireAuth from "./Components/RequireAuth/RequireAuth";
 import ErrorPage from "./Components/Errorpage/Errorpage";
 import NoauthPage from "./Components/Errorpage/Noauthpage";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { CurrentPageIdProvider } from "./Hooks/CurrentPageId";
+import { CurrentPageProvider } from "./Hooks/CurrentPage";
 import { PagesProvider } from "./Hooks/Pages";
 import { InviteProvider } from "./Hooks/InviteUser";
 import {EmojiStateProvider} from "./Hooks/EmojiState"
@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
 		<PagesProvider>
-			<CurrentPageIdProvider>
+			<CurrentPageProvider>
 					<TrashPagesProvider>
 						<InviteProvider>
 							<EmojiStateProvider>
@@ -40,7 +40,7 @@ root.render(
 							</EmojiStateProvider>
 						</InviteProvider>
 					</TrashPagesProvider>
-			</CurrentPageIdProvider>
+			</CurrentPageProvider>
 		</PagesProvider>
 	</>
 );

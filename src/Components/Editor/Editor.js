@@ -19,7 +19,7 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 import { usePagesUpdate } from "../../Hooks/Pages";
 import { useNavigate } from "react-router-dom"
 // import { useWsReceivedData } from "../../Hooks/useActionCable"
@@ -38,11 +38,14 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-	const currentPageId = useCurrentPageId();
-	const changeCurrentPage = useCurrentPageUpdateId();
-	const changePages = usePagesUpdate();
+	const {id: currentPageId}= useCurrentPage();
+	// const currentPageId = "06dac383-6dbb-40e5-8e99-6916595c7601"
+	console.log(currentPageId)
+	// const currentPageId = ""
+	const changeCurrentPage = useCurrentPageUpdate();
+	// const changePages = usePagesUpdate();
 	const ejInstance = useRef();
-	const Navigate = useNavigate();
+	// const Navigate = useNavigate();
 	const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
 	// const wsReceivedData = useWsReceivedData();
 	let isAddPageLink = false;
@@ -105,7 +108,7 @@ function Editor() {
 					const newPage = block.meta.id
 					if (newPage){
 						isAddPageLink = false
-						changePages(prevPages => [...prevPages, block.meta])
+						// changePages(prevPages => [...prevPages, block.meta])
 						changeCurrentPage(newPage)
 					}
 				}
@@ -258,7 +261,7 @@ function Editor() {
 				.catch((err) => {
 					console.error(err)
 					localStorage.setItem("currentPageId", "")
-					Navigate("/unknown-page")
+					// Navigate("/unknown-page")
 				});
 		}
 
@@ -266,7 +269,7 @@ function Editor() {
 		ejInstance.current?.destroy();
 		ejInstance.current = null;
 		};
-	}, [currentPageId, token, initEditor, Navigate]);
+	}, [currentPageId, token, initEditor]);
 
 	// useEffect(() => {
 	// 	if (wsReceivedData) {

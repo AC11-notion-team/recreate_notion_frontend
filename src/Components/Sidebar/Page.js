@@ -2,10 +2,10 @@ import React, { useState, useCallback } from "react";
 import pageButtonRight from "../image/pageButtonRight.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
-import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
 
-const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFavorite}) => {
-	const changeCurrentPageId = useCurrentPageUpdateId();
+const Page = ({onEmojiClick,page, pageID, toggleFavorite, handleChangeCurrentPage}) => {
+	console.log(page)
+	const {title: pageTitle, icon: pageIcon, favorite: pageFavorite} = page
 	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const showDropdown = useCallback(() => {
 		setDisplayDropdown(true);
@@ -29,7 +29,7 @@ const Page = ({ onEmojiClick, pageTitle, pageIcon, pageID,toggleFavorite,pageFav
 						/>
 					</button>
 					<div className="w-full text-left" 
-					     onClick={() => {changeCurrentPageId(pageID)}}>
+					     onClick={handleChangeCurrentPage}>
 						<p className="ml-3 text-sm font-semibold text-gray-600 whitespace-nowrap" value={pageTitle} >
 							{pageTitle ? pageTitle : "Untitled"}
 						</p>

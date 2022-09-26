@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import UserInviteList from "./UserInviteList";
 import axios from "axios";
-import { useCurrentPageId } from "../../../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../../../Hooks/CurrentPage";
 import { usePages } from "../../../../Hooks/Pages";
 import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const ShareToParticularPerson = () => {
-	const currentPageId = useCurrentPageId();
+	const currentPageId = useCurrentPage();
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [searchUser, setSearchUser] = useState();
 	const [userInformation, setUserInformation] = useState([]);

@@ -6,7 +6,7 @@ import MenuButton from "./MenuButton";
 import ActionButton from "./ActionButton"
 import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
-import { useCurrentPageId ,useCurrentPageUpdateId  } from "../../Hooks/CurrentPageId";
+import { useCurrentPage ,useCurrentPageUpdate  } from "../../Hooks/CurrentPage";
 import { usePagesUpdate } from "../../Hooks/Pages";
 import axios from "axios";
 
@@ -17,11 +17,11 @@ export default function More({favorite,toggleFavorite}){
             setIsMore(prevMore => !prevMore)
         }
     };
-    const currentPageId = useCurrentPageId();
+    const { id: currentPageId } = useCurrentPage();
     const baseUrl = process.env.REACT_APP_BASEURL;
 
 	const changePages = usePagesUpdate();
-	const changeCurrentPageId = useCurrentPageUpdateId();
+	const changeCurrentPageId = useCurrentPageUpdate();
     let prevId =""
 	const removePage = () => {
 		axios({

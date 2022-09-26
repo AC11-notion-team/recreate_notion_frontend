@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useContext, useState, useCallback } from 'react'
 import ActionCable from 'actioncable'
-import { useCurrentPageId } from "./CurrentPageId";
+import { useCurrentPage } from "./CurrentPage";
 import jwt_decode from "jwt-decode";
 
 const WsReceivedContext = React.createContext();
@@ -11,7 +11,7 @@ export function useWsReceivedData() {
 
 export function WsReceivedProvider({ children }){
     const [wsReceivedData, setWsReceivedData] = useState(() => "");
-    const currentPageId = useCurrentPageId()
+    const currentPageId = useCurrentPage()
     const socketUrl = `ws://localhost:3001/cable`;
     const {user_id} = jwt_decode(localStorage.getItem("zettel_user_token"))
     const actionCable = useMemo(() => ActionCable.createConsumer(socketUrl), [socketUrl])

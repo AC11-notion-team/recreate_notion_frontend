@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
-	const currentPageId = useCurrentPageId();
+	const currentPageId = useCurrentPage();
 
 	const [isTitleButton, setIsTitleButton] = useState(false);
 	const handleToggle = (e) => {

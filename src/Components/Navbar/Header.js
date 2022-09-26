@@ -7,7 +7,7 @@ import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
 import { usePages } from "../../Hooks/Pages";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 
 export default function Header({
 	isSide,
@@ -16,7 +16,7 @@ export default function Header({
 	onEmojiClick,
 }) {
 	const pages = usePages();
-	const currentPageId = useCurrentPageId();
+	const currentPageId = useCurrentPage();
 
 	const pageItem = pages.filter((item) => {
 		return item.id === currentPageId;

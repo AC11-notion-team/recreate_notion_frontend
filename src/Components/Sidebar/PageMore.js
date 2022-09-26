@@ -8,7 +8,7 @@ import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
 import { usePagesUpdate } from "../../Hooks/Pages";
-import { useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
@@ -23,7 +23,7 @@ export default function PageMore({
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const changePages = usePagesUpdate();
-	const changeCurrentPageId = useCurrentPageUpdateId();
+	const changeCurrentPageId = useCurrentPageUpdate();
 	const changeTrashPages = useTrashPagesUpdate()
 	let prevId =""
 
@@ -84,7 +84,7 @@ export default function PageMore({
 						src={trash}
 						alt="delete"
 						content="Delete"
-						handleClick={removePage}
+						// handleClick={removePage}
 						className="py-1"
 					/>
 					<ActionButton

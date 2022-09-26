@@ -29,6 +29,7 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 							pageTitle={item.title}
 							pageIcon={item.icon}
 							pageID={item.id}
+							page={item}
 							pageFavorite={item.id}
 							toggleFavorite={toggleFavorite}
 						/>

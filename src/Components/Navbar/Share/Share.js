@@ -5,14 +5,14 @@ import ShareLink from "./component/ShareLink";
 import ShareToParticularPerson from "./component/ShareToParticularPerson";
 import axios from "axios";
 import { Switch } from "@headlessui/react";
-import { useCurrentPageId } from "../../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../../Hooks/CurrentPage";
 import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default React.memo(function Share() {
 	const domainUrl = process.env.REACT_APP_DOMAINURL;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isShare, setIsShare] = useState(() => false);
-	const currentPageId = useCurrentPageId();
+	const { id: currentPageId } = useCurrentPage();
 	const handleToggle = (e) => {
 		setIsShare((prevShare) => {
 			return !prevShare
