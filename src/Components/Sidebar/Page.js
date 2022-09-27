@@ -3,9 +3,8 @@ import pageButtonRight from "../image/pageButtonRight.png";
 import PageMore from "./PageMore";
 import Emoji from "../Navbar/EmojiPicker";
 
-const Page = ({onEmojiClick,page, toggleFavorite, handleChangeCurrentPage}) => {
-	console.log(page)
-	const {title: pageTitle, icon: pageIcon, favorite: pageFavorite, id: pageID} = page
+const Page = ({page, handleChangeCurrentPage}) => {
+	const {title: pageTitle, icon: pageIcon} = page
 	const [displayDropdown, setDisplayDropdown] = useState(false);
 	const showDropdown = useCallback(() => {
 		setDisplayDropdown(true);
@@ -23,9 +22,7 @@ const Page = ({onEmojiClick,page, toggleFavorite, handleChangeCurrentPage}) => {
 							alt="right"
 						/>
 						<Emoji
-							pageID={pageID}
 							pageIcon={pageIcon}
-							onEmojiClick={onEmojiClick}
 						/>
 					</button>
 					<div className="w-full text-left" 
@@ -35,16 +32,7 @@ const Page = ({onEmojiClick,page, toggleFavorite, handleChangeCurrentPage}) => {
 						</p>
 					</div>
 				</div>
-				{displayDropdown && (
-					<PageMore
-						pageTitle={pageTitle}
-						pageIcon={pageIcon}
-						onEmojiClick={onEmojiClick}
-						pageID={pageID}
-						pageFavorite={pageFavorite}
-						toggleFavorite={toggleFavorite}
-					/>
-				)}
+				{displayDropdown && <PageMore page={page}/>}
 			</div>
 		</div>
 	);

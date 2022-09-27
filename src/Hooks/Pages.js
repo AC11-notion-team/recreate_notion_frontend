@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useCurrentPageUpdate } from "./CurrentPage";
-import { useParams } from "react-router-dom";
+
 import axios from "axios";
 
 const PagesContext = React.createContext();
@@ -17,13 +17,11 @@ export function usePagesUpdate() {
 export function PagesProvider({ children }) {
 	const [pages, setPages] = useState([]);
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const changeCurrentPage = useCurrentPageUpdate();
-	const params = useParams();
 	function changePages(pages) {
 		setPages(pages);
 	}
 	
-	useEffect(() => {
+	useMemo(() => {
 		(async () => {
 			try {
 				const response = await axios({
@@ -37,17 +35,14 @@ export function PagesProvider({ children }) {
 					},
 				});
 				if (response){
-					console.log(response)
 					changePages(response.data.pages);
-					const currentPageId = params["page_id"] || localStorage.getItem("currentPageId") || response.data.pages[0].id
-					const currentPage = response.data.pages.filter(item => item.id === currentPageId)[0]
-					changeCurrentPage(currentPage);
+					
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		})();
-	}, []);
+	}, [baseUrl]);
 	return (
 		<PagesContext.Provider value={pages}>
 			<PagesUpdateContext.Provider value={changePages}>

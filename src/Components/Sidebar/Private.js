@@ -1,18 +1,14 @@
-import React, { useEffect, useMemo,useCallback } from "react";
+import React  from "react";
 import Page from "./Page";
 
-import { usePages, usePagesUpdate } from "../../Hooks/Pages";
+import { usePages  } from "../../Hooks/Pages";
 import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 
 
-function Private({ onEmojiClick,toggleFavorite }) {
+function Private() {
 	const pages = usePages();
-	const changePages = usePagesUpdate();
 	const changeCurrentPage = useCurrentPageUpdate();
-	const handleChangeCurrentPage = (page) => {
-		console.log(page)
-		changeCurrentPage(page)
-	}
+	const handleChangeCurrentPage = (page) => {changeCurrentPage(page)}
 
 	return (
 		<div className="px-1 py-1">
@@ -20,9 +16,7 @@ function Private({ onEmojiClick,toggleFavorite }) {
 				<Page
 					key={page.id}
 					handleChangeCurrentPage = {() => handleChangeCurrentPage(page)}
-					onEmojiClick={onEmojiClick}
 					page={page}
-					toggleFavorite ={toggleFavorite}
 				/>
 			))}
 		</div>

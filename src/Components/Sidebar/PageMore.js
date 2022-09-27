@@ -12,31 +12,32 @@ import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
 
 
-export default function PageMore({
-	onEmojiClick,
-	pageTitle,
-	pageIcon,
-	pageID,
-	toggleFavorite,
-	pageFavorite,
-	page
-}) {
+export default function PageMore({ page }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const changePages = usePagesUpdate();
-	const changeCurrentPageId = useCurrentPageUpdate();
 	const changeTrashPages = useTrashPagesUpdate()
-	let prevId =""
-	// const {id: pageID, icon: pageIcon, title: pageTitle} =
+	const {id: pageID, favorite: pageFavorite} = page
+	
+	const handleFavorite = () => {
+		changePages(prevPages =>{
+			return prevPages.map(prevPage =>{
+				return prevPage.id === page.id 
+					?	{...page, favorite: !page.favorite}
+					:	prevPage
+			})
+		})
+	}
+
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
 	};
+
 	const closeDropdown = ()=>setIsPageMore(false)
 	const ref = useDetectClickOutside({
 		onTriggered: closeDropdown,
 		allowAnyKey: false,
 	});
-
 	
 	const removePage = () => {
 		axios({
@@ -47,26 +48,22 @@ export default function PageMore({
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
 		}).then((res) => {
-			changePages((prevPages) => {
-				return prevPages.filter((item) => {
-					if(item.id !== pageID){
-						prevId = item.id
-					}else{
-						changeCurrentPageId(prevId)
-					}
-					return item.id !== pageID
+			// changePages((prevPages) => {
+			// 	return prevPages.filter((item) => {
+			// 		if(item.id !== pageID){
+			// 			prevId = item.id
+			// 		}else{
+			// 			changeCurrentPageId(prevId)
+			// 		}
+			// 		return item.id !== pageID
 					
-				});
-			});
+			// 	});
+			// });
 			changeTrashPages(prevTrahsPages =>{
 				return [...prevTrahsPages,res.data]
 			})
 		})
 	};
-
-	const callback =()=>{
-		toggleFavorite(pageID)
-	}
 
 	return (
 		<div ref={ref} onMouseLeave = {closeDropdown}>
@@ -93,18 +90,14 @@ export default function PageMore({
 						alt="Favorite"
 						content={pageFavorite ? "Remove from Favorites":"Add to Favorites"} 
 						className="py-1"
-						handleClick={callback}
+						handleClick={handleFavorite}
 					/>
 					<Rename
-						pageTitle={pageTitle}
-						pageIcon={pageIcon}
-						pageID={pageID}
-						onEmojiClick={onEmojiClick}
+						page = {page}
 						handleMore={handleToggle}
 					/>
 				</div>
 			</div>}
-	
 		</div>
 	);
 }

@@ -3,19 +3,41 @@ import rename from "../image/edit.png";
 import ActionButton from "../Navbar/ActionButton";
 import { useCurrentPage } from "../../Hooks/CurrentPage";
 import Emoji from "../Navbar/EmojiPicker";
+import { usePagesUpdate } from "../../Hooks/Pages"
+import { useContext } from "react";
 
-export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMore}){
-    const currentPageId = useCurrentPage();
+export default function Rename({handleMore, page}){
+    const {title: pageTitle, icon: pageIcon} = page
+    const updatePages = usePagesUpdate()
     const [isRename, setIsRename] = useState(false);
 	const handleToggle = (e) => {
         setIsRename((prevTitleButton) => !prevTitleButton);
 	};
-    const callback = (event) => onEmojiClick(event, currentPageId,pageID)
+
+    const handleEditEmoji = (e, emojiObject) =>{
+        console.log(emojiObject)
+        updatePages(prevPages => {
+            return prevPages.map(prevPage =>{
+                return prevPage.id === page.id ? {...page, icon: emojiObject.emoji} : prevPage
+            })
+        })
+    }
+
+    
+    const handleEditTitle = (e)=>{
+        updatePages(prevPages => {
+            return prevPages.map(prevPage =>{
+                return prevPage.id === page.id ? {...page, title: e.target.value} : prevPage
+            })
+        })
+    }
+
     const handleKeyPress =(e)=>{
 		if(e.key === "Enter"){
 			handleMore()
 		}
 	}
+    
     return(
         <div>
             <ActionButton
@@ -31,13 +53,12 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMo
                         <div className="flex items-center border rounded mr-2 point px-1 h-7">
                             <Emoji
                                 pageIcon={pageIcon}
-                                onEmojiClick={onEmojiClick}
-                                pageID={pageID}
+                                handleEditEmoji={handleEditEmoji}
                             />
                         </div>
                         <input
                             type="text"
-                            onChange={callback}
+                            onChange={handleEditTitle}
                             className="input h-7 w-full rounded title px-1" 
                             value={pageTitle}
                             placeholder="Untitled"

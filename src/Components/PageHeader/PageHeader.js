@@ -1,36 +1,45 @@
 import React, { useState} from "react";
-import { usePages} from "../../Hooks/Pages";
 import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 import Emoji from "../Navbar/EmojiPicker";
 import PageHeaderWithCover from "./PageHeaderWithCover"
 import aws from "aws-sdk";
 import axios from "axios";
-import { useEffect } from "react";
 import CircleLoader from "react-spinners/CircleLoader";
-import {usePagesUpdate} from "../../Hooks/Pages"
 
-function PageHeader({ onEmojiClick }) {
+function PageHeader() {
 	const bucketName = process.env.REACT_APP_S3BUCKET;
 	const region = process.env.REACT_APP_S3REGION;
 	const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isChangeCover, setIsChangeCover] = useState(false)
+	const updateCurrentPage =	useCurrentPageUpdate()
 	const showButton = () => setIsChangeCover(true)
 	const closeButton = () => setIsChangeCover(false)
+	const currentPage = useCurrentPage();
+	const { id: currentPageId, title, icon: pageIcon, cover} = currentPage
+	const [loading, setLoading] = useState(false);
+	const [color, setColor] = useState("#36d7b7");
 
-	const updateCurrentPage =	useCurrentPageUpdate()
 	const handleEditTitle = (event)=>{
 		updateCurrentPage({...currentPage, title: event.target.value})
 	}
+
 	const handleChangeCover = (imageUrl)=>{
 		updateCurrentPage({...currentPage, cover: imageUrl})
 	}
+
+	const handleEditEmoji = (e, emojiObject) =>{
+        console.log(emojiObject)
+        updateCurrentPage({...currentPage, icon: emojiObject.emoji})
+    }
+
 	const override = {
 		display: "block",
 		margin: "0 auto",
 		borderColor: "red",
 	};
+
 	const S3Client = new aws.S3({
 		region,
 		accessKeyId,
@@ -38,11 +47,6 @@ function PageHeader({ onEmojiClick }) {
 		signatureVersion: "v4",
 	});
 	
-	const currentPage = useCurrentPage();
-	const { id: currentPageId, title, icon: pageIcon, cover} = currentPage
-	const [loading, setLoading] = useState(false);
-	const [color, setColor] = useState("#36d7b7");
-
 	const upload = async (file) => {
 		let files = file.target.files[0];
 		if (files){
@@ -82,13 +86,6 @@ function PageHeader({ onEmojiClick }) {
 					},
 				}).then((res) => {
 					setLoading(false);
-					// updatePages((prev)=>{
-					// 	return prev.map( item => {
-					// 		return item.id === currentPageId
-					// 		? {...item, cover: res.data.message}
-					// 		: item
-					// 	})
-					// })
 					handleChangeCover(res.data.message);
 				});
 			})
@@ -129,17 +126,15 @@ function PageHeader({ onEmojiClick }) {
 						?(
 							<div className=" absolute mb-28 text-6xl cursor-pointer">
 								<Emoji
-									currentPageID={currentPageId}
 									pageIcon={pageIcon}
-									onEmojiClick={onEmojiClick}
+									handleEditEmoji={handleEditEmoji}
 								/>
 							</div>)
 						:(
 							<div className="mb-2 mr-3 text-4xl cursor-pointer left-44 -bottom-7">
 								<Emoji
-									currentPageID={currentPageId}
 									pageIcon={pageIcon}
-									onEmojiClick={onEmojiClick}
+									handleEditEmoji={handleEditEmoji}
 								/>
 							</div>)
 					}

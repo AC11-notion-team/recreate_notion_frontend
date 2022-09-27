@@ -9,39 +9,25 @@ import RequireAuth from "./Components/RequireAuth/RequireAuth";
 import ErrorPage from "./Components/Errorpage/Errorpage";
 import NoauthPage from "./Components/Errorpage/Noauthpage";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { CurrentPageProvider } from "./Hooks/CurrentPage";
-import { PagesProvider } from "./Hooks/Pages";
-import { InviteProvider } from "./Hooks/InviteUser";
-import {EmojiStateProvider} from "./Hooks/EmojiState"
-import {TrashPagesProvider}from "./Hooks/TrashPages"
+
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<>
-		<PagesProvider>
-			<CurrentPageProvider>
-					<TrashPagesProvider>
-						<InviteProvider>
-							<EmojiStateProvider>
-								<BrowserRouter>
-									<Routes>
-										<Route element={< RequireAuth />}>
-											<Route path="/app" element={<App />} />
-											<Route path="/app/:page_id" element={<App />} />
-										</Route>
-										<Route path="/" element={<HomePage />} />
-										<Route path="/error-page" element={< ErrorPage />} />
-										<Route path="/unknown-page" element={< NoauthPage />} />
-										<Route path="login-page" element={<LoginPage />} />
-										<Route path="*" element={<Navigate to="/error-page" replace />} />
-									</Routes>
-								</BrowserRouter>
-							</EmojiStateProvider>
-						</InviteProvider>
-					</TrashPagesProvider>
-			</CurrentPageProvider>
-		</PagesProvider>
+		<BrowserRouter>
+			<Routes>
+				<Route element={< RequireAuth />}>
+					<Route path="/app" element={<App />} />
+					<Route path="/app/:page_id" element={<App />} />
+				</Route>
+				<Route path="/" element={<HomePage />} />
+				<Route path="/error-page" element={< ErrorPage />} />
+				<Route path="/unknown-page" element={< NoauthPage />} />
+				<Route path="login-page" element={<LoginPage />} />
+				<Route path="*" element={<Navigate to="/error-page" replace />} />
+			</Routes>
+		</BrowserRouter>
 	</>
 );
 
