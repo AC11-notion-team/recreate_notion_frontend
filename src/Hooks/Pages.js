@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect, useMemo } from "react";
-import { useCurrentPageUpdate } from "./CurrentPage";
+import React, { useContext, useState, useMemo } from "react";
 
 import axios from "axios";
 
 const PagesContext = React.createContext();
 const PagesUpdateContext = React.createContext();
+const HandlePageUpdateContext = React.createContext();
+const HandlePagesTitleContext = React.createContext();
 
 export function usePages() {
 	return useContext(PagesContext);
@@ -14,13 +15,41 @@ export function usePagesUpdate() {
 	return useContext(PagesUpdateContext);
 }
 
+export function useHandlePageUpdate() {
+	return useContext(HandlePageUpdateContext);
+}
+
+export function useHandlePagesTitle() {
+	return useContext(HandlePagesTitleContext);
+}
+
 export function PagesProvider({ children }) {
 	const [pages, setPages] = useState([]);
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	function changePages(pages) {
 		setPages(pages);
 	}
-	
+
+	function handlePageUpdate(page){
+		page.id && setPages(prevPages =>{
+			return prevPages.map(prevPage =>{
+				return prevPage.id === page.id 
+					?	page
+					:	prevPage
+			})
+		})
+	}
+
+	function handlePagesTitle(page, newTitle){
+		changePages(prevPages =>{
+			return prevPages.map(prevPage =>{
+				return prevPage.id === page.id 
+					?	{...prevPage, title: newTitle}
+					:	prevPage
+			})
+		})
+	}
+
 	useMemo(() => {
 		(async () => {
 			try {
@@ -46,7 +75,11 @@ export function PagesProvider({ children }) {
 	return (
 		<PagesContext.Provider value={pages}>
 			<PagesUpdateContext.Provider value={changePages}>
-				{children}
+				<HandlePageUpdateContext.Provider value = {handlePageUpdate}>
+					<HandlePagesTitleContext.Provider value = {handlePagesTitle}>
+						{children}
+					</HandlePagesTitleContext.Provider>
+				</HandlePageUpdateContext.Provider>
 			</PagesUpdateContext.Provider>
 		</PagesContext.Provider>
 	);

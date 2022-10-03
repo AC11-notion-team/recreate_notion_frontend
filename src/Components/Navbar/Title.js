@@ -1,34 +1,18 @@
 import React, { useState } from "react";
 import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
-import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { useHandlePageUpdate } from "../../Hooks/Pages"
 
-export default function Title() {
+function Title() {
 	const currentPage = useCurrentPage();
-	const updateCurrentPage = useCurrentPageUpdate()
-	const [isTitleButton, setIsTitleButton] = useState(false);
+	const [isTitleButton, setIsTitleButton] = useState(()=>false);
 	const {title: pageTitle, icon: pageIcon} = currentPage
-
-	const handleToggle = (e) => {
-		setIsTitleButton((prevTitleButton) => !prevTitleButton);
-	};
-
-	const handleEditEmoji = (e, emojiObject) =>{
-        console.log(emojiObject)
-        updateCurrentPage({...currentPage, icon: emojiObject.emoji})
-    }
-
-	const handleEditTitle = (event)=>{
-		updateCurrentPage({...currentPage, title: event.target.value})
-	}
-
-	const handleKeyPress =(e)=>{
-		if(e.key === "Enter"){
-			setIsTitleButton(false)
-		}
-	}
-
+	const handlePageUpdate = useHandlePageUpdate()
+	const handleToggle = (e) => setIsTitleButton((prevTitleButton) => !prevTitleButton)
+	const handleEditEmoji = (e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji})
+	const handleKeyPress =(e)=> {(e.key === "Enter") && setIsTitleButton(false)}
 	const ref = useDetectClickOutside({
 		onTriggered: () => setIsTitleButton(false),
 		allowAnyKey: false,
@@ -54,11 +38,11 @@ export default function Title() {
 						</div>
 						<input
 							type="text"
-							onChange={handleEditTitle}
+							onChange={(e) => handlePageUpdate({...currentPage, title: e.target.value})}
 							className="input h-7 w-full rounded px-1"
 							value={pageTitle}
 							placeholder="Untitled"
-							onKeyPress={(e)=>handleKeyPress(e)}
+							onKeyPress={handleKeyPress}
 						/>
 					</div>
 				</div>
@@ -66,3 +50,4 @@ export default function Title() {
 		</div>
 	);
 }
+export default React.memo(Title)

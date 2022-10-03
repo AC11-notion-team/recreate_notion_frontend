@@ -6,18 +6,14 @@ import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
-import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
+import { useHandlePageUpdate } from "../../Hooks/Pages";
 
-export default function Header({
-	isSide,
-	toggleSide,
-}) {
+
+export default function Header({ isSide, toggleSide}) {
 	const currentPage = useCurrentPage()
 	const {favorite: pageFavorite} = currentPage;
-	const changeCurrentPage = useCurrentPageUpdate();
-	const handleFavorite = () =>{
-		changeCurrentPage({...currentPage, favorite: !pageFavorite})
-	}
+	const handlePageUpdate = useHandlePageUpdate();
 
 	return (
 		<nav className="flex h-12 justify-between px-2 leading-10 relative">
@@ -38,11 +34,12 @@ export default function Header({
 			</div>
 			<div className="flex">
 				<Share />
-				<div className="flex items-center" onClick={handleFavorite}>
+				<div className="flex items-center" >
 					<MenuButton
 						className="IsFavorite"
 						alt="favoriteButton"
 						src={pageFavorite ? fullStar : emptyStar}
+						handleClick={() => handlePageUpdate({...currentPage, favorite: !currentPage.favorite})}
 					/>
 				</div>
 				< More />

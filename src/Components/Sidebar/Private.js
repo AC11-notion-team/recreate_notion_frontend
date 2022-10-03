@@ -2,12 +2,12 @@ import React  from "react";
 import Page from "./Page";
 
 import { usePages  } from "../../Hooks/Pages";
-import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useCurrentPageChange } from "../../Hooks/CurrentPage";
 
 
 function Private() {
 	const pages = usePages();
-	const changeCurrentPage = useCurrentPageUpdate();
+	const changeCurrentPage = useCurrentPageChange();
 	const handleChangeCurrentPage = (page) => {changeCurrentPage(page)}
 
 	return (

@@ -1,11 +1,11 @@
 import React from "react";
 import { usePages } from "../../Hooks/Pages";
 import Page from "./Page";
-import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useCurrentPageChange } from "../../Hooks/CurrentPage";
 
-export default function Star() {
+export default function FavoritePage() {
 	const pages = usePages();
-	const changeCurrentPage = useCurrentPageUpdate();
+	const changeCurrentPage = useCurrentPageChange();
 	const favoritePages = pages.filter(page =>page.favorite === true)
 	const handleChangeCurrentPage = (page) => { changeCurrentPage(page) }
 	return (

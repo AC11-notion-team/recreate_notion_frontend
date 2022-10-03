@@ -6,24 +6,17 @@ import MenuButton from "./MenuButton";
 import ActionButton from "./ActionButton"
 import emptyStar from "../image/empty-star.png"
 import fullStar from "../image/full-star.png"
-import { useCurrentPage ,useCurrentPageUpdate  } from "../../Hooks/CurrentPage";
-import { usePagesUpdate } from "../../Hooks/Pages";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
+import { useHandlePageUpdate } from "../../Hooks/Pages";
 import axios from "axios";
 
 export default function More(){
     const [isMore,setIsMore] = useState(false)
-	const changeCurrentPage = useCurrentPageUpdate();
 	const currentPage = useCurrentPage();
-    const handleToggle = (e) => {
-        if(e.target.className.includes("IsMore") === true){
-            setIsMore(prevMore => !prevMore)
-        }
-    };
-    const { id: currentPageId, favorite } = currentPage;
-    const baseUrl = process.env.REACT_APP_BASEURL;
-	const handleFavorite = () =>{
-		changeCurrentPage({...currentPage, favorite: !favorite})
-	}
+	const handlePageUpdate = useHandlePageUpdate();
+    const handleToggle = (e) => setIsMore(prevMore => !prevMore);
+    const { favorite } = currentPage;
+    // const baseUrl = process.env.REACT_APP_BASEURL;
 	// const removePage = () => {
 	// 	axios({
 	// 		method: "delete",
@@ -53,7 +46,7 @@ export default function More(){
 
             {isMore&& <div onClick={handleToggle}  className="IsMore fixed  w-screen top-0 bottom-0 left-0 z-20">
                 <div className="absolute w-60 bg-white border-2 box-shadow right-4 top-12 rounded-md p-1.5">
-                    <ActionButton src={favorite ? fullStar : emptyStar} alt="favorite" content={favorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={handleFavorite} />
+                    <ActionButton src={favorite ? fullStar : emptyStar} alt="favorite" content={favorite ? "Remove from Favorites":"Add to Favorites"} className="py-0.5" handleClick={() => handlePageUpdate({...currentPage, favorite: !currentPage.favorite})} />
                     <ActionButton src={trash} alt="delete" content="Delete" className="py-0.5" />
                 </div>
             </div>}

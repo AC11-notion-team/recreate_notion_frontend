@@ -1,5 +1,6 @@
-import React, { useState} from "react";
+import React, { useState, useCallback} from "react";
 import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useHandlePageUpdate } from "../../Hooks/Pages"
 import Emoji from "../Navbar/EmojiPicker";
 import PageHeaderWithCover from "./PageHeaderWithCover"
 import aws from "aws-sdk";
@@ -12,27 +13,22 @@ function PageHeader() {
 	const accessKeyId = process.env.REACT_APP_S3ACCESSKEY;
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const [isChangeCover, setIsChangeCover] = useState(false)
+	const [isChangeCover, setIsChangeCover] = useState(()=> false)
 	const updateCurrentPage =	useCurrentPageUpdate()
 	const showButton = () => setIsChangeCover(true)
 	const closeButton = () => setIsChangeCover(false)
 	const currentPage = useCurrentPage();
+	const handlePageUpdate = useHandlePageUpdate()
 	const { id: currentPageId, title, icon: pageIcon, cover} = currentPage
-	const [loading, setLoading] = useState(false);
-	const [color, setColor] = useState("#36d7b7");
+	const [loading, setLoading] = useState(()=> false);
 
-	const handleEditTitle = (event)=>{
-		updateCurrentPage({...currentPage, title: event.target.value})
-	}
 
 	const handleChangeCover = (imageUrl)=>{
 		updateCurrentPage({...currentPage, cover: imageUrl})
 	}
 
-	const handleEditEmoji = (e, emojiObject) =>{
-        console.log(emojiObject)
-        updateCurrentPage({...currentPage, icon: emojiObject.emoji})
-    }
+	const handleEditEmoji = (e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji})
+
 
 	const override = {
 		display: "block",
@@ -47,7 +43,7 @@ function PageHeader() {
 		signatureVersion: "v4",
 	});
 	
-	const upload = async (file) => {
+	const upload = useCallback(async (file) => {
 		let files = file.target.files[0];
 		if (files){
 			setLoading(true);
@@ -92,7 +88,7 @@ function PageHeader() {
 			.catch(function (err) {
 				console.error(err);
 			});
-	};
+	}, [currentPageId]);
 
 	return (
 		<div onMouseEnter={showButton} onMouseLeave={closeButton}>
@@ -122,27 +118,18 @@ function PageHeader() {
 			
 			<div className="w-auto mx-20 pt-8 pb-16">
 				<div className="relative flex items-center w-4/6 max-w-screen-sm m-auto">
-					{cover
-						?(
-							<div className=" absolute mb-28 text-6xl cursor-pointer">
-								<Emoji
-									pageIcon={pageIcon}
-									handleEditEmoji={handleEditEmoji}
-								/>
-							</div>)
-						:(
-							<div className="mb-2 mr-3 text-4xl cursor-pointer left-44 -bottom-7">
-								<Emoji
-									pageIcon={pageIcon}
-									handleEditEmoji={handleEditEmoji}
-								/>
-							</div>)
-					}
-
+					
+					<div className= { cover ? " absolute mb-28 text-6xl cursor-pointer" : "mb-2 mr-3 text-4xl cursor-pointer left-44 -bottom-7"}>
+						<Emoji
+							pageIcon={pageIcon}
+							handleEditEmoji={handleEditEmoji}
+						/>
+					</div>
+						
 					<input
 						className="w-3/4 text-4xl font-bold outline-none"
 						placeholder="Untitled"
-						onChange={(event) => handleEditTitle(event)}
+						onChange={(e) => handlePageUpdate({...currentPage, title: e.target.value})}
 						value={title}
 					/>
 					<input
@@ -157,4 +144,4 @@ function PageHeader() {
 	);
 }
 
-export default PageHeader;
+export default React.memo(PageHeader);

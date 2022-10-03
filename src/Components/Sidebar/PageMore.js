@@ -7,27 +7,15 @@ import ActionButton from "../Navbar/ActionButton";
 import Rename from "./Rename";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import axios from "axios";
-import { usePagesUpdate } from "../../Hooks/Pages";
-import { useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import { useHandlePageUpdate } from "../../Hooks/Pages";
 import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
-
 
 export default function PageMore({ page }) {
 	const [isPageMore, setIsPageMore] = useState(false);
 	const baseUrl = process.env.REACT_APP_BASEURL;
-	const changePages = usePagesUpdate();
 	const changeTrashPages = useTrashPagesUpdate()
 	const {id: pageID, favorite: pageFavorite} = page
-	
-	const handleFavorite = () => {
-		changePages(prevPages =>{
-			return prevPages.map(prevPage =>{
-				return prevPage.id === page.id 
-					?	{...page, favorite: !page.favorite}
-					:	prevPage
-			})
-		})
-	}
+	const handlePageUpdate = useHandlePageUpdate()
 
 	const handleToggle = () => {
 		setIsPageMore((prevPageMore) => !prevPageMore);
@@ -90,7 +78,7 @@ export default function PageMore({ page }) {
 						alt="Favorite"
 						content={pageFavorite ? "Remove from Favorites":"Add to Favorites"} 
 						className="py-1"
-						handleClick={handleFavorite}
+						handleClick={()=>handlePageUpdate({...page, favorite: !page.favorite})}
 					/>
 					<Rename
 						page = {page}
