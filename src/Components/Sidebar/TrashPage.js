@@ -2,8 +2,9 @@ import React from "react";
 import backIcon from "../image/back-arrow.png"
 import axios from "axios";
 import { usePagesUpdate } from "../../Hooks/Pages";
-import {useCurrentPageUpdateId} from "../../Hooks/CurrentPageId"
-import {useTrashPagesUpdate} from "../../Hooks/TrashPages"
+import {useCurrentPageUpdateId} from "../../Hooks/CurrentPageId";
+import {useTrashPagesUpdate} from "../../Hooks/TrashPages";
+import deleted from "../image/delete.png";
 
 export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
     const baseUrl = process.env.REACT_APP_BASEURL;
@@ -37,6 +38,29 @@ export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
         });
         
     }
+
+    const reallyDestroyPage = (pageId) =>{
+        axios({
+			method: "delete",
+			url: `${baseUrl}/pages/${pageId}/delete_page`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
+			},
+            params: {
+				delete:"reallyDelete!"
+            },
+        })
+        .then((res)=>{
+            changeTrashPages (prevTrahsPages => {
+                return prevTrahsPages.filter((respage)=>{
+                    return respage.id != trashPageID
+                })
+            })
+        }).catch((err) => {
+            console.error(err);
+        });
+    }
   
     return(
         <div className="flex items-center justify-between py-2 px-4 point group">
@@ -44,7 +68,10 @@ export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
                 <span className="w-5 h-5 mr-3">{trashPageIcon ? trashPageIcon:"🗒️"}</span>
                 <p className="text-sm font-semibold">{trashPageTitle}</p>
             </div>
-            <img data-id={trashPageID} className="w-5 h-5 hidden group-hover:inline-block" src={backIcon} alt="back-icon" onClick={(event)=>restorePage(event.target.dataset.id)} />
+            <div>
+                <img data-id={trashPageID} className="w-5 h-5 hidden group-hover:inline-block mr-2" src={backIcon} alt="back-icon" onClick={(event)=>restorePage(event.target.dataset.id)} />
+                <img data-id={trashPageID} className="w-5 h-5 hidden group-hover:inline-block" src={deleted} alt="deleted-icon" onClick={(event)=>reallyDestroyPage(event.target.dataset.id)}/>
+            </div>
         </div>
     )
 }
