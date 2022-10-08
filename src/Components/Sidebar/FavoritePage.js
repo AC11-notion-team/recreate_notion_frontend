@@ -14,8 +14,6 @@ export default function Star({toggleFavorite,onEmojiClick}) {
 		)
 	},[pages])
 	
-
-	
 	return (
 		<div>
 			{favoritePages?.length>0 ?<div>
