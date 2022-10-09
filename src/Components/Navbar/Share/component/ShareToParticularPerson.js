@@ -89,7 +89,7 @@ const ShareToParticularPerson = () => {
 	};
 
 	return (
-		<div className="relative p-1 m-2">
+		<div className="relative p-1 m-2 max-h-96 overflow-y-auto">
 			<div className="flex items-center justify-between mb-3 flex-nowrap">
 				<input
 					type="text"
@@ -104,11 +104,11 @@ const ShareToParticularPerson = () => {
 					</p>
 				</button>
 			</div>
-			{userInformation !== "" ? (
+			{userInformation.length >0 ? (
 				<div>
 					{userInformation.map((item, i) => (
 						<div key={i}>
-							<div className="w-full ">
+							<div className="w-full">
 								<Checkbox value={item.email} {...checkbox} className="flex w-full">
 									<UserInviteList
 										username={item.username}
@@ -126,7 +126,7 @@ const ShareToParticularPerson = () => {
 				<>
 					<div>
 						{userInformation?.length >= 1 && <hr />}
-						<div>Invite:</div>
+						<div className="p-2 text-lg font-semibold ext-center leading-5 rounded">Invite:</div>
 						{invistList?.map((item, i) => (
 							<div className="relative flex content-center">
 								<UserInviteList
