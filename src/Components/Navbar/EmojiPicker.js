@@ -18,7 +18,7 @@ export default function Emoji({ pageIcon, handleEditEmoji }) {
 	return (
 		<div ref={ref}>
 			<div>
-				<span className="w-full " alt="title" onClick={toggleEmoji}>
+				<span className="w-full hover:opacity-80" alt="title" onClick={toggleEmoji}>
 					{pageIcon ? pageIcon : "🗒️"}
 				</span>
 			</div>

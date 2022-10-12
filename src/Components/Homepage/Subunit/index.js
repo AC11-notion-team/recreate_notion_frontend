@@ -3,9 +3,9 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const  Nav = props => (
     <nav className="  md:flex  items-center max-w-7xl mx-auto  py-5 sticky top-0 left-0 right-0 bg-[#fffefc] z-20">
-        <a href="homepage">
+        <a href='/'>
             <div className="flex item-center flex-wrap items-center max-auto">
-                <div className="flex items-center  h-12 w-10 "><img src="/zettel.png" alt="" /></div>
+                <div className="flex items-center  h-12 w-10 "><img src="/zettel.png" alt="zettel" /></div>
                 <span className="text-xl font-bold ml-2">Zettel</span>
             </div>
         </a>

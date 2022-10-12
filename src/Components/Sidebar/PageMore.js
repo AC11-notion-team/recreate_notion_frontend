@@ -35,6 +35,9 @@ export default function PageMore({ page }) {
 				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("zettel_user_token"),
 			},
+			params: {
+				delete:"softDelete"
+            },
 		}).then((res) => {
 			// changePages((prevPages) => {
 			// 	return prevPages.filter((item) => {
