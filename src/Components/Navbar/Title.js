@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
 import { useCurrentPage } from "../../Hooks/CurrentPage";
@@ -7,12 +7,13 @@ import { useHandlePageUpdate } from "../../Hooks/Pages"
 
 function Title() {
 	const currentPage = useCurrentPage();
+	const handlePageUpdate = useHandlePageUpdate()
 	const [isTitleButton, setIsTitleButton] = useState(()=>false);
 	const {title: pageTitle, icon: pageIcon} = currentPage
-	const handlePageUpdate = useHandlePageUpdate()
-	const handleToggle = (e) => setIsTitleButton((prevTitleButton) => !prevTitleButton)
-	const handleEditEmoji = (e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji})
-	const handleKeyPress =(e)=> {(e.key === "Enter") && setIsTitleButton(false)}
+	const handleToggle = useCallback(() => setIsTitleButton((prevTitleButton) => !prevTitleButton), [])
+	const handleEditEmoji = useCallback((e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji}), [currentPage, handlePageUpdate])
+	const handleEditTitle = useCallback((e) => handlePageUpdate({...currentPage, title: e.target.value}), [currentPage, handlePageUpdate])
+	const handleKeyPress = useCallback((e)=> {(e.key === "Enter") && setIsTitleButton(false)}, [])
 	const ref = useDetectClickOutside({
 		onTriggered: () => setIsTitleButton(false),
 		allowAnyKey: false,
@@ -38,7 +39,7 @@ function Title() {
 						</div>
 						<input
 							type="text"
-							onChange={(e) => handlePageUpdate({...currentPage, title: e.target.value})}
+							onChange={handleEditTitle}
 							className="input h-7 w-full rounded px-1"
 							value={pageTitle}
 							placeholder="Untitled"

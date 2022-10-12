@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { usePages, usePagesUpdate } from "./Pages"
+import { usePages } from "./Pages"
 import { useParams } from "react-router-dom";
-import { set } from "react-hook-form";
 
 const CurrentPageContext = React.createContext();
 const CurrentPageUpdateContext = React.createContext();
@@ -78,7 +77,7 @@ function deepEqual(object1, object2) {
 	  }
 	}
 	return true;
-  }
-  function isObject(object) {
+}
+function isObject(object) {
 	return object != null && typeof object === 'object';
-  }  
+}  

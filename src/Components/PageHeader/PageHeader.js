@@ -1,11 +1,12 @@
-import React, { useState, useCallback} from "react";
-import { useCurrentPage, useCurrentPageUpdate } from "../../Hooks/CurrentPage";
+import React, { useState} from "react";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 import { useHandlePageUpdate } from "../../Hooks/Pages"
 import Emoji from "../Navbar/EmojiPicker";
 import PageHeaderWithCover from "./PageHeaderWithCover"
 import aws from "aws-sdk";
 import axios from "axios";
 import CircleLoader from "react-spinners/CircleLoader";
+import { useCallback } from "react";
 
 function PageHeader() {
 	const bucketName = process.env.REACT_APP_S3BUCKET;
@@ -14,7 +15,6 @@ function PageHeader() {
 	const secretAccessKey = process.env.REACT_APP_S3SECRETACCESSKEY;
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const [isChangeCover, setIsChangeCover] = useState(()=> false)
-	const updateCurrentPage =	useCurrentPageUpdate()
 	const showButton = () => setIsChangeCover(true)
 	const closeButton = () => setIsChangeCover(false)
 	const currentPage = useCurrentPage();
@@ -22,13 +22,12 @@ function PageHeader() {
 	const { id: currentPageId, title, icon: pageIcon, cover} = currentPage
 	const [loading, setLoading] = useState(()=> false);
 
+	const handleChangeCover = useCallback((imageUrl)=>{
+		handlePageUpdate({...currentPage, cover: imageUrl})
+	}, [currentPage, handlePageUpdate])
 
-	const handleChangeCover = (imageUrl)=>{
-		updateCurrentPage({...currentPage, cover: imageUrl})
-	}
-
-	const handleEditEmoji = (e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji})
-
+	const handleEditEmoji = useCallback((e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji}), [currentPage, handlePageUpdate])
+	const handleEditTitle = useCallback((e) => handlePageUpdate({...currentPage, title: e.target.value}), [currentPage, handlePageUpdate])
 
 	const override = {
 		display: "block",
@@ -88,7 +87,7 @@ function PageHeader() {
 			.catch(function (err) {
 				console.error(err);
 			});
-	}, [currentPageId]);
+	}, [S3Client, baseUrl, bucketName, currentPageId, handleChangeCover]);
 
 	return (
 		<div onMouseEnter={showButton} onMouseLeave={closeButton}>
@@ -129,7 +128,7 @@ function PageHeader() {
 					<input
 						className="w-3/4 text-4xl font-bold outline-none"
 						placeholder="Untitled"
-						onChange={(e) => handlePageUpdate({...currentPage, title: e.target.value})}
+						onChange={handleEditTitle}
 						value={title}
 					/>
 					<input

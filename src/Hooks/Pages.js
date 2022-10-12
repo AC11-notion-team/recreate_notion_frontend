@@ -1,6 +1,7 @@
-import React, { useContext, useState, useMemo } from "react";
-
+import React, { useContext, useState, useMemo, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useCurrentPageChange } from "./CurrentPage"
 
 const PagesContext = React.createContext();
 const PagesUpdateContext = React.createContext();
@@ -24,8 +25,20 @@ export function useHandlePagesTitle() {
 }
 
 export function PagesProvider({ children }) {
+	const params = useParams()
 	const [pages, setPages] = useState([]);
 	const baseUrl = process.env.REACT_APP_BASEURL;
+	const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
+	const changeCurrentPage = useCurrentPageChange()
+	// useEffect(()=>{
+	// 	if (pages.length > 0 ){
+	// 		const currentPageId = params["page_id"] || localStorage.getItem("currentPageId") || pages?.[0].id
+	// 		const currentPage = pages.filter(page => page.id === currentPageId)?.[0]
+	// 		console.log(currentPage)
+	// 		currentPage && changeCurrentPage(currentPage);
+	// 	}
+	// }, [])
+
 	function changePages(pages) {
 		setPages(pages);
 	}
@@ -38,6 +51,15 @@ export function PagesProvider({ children }) {
 					:	prevPage
 			})
 		})
+		axios({
+			method: "put",
+			url: `${baseUrl}/pages/${page.id}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			data: page
+		});
 	}
 
 	function handlePagesTitle(page, newTitle){
@@ -50,28 +72,23 @@ export function PagesProvider({ children }) {
 		})
 	}
 
-	useMemo(() => {
-		(async () => {
-			try {
-				const response = await axios({
-					method: "get",
-					url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem(
-							"zettel_user_token"
-						)}`,
-					},
-				});
-				if (response){
-					changePages(response.data.pages);
-					
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		})();
-	}, [baseUrl]);
+	useEffect(() => {
+		axios({
+			method: "get",
+			url: `${baseUrl}/users/${localStorage.getItem("zettel_user_id")}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		}).then((response)=>{
+			const return_data = response?.data?.pages
+			changePages(return_data);
+			const currentPageId = params["page_id"] || localStorage.getItem("currentPageId") || return_data?.[0].id
+			const currentPage = return_data.filter(page => page.id === currentPageId)?.[0]
+			console.log(currentPage)
+			changeCurrentPage(currentPage);
+		}).catch(error => console.error(error))
+	}, [baseUrl, changeCurrentPage, params, token]);
 	return (
 		<PagesContext.Provider value={pages}>
 			<PagesUpdateContext.Provider value={changePages}>
