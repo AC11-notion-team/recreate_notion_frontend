@@ -5,13 +5,11 @@ import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
 import PageHeader from "./Components/PageHeader/PageHeader.js";
-import { WsReceivedProvider } from "./Hooks/useActionCable";
 import { CurrentPageProvider } from "./Hooks/CurrentPage";
 import { PagesProvider } from "./Hooks/Pages";
 import { InviteProvider } from "./Hooks/InviteUser";
 import { TrashPagesProvider }from "./Hooks/TrashPages"
-import  VerifyAuth  from "./Components/VerifyAuth/VerifyAuth"
-import { Route, Routes } from "react-router-dom";
+
 function App() {
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);

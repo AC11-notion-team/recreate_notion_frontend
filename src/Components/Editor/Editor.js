@@ -22,7 +22,6 @@ import axios from 'axios';
 import { useCurrentPage, useCurrentPageChange } from "../../Hooks/CurrentPage";
 import { usePagesUpdate } from "../../Hooks/Pages";
 import { useNavigate } from "react-router-dom"
-// import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;

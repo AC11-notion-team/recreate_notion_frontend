@@ -1,12 +1,9 @@
-import React, { useContext, useState, useMemo, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useCurrentPageChange } from "./CurrentPage"
 
 const PagesContext = React.createContext();
 const PagesUpdateContext = React.createContext();
 const HandlePageUpdateContext = React.createContext();
-const HandlePagesTitleContext = React.createContext();
 
 export function usePages() {
 	return useContext(PagesContext);
@@ -20,24 +17,10 @@ export function useHandlePageUpdate() {
 	return useContext(HandlePageUpdateContext);
 }
 
-export function useHandlePagesTitle() {
-	return useContext(HandlePagesTitleContext);
-}
-
 export function PagesProvider({ children }) {
-	const params = useParams()
 	const [pages, setPages] = useState([]);
 	const baseUrl = process.env.REACT_APP_BASEURL;
 	const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
-	const changeCurrentPage = useCurrentPageChange()
-	// useEffect(()=>{
-	// 	if (pages.length > 0 ){
-	// 		const currentPageId = params["page_id"] || localStorage.getItem("currentPageId") || pages?.[0].id
-	// 		const currentPage = pages.filter(page => page.id === currentPageId)?.[0]
-	// 		console.log(currentPage)
-	// 		currentPage && changeCurrentPage(currentPage);
-	// 	}
-	// }, [])
 
 	function changePages(pages) {
 		setPages(pages);
@@ -62,16 +45,6 @@ export function PagesProvider({ children }) {
 		});
 	}
 
-	function handlePagesTitle(page, newTitle){
-		changePages(prevPages =>{
-			return prevPages.map(prevPage =>{
-				return prevPage.id === page.id 
-					?	{...prevPage, title: newTitle}
-					:	prevPage
-			})
-		})
-	}
-
 	useEffect(() => {
 		axios({
 			method: "get",
@@ -81,21 +54,15 @@ export function PagesProvider({ children }) {
 				Authorization: token,
 			},
 		}).then((response)=>{
-			const return_data = response?.data?.pages
-			changePages(return_data);
-			const currentPageId = params["page_id"] || localStorage.getItem("currentPageId") || return_data?.[0].id
-			const currentPage = return_data.filter(page => page.id === currentPageId)?.[0]
-			console.log(currentPage)
-			changeCurrentPage(currentPage);
+			changePages(response?.data?.pages);
 		}).catch(error => console.error(error))
-	}, [baseUrl, changeCurrentPage, params, token]);
+	}, [baseUrl, token]);
+
 	return (
 		<PagesContext.Provider value={pages}>
 			<PagesUpdateContext.Provider value={changePages}>
 				<HandlePageUpdateContext.Provider value = {handlePageUpdate}>
-					<HandlePagesTitleContext.Provider value = {handlePagesTitle}>
-						{children}
-					</HandlePagesTitleContext.Provider>
+					{children}
 				</HandlePageUpdateContext.Provider>
 			</PagesUpdateContext.Provider>
 		</PagesContext.Provider>
