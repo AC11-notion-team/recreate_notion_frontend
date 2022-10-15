@@ -19,10 +19,9 @@ import Table from '@editorjs/table';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import aws from 'aws-sdk';
 import axios from 'axios';
-import { useCurrentPageId, useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage, useCurrentPageChange } from "../../Hooks/CurrentPage";
 import { usePagesUpdate } from "../../Hooks/Pages";
 import { useNavigate } from "react-router-dom"
-// import { useWsReceivedData } from "../../Hooks/useActionCable"
 
 const bucketName = process.env.REACT_APP_S3BUCKET;
 const region = process.env.REACT_APP_S3REGION;
@@ -38,15 +37,14 @@ const baseUrl = process.env.REACT_APP_BASEURL;
 
 const EDITTOR_HOLDER_ID = "editorjs";
 function Editor() {
-	const currentPageId = useCurrentPageId();
-	const changeCurrentPage = useCurrentPageUpdateId();
+	const {id: currentPageId}= useCurrentPage();
+	const changeCurrentPage = useCurrentPageChange();
 	const changePages = usePagesUpdate();
 	const ejInstance = useRef();
 	const Navigate = useNavigate();
 	const token = `Bearer ${localStorage.getItem("zettel_user_token") || null}`;
 	// const wsReceivedData = useWsReceivedData();
 	let isAddPageLink = false;
-
 
 	const initEditor = useCallback((initialData, readOnly) => {
 		const editor = new EditorJS({
@@ -102,10 +100,10 @@ function Editor() {
 				}
 				if (isAddPageLink && event.type === "block-changed" && event.detail.target.name === "linkpage"){
 					const block = content.blocks.filter(block => block.id === event.detail.target.id)[0]?.data
-					const newPage = block.meta.id
+					const newPage = block.meta
 					if (newPage){
 						isAddPageLink = false
-						changePages(prevPages => [...prevPages, block.meta])
+						changePages(prevPages => [...prevPages, newPage])
 						changeCurrentPage(newPage)
 					}
 				}
@@ -146,9 +144,9 @@ function Editor() {
 						const ranBytes = Math.floor(Math.random()*10000000000000)
 						const imageName = ranBytes.toString()
 						const params = {
-						Bucket: bucketName,
-						Key: imageName,
-						Expires: 60
+							Bucket: bucketName,
+							Key: imageName,
+							Expires: 60
 						}
 						const url = await S3Client.getSignedUrlPromise('putObject', params)
 						
@@ -266,7 +264,7 @@ function Editor() {
 		ejInstance.current?.destroy();
 		ejInstance.current = null;
 		};
-	}, [currentPageId, token, initEditor, Navigate]);
+	}, [currentPageId, token, initEditor]);
 
 	// useEffect(() => {
 	// 	if (wsReceivedData) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import FavoritePage from "./FavoritePage";
 import Private from "./Private";
 import Share from "./Share";
@@ -9,16 +9,11 @@ import addPage from "../image/plus.png";
 import axios from "axios";
 import { usePagesUpdate } from "../../Hooks/Pages";
 
-export default function Sidebar({
-	toggleFavorite,
-	toggle,
-	onEmojiClick,
-}) {
-	// useContext state= pages
+export default function Sidebar({toggleSide}) {
 	const changePages = usePagesUpdate();
 	const baseUrl = process.env.REACT_APP_BASEURL;
 
-	const addPage1 = () => {
+	const addPage1 = useCallback(() => {
 		//  負責加page的
 		axios({
 			method: "post",
@@ -38,16 +33,16 @@ export default function Sidebar({
 			.catch((err) => {
 				console.error(err);
 			});
-	};
+	}, []);
 	return (
 		<div className="absolute inset-0 h-screen side-minW bg-gray-100">
-			<User toggle={toggle} />
+			<User toggleSide={toggleSide} />
 			<div className="mb-2 px-1 py-2">
 				<QuickFind />
 			</div>
 			<div className="h-3/4 overflow-x-hidden overflow-y-auto">
 				<div className="mb-4">
-					<FavoritePage onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
+					<FavoritePage />
 				</div>
 				<div className="mb-4">
 					<Share />
@@ -64,7 +59,7 @@ export default function Sidebar({
 						</button>
 					</div>
 
-					<Private onEmojiClick={onEmojiClick} toggleFavorite={toggleFavorite}/>
+					<Private/>
 				</div>
 				<div className="px-1 py-2">
 					<Trash />

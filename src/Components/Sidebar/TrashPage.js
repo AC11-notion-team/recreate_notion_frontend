@@ -2,14 +2,14 @@ import React from "react";
 import backIcon from "../image/back-arrow.png"
 import axios from "axios";
 import { usePagesUpdate } from "../../Hooks/Pages";
-import {useCurrentPageUpdateId} from "../../Hooks/CurrentPageId";
+import {useCurrentPageUpdate} from "../../Hooks/CurrentPage"
 import {useTrashPagesUpdate} from "../../Hooks/TrashPages";
 import deleted from "../image/delete.png";
 
 export default function TrashPage({trashPageID,trashPageIcon,trashPageTitle}){
     const baseUrl = process.env.REACT_APP_BASEURL;
     const changePages = usePagesUpdate();
-    const changeCurrentPage = useCurrentPageUpdateId()
+    const changeCurrentPage = useCurrentPageUpdate()
     const changeTrashPages = useTrashPagesUpdate()
     const restorePage = (pageId) => {
         axios({

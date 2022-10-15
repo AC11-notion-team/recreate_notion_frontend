@@ -1,16 +1,15 @@
 import React, { useState, useCallback} from "react";
 import Picker from "emoji-picker-react";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import { useDetectClickOutside } from "react-detect-click-outside";
 
-export default function Emoji({pageID,pageIcon, onEmojiClick }) {
+function Emoji({ pageIcon, handleEditEmoji }) {
 	const [isEmoji, setIsEmoji] = useState(false);
-	const toggleEmoji = () => setIsEmoji((prevIsEmoji) => !prevIsEmoji);
-	const currentPageId = useCurrentPageId();
+	const toggleEmoji = useCallback(() => setIsEmoji((prevIsEmoji) => !prevIsEmoji), [])
 	const callback = useCallback((e,emojiObject) => {
-		onEmojiClick(e,currentPageId,pageID, emojiObject)
+		handleEditEmoji(e, emojiObject)
 		setIsEmoji(false)
-	}, [currentPageId, onEmojiClick, pageID])
+	}, [handleEditEmoji])
+
 	const ref = useDetectClickOutside({
 		onTriggered: () => setIsEmoji(false),
 		allowAnyKey: false,
@@ -34,3 +33,4 @@ export default function Emoji({pageID,pageIcon, onEmojiClick }) {
 		</div>
 	);
 }
+export default React.memo(Emoji)

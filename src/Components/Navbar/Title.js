@@ -1,28 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Emoji from "./EmojiPicker";
 import ActionButton from "./ActionButton";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { useHandlePageUpdate } from "../../Hooks/Pages"
 
-export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
-	const currentPageId = useCurrentPageId();
-
-	const [isTitleButton, setIsTitleButton] = useState(false);
-	const handleToggle = (e) => {
-		setIsTitleButton((prevTitleButton) => !prevTitleButton);
-	};
-	const callback = (e) => {
-		onEmojiClick(e,currentPageId)
-	}
-	const handleKeyPress =(e)=>{
-		if(e.key === "Enter"){
-			setIsTitleButton(false)
-		}
-	}
+function Title() {
+	const currentPage = useCurrentPage();
+	const handlePageUpdate = useHandlePageUpdate()
+	const [isTitleButton, setIsTitleButton] = useState(()=>false);
+	const {title: pageTitle, icon: pageIcon} = currentPage
+	const handleToggle = useCallback(() => setIsTitleButton((prevTitleButton) => !prevTitleButton), [])
+	const handleEditEmoji = useCallback((e, emojiObject) => handlePageUpdate({...currentPage, icon: emojiObject.emoji}), [currentPage, handlePageUpdate])
+	const handleEditTitle = useCallback((e) => handlePageUpdate({...currentPage, title: e.target.value}), [currentPage, handlePageUpdate])
+	const handleKeyPress = useCallback((e)=> {(e.key === "Enter") && setIsTitleButton(false)}, [])
 	const ref = useDetectClickOutside({
 		onTriggered: () => setIsTitleButton(false),
 		allowAnyKey: false,
 	});
+	
 	return (
 		<div ref = {ref} >
 			<div className="h-6 flex items-center">
@@ -37,18 +33,17 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 					<div className="flex items-center py-1 px-2">
 						<div className="flex items-center border rounded mr-2 point px-1 h-7">
 							<Emoji
-								currentPageID={currentPageId}
 								pageIcon={pageIcon}
-								onEmojiClick={onEmojiClick}
+								handleEditEmoji={handleEditEmoji}
 							/>
 						</div>
 						<input
 							type="text"
-							onChange={callback}
+							onChange={handleEditTitle}
 							className="input h-7 w-full rounded px-1"
 							value={pageTitle}
 							placeholder="Untitled"
-							onKeyPress={(e)=>handleKeyPress(e)}
+							onKeyPress={handleKeyPress}
 						/>
 					</div>
 				</div>
@@ -56,3 +51,4 @@ export default function Title({ pageTitle, pageIcon, onEmojiClick }) {
 		</div>
 	);
 }
+export default React.memo(Title)

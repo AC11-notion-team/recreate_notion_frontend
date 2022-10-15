@@ -1,11 +1,11 @@
 import React,{useState, useEffect} from "react";
 import search from "../image/search.png"
 import axios from 'axios';
-import {useCurrentPageUpdateId } from "../../Hooks/CurrentPageId";
+import {useCurrentPageUpdate } from "../../Hooks/CurrentPage";
 
 
 export default function QuickFind(){
-	const changeCurrentPageId = useCurrentPageUpdateId();
+	const changeCurrentPageId = useCurrentPageUpdate();
 
     const [isQuickFind, setIsQuickFind] = useState(false);
     const handleToggle = (e) => {

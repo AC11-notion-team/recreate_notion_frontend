@@ -4,50 +4,16 @@ import Editor from "./Components/Editor/Editor";
 import Header from "./Components/Navbar/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Split from "split.js";
-import axios from "axios";
-import { usePagesUpdate, usePages } from "./Hooks/Pages";
 import PageHeader from "./Components/PageHeader/PageHeader.js";
-import { WsReceivedProvider } from "./Hooks/useActionCable";
+import { CurrentPageProvider } from "./Hooks/CurrentPage";
+import { PagesProvider } from "./Hooks/Pages";
+import { InviteProvider } from "./Hooks/InviteUser";
+import { TrashPagesProvider }from "./Hooks/TrashPages"
 
 function App() {
-	const changePages = usePagesUpdate();
-	const baseUrl = process.env.REACT_APP_BASEURL;
 	// 控制sidebar 出現跟消失
 	const [isSide, setIsSide] = useState(true);
 	const toggleSide = useCallback(() => setIsSide((prevSide) => !prevSide), []);
-	//我的最愛
-	const [isFavorite, setIsFavorite] = useState(false);
-	const token = `Bearer ${localStorage.getItem("zettel_user_token")}`
-
-	const toggleFavorite = useCallback((currentPageID, pageID) => {
-		const currentIsFavorite = !isFavorite
-		setIsFavorite((prevIsFavorite) => !prevIsFavorite);
-		axios({
-			method: "put",
-			url: `${baseUrl}/pages/${currentPageID}`,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: token,
-			},
-			data: {
-				favorite: currentIsFavorite,
-			},
-		}).then((res) => {
-			changePages((prevPages) => {
-				return prevPages.map((item) => {
-					if (pageID) {
-						return item.id === pageID
-							? { ...item, favorite: currentIsFavorite }
-							: item;
-					} else {
-						return item.id === currentPageID
-							? { ...item, favorite: currentIsFavorite }
-							: item;
-					}
-				});
-			});
-		});
-	}, [baseUrl, changePages, isFavorite, token]);
 
 	//  側邊欄拖拉
 	useLayoutEffect(() => {
@@ -63,85 +29,37 @@ function App() {
 		}
 	}, [isSide]);
 
-	const onEmojiClick = useCallback((event, currentPageID, pageID, emojiObject) => {
-		const { type, value, className } = event.target;
-		if (className === "emoji-img") {
-			changePages((prevPages) => {
-				return prevPages.map((item) => {
-					if (pageID) {
-						return item.id === pageID
-							? { ...item, icon: emojiObject.emoji }
-							: item;
-					} else {
-						return item.id === currentPageID
-							? { ...item, icon: emojiObject.emoji }
-							: item;
-					}
-				});
-			});
-			axios({
-				method: "put",
-				url: `${baseUrl}/pages/${currentPageID}`,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: token,
-				},
-				data: {
-					icon: emojiObject.emoji,
-				},
-			});
-		}
-		if (type === "text") {
-			changePages((prevPages) => {
-				return prevPages.map((item) => {
-					if (pageID) {
-						return item.id === pageID ? { ...item, title: value } : item;
-					} else {
-						return item.id === currentPageID ? { ...item, title: value } : item;
-					}
-				});
-			});
-			axios({
-				method: "put",
-				url: `${baseUrl}/pages/${currentPageID}`,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: token,
-				},
-				data: {
-					title: value,
-				},
-			});
-		}
-	},[baseUrl, changePages, token]);
-
 	return (
-		<div>
-			<div className="flex w-full h-screen split">
-				{isSide && (
-					<div id="split-0" className="relative flex-grow-0 side-minW">
-						<Sidebar
-							toggleFavorite={toggleFavorite}
-							toggle={toggleSide}
-							onEmojiClick={onEmojiClick}
-						/>
-					</div>
-				)}
+		<PagesProvider>
+			<CurrentPageProvider>
+				<TrashPagesProvider>
+					<InviteProvider>
+						<div>
+							<div className="flex w-full h-screen split">
+								{isSide && (
+									<div id="split-0" className="relative flex-grow-0 side-minW">
+										<Sidebar
+											toggleSide={toggleSide}
+										/>
+									</div>
+								)}
 
-				<div id="split-1" className="flex-grow overflow-hidden">
-					<Header
-						toggleFavorite={toggleFavorite}
-						isSide={isSide}
-						toggleSide={toggleSide}
-						onEmojiClick={onEmojiClick}
-					/>
-					<div className="relative overflow-auto content ">
-						<PageHeader onEmojiClick={onEmojiClick} />
-						<Editor />
-					</div>
-				</div>
-			</div>
-		</div>
+								<div id="split-1" className="flex-grow overflow-hidden">
+									<Header
+										isSide={isSide}
+										toggleSide={toggleSide}
+									/>
+									<div className="relative overflow-auto content ">
+										<PageHeader />
+										<Editor />
+									</div>
+								</div>
+							</div>
+						</div>
+					</InviteProvider>
+				</TrashPagesProvider>
+			</CurrentPageProvider>
+		</PagesProvider>
 	);
 }
 export default App;

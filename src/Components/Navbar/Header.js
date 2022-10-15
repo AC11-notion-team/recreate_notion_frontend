@@ -6,27 +6,14 @@ import menu from "../image/menu.png";
 import emptyStar from "../image/empty-star.png";
 import fullStar from "../image/full-star.png";
 import MenuButton from "./MenuButton";
-import { usePages } from "../../Hooks/Pages";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
+import { useCurrentPage } from "../../Hooks/CurrentPage";
+import { useHandlePageUpdate } from "../../Hooks/Pages";
 
-export default function Header({
-	isSide,
-	toggleFavorite,
-	toggleSide,
-	onEmojiClick,
-}) {
-	const pages = usePages();
-	const currentPageId = useCurrentPageId();
 
-	const pageItem = pages.filter((item) => {
-		return item.id === currentPageId;
-	});
-	const pageTitle = pageItem[0]?.title;
-	const pageIcon = pageItem[0]?.icon;
-	const pageFavorite = pageItem[0]?.favorite;
-	const callback =()=>{
-		toggleFavorite(currentPageId)
-	}
+export default function Header({ isSide, toggleSide}) {
+	const currentPage = useCurrentPage()
+	const {favorite: pageFavorite} = currentPage;
+	const handlePageUpdate = useHandlePageUpdate();
 
 	return (
 		<nav className="flex h-12 justify-between px-2 leading-10 relative">
@@ -42,23 +29,20 @@ export default function Header({
 					</div>
 				)}
 				<div className="flex items-center">
-					<Title
-						pageTitle={pageTitle}
-						pageIcon={pageIcon}
-						onEmojiClick={onEmojiClick}
-					/>
+					<Title/>
 				</div>
 			</div>
 			<div className="flex">
 				<Share />
-				<div className="flex items-center" onClick={callback}>
+				<div className="flex items-center" >
 					<MenuButton
 						className="IsFavorite"
 						alt="favoriteButton"
 						src={pageFavorite ? fullStar : emptyStar}
+						handleClick={() => handlePageUpdate({...currentPage, favorite: !currentPage.favorite})}
 					/>
 				</div>
-				<More favorite={pageFavorite} toggleFavorite={toggleFavorite} />
+				< More />
 			</div>
 		</nav>
 	);

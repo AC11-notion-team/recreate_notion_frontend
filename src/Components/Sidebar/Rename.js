@@ -1,21 +1,18 @@
 import React,{useState} from "react"
 import rename from "../image/edit.png";
 import ActionButton from "../Navbar/ActionButton";
-import { useCurrentPageId } from "../../Hooks/CurrentPageId";
 import Emoji from "../Navbar/EmojiPicker";
+import {  useHandlePageUpdate } from "../../Hooks/Pages"
 
-export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMore}){
-    const currentPageId = useCurrentPageId();
+
+export default function Rename({handleMore, page}){
+    const {title: pageTitle, icon: pageIcon} = page
+    const handlePageUpdate = useHandlePageUpdate()
     const [isRename, setIsRename] = useState(false);
-	const handleToggle = (e) => {
-        setIsRename((prevTitleButton) => !prevTitleButton);
-	};
-    const callback = (event) => onEmojiClick(event, currentPageId,pageID)
-    const handleKeyPress =(e)=>{
-		if(e.key === "Enter"){
-			handleMore()
-		}
-	}
+	const handleToggle = (e) => setIsRename((prevTitleButton) => !prevTitleButton)
+    const handleKeyPress =(e)=> {(e.key === "Enter") && handleMore()}
+    const handleEditEmoji = (e, emojiObject) =>handlePageUpdate({...page, icon: emojiObject.emoji})
+
     return(
         <div>
             <ActionButton
@@ -31,17 +28,16 @@ export default function Rename({onEmojiClick,pageTitle, pageIcon,pageID,handleMo
                         <div className="flex items-center border rounded mr-2 point px-1 h-7">
                             <Emoji
                                 pageIcon={pageIcon}
-                                onEmojiClick={onEmojiClick}
-                                pageID={pageID}
+                                handleEditEmoji={handleEditEmoji}
                             />
                         </div>
                         <input
                             type="text"
-                            onChange={callback}
+                            onChange={(e)=>handlePageUpdate({...page, title: e.target.value})}
                             className="input h-7 w-full rounded title px-1" 
                             value={pageTitle}
                             placeholder="Untitled"
-                            onKeyPress={(e)=>handleKeyPress(e)}  
+                            onKeyPress={handleKeyPress}  
                         />
                     </div>
                 </div>
